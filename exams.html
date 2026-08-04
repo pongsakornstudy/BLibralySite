@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แหล่งข้อสอบ | ห้องสมุดของบีส</title>
+    <meta name="description" content="รวมแหล่งข้อสอบและแบบฝึกหัดออนไลน์ แยกตามวิชา เตรียมสอบ TCAS และสอบปลายภาค">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        latte: {
+                            50:  '#FDFAF6',
+                            100: '#FAF6F0',
+                            200: '#F0E6D6',
+                            300: '#D4B89F',
+                            400: '#C4A882',
+                            500: '#A67B5B',
+                            600: '#8C6B52',
+                            700: '#6F4E37',
+                            800: '#5A3E2B',
+                            900: '#4A3525',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Lora"', 'serif'],
+                        sans:  ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: #FAF6F0;
+            background-image:
+                linear-gradient(rgba(250, 246, 240, 0.90), rgba(250, 246, 240, 0.90)),
+                url('./bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #4A3525;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FAF6F0; }
+        ::-webkit-scrollbar-thumb { background: #D4B89F; border-radius: 4px; }
+
+        .subject-card {
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(74, 53, 37, 0.08);
+            border: 1px solid #F0E6D6;
+            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+        .subject-card:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 0 16px 40px rgba(74, 53, 37, 0.18);
+        }
+        .subject-card .card-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #F0E6D6;
+            display: block;
+        }
+        .subject-card .card-label {
+            padding: 18px 20px;
+            background: #ffffff;
+            border-top: 1px solid #F0E6D6;
+        }
+
+        .back-btn svg { transition: transform 0.2s; }
+        .back-btn:hover svg { transform: translateX(-4px); }
+
+        .exam-card {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #F0E6D6;
+            padding: 20px 24px;
+            box-shadow: 0 2px 10px rgba(74, 53, 37, 0.06);
+            transition: transform 0.25s, box-shadow 0.25s;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .exam-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(74, 53, 37, 0.12);
+        }
+        .exam-badge {
+            min-width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .badge-tcas  { background: #FFF0E0; }
+        .badge-onet  { background: #E8F4FF; }
+        .badge-mid   { background: #F0FFF0; }
+        .badge-other { background: #F0E6D6; }
+    </style>
+</head>
+<body class="font-sans min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-[#FAF6F0]/90 backdrop-blur-md border-b border-latte-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="./index.html" class="font-serif text-xl text-latte-900 hover:text-latte-700 transition">
+                📖 ห้องสมุดของบีส
+            </a>
+            <a href="./index.html#booking" class="bg-latte-700 text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-latte-900 transition">
+                จองคิวเรียน ✏️
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 py-12">
+
+        <!-- ===== SUBJECT GRID VIEW ===== -->
+        <div id="view-subjects">
+            <div class="text-center mb-12">
+                <p class="text-latte-500 font-medium uppercase tracking-widest text-sm mb-3">📝 Exam Bank</p>
+                <h1 class="font-serif text-4xl sm:text-5xl text-latte-900 mb-3">แหล่งข้อสอบ</h1>
+                <p class="text-latte-600 text-lg">รวมแนวข้อสอบ ข้อสอบเก่า และแบบฝึกหัดออนไลน์</p>
+                <div class="w-16 h-1 bg-latte-400 rounded-full mx-auto mt-5"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+
+                <button onclick="showSubject('math')" class="subject-card text-left">
+                    <img src="./images/img_math.png" alt="คณิตศาสตร์" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">คณิตศาสตร์</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('bio')" class="subject-card text-left">
+                    <img src="./images/img_bio.png" alt="ชีววิทยา" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">ชีววิทยา</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('physics')" class="subject-card text-left">
+                    <img src="./images/img_physics.png" alt="ฟิสิกส์" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">ฟิสิกส์</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('chem')" class="subject-card text-left">
+                    <img src="./images/img_chem.png" alt="เคมี" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">เคมี</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('tpat1')" class="subject-card text-left">
+                    <img src="./images/img_tpat1.png" alt="TPAT1" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">TPAT1</p>
+                        <p class="text-sm text-latte-500 mt-1">ข้อสอบจริง · แนวข้อสอบ</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('english')" class="subject-card text-left">
+                    <img src="./images/img_english.png" alt="ภาษาอังกฤษ" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">ภาษาอังกฤษ</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('social')" class="subject-card text-left">
+                    <img src="./images/img_social.png" alt="สังคมศึกษา" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">สังคมศึกษา</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+                <button onclick="showSubject('thai')" class="subject-card text-left">
+                    <img src="./images/img_thai.png" alt="ภาษาไทย" class="card-img">
+                    <div class="card-label">
+                        <p class="font-serif text-xl font-semibold text-latte-900">ภาษาไทย</p>
+                        <p class="text-sm text-latte-500 mt-1">TCAS · O-NET · ปลายภาค</p>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- ===== EXAM DETAIL VIEW ===== -->
+        <div id="view-chapters" class="hidden">
+
+            <div class="mb-10">
+                <button onclick="goBack()" class="back-btn flex items-center gap-2 text-latte-600 hover:text-latte-900 transition mb-6 font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    กลับหน้าวิชาทั้งหมด
+                </button>
+
+                <div class="flex items-center gap-5">
+                    <img id="detail-img" src="" alt="" class="w-20 h-20 rounded-2xl object-cover shadow-md border border-latte-200">
+                    <div>
+                        <p class="text-sm text-latte-500 font-medium uppercase tracking-widest mb-1">แหล่งข้อสอบ</p>
+                        <h2 id="detail-title" class="font-serif text-3xl sm:text-4xl text-latte-900"></h2>
+                    </div>
+                </div>
+                <div class="w-full h-px bg-latte-200 mt-6"></div>
+            </div>
+
+            <div id="chapter-list" class="flex flex-col gap-4"></div>
+
+            <div id="chapter-empty" class="hidden text-center py-16">
+                <p class="text-5xl mb-4">📭</p>
+                <p class="font-serif text-xl text-latte-700">ยังไม่มีข้อสอบในวิชานี้</p>
+                <p class="text-latte-500 mt-2">บีสจะอัปเดตเร็วๆ นี้นะครับ!</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="mt-16 border-t border-latte-200 py-8">
+        <p class="text-center text-latte-400 text-sm font-mono">~ ห้องสมุดของบีส · คลังข้อสอบ ~</p>
+    </footer>
+
+    <script>
+        // badgeClass: badge-tcas / badge-onet / badge-mid / badge-other
+        const subjects = {
+            math: {
+                name: 'คณิตศาสตร์',
+                img: './img_math.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS คณิต (รวมปี)', badge: '📐', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS คณิตศาสตร์ ย้อนหลังหลายปี', link: null },
+                    { name: 'ข้อสอบ O-NET คณิต', badge: '📊', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 วิชาคณิตศาสตร์', link: null },
+                    { name: 'แบบฝึกหัดปลายภาค', badge: '📝', badgeClass: 'badge-mid', desc: 'โจทย์ฝึกซ้อมสอบปลายภาคของโรงเรียน', link: null },
+                ]
+            },
+            bio: {
+                name: 'ชีววิทยา',
+                img: './img_bio.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS ชีววิทยา', badge: '🌿', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS ชีววิทยา ย้อนหลังหลายปี', link: null },
+                    { name: 'ข้อสอบ O-NET วิทยาศาสตร์', badge: '🔬', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 วิทยาศาสตร์', link: null },
+                ]
+            },
+            physics: {
+                name: 'ฟิสิกส์',
+                img: './img_physics.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS ฟิสิกส์', badge: '⚡', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS ฟิสิกส์ ย้อนหลังหลายปี', link: null },
+                    { name: 'ข้อสอบ O-NET วิทยาศาสตร์', badge: '🌊', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 วิทยาศาสตร์', link: null },
+                ]
+            },
+            chem: {
+                name: 'เคมี',
+                img: './img_chem.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS เคมี', badge: '⚗️', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS เคมี ย้อนหลังหลายปี', link: null },
+                    { name: 'ข้อสอบ O-NET วิทยาศาสตร์', badge: '🧪', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 วิทยาศาสตร์', link: null },
+                ]
+            },
+            tpat1: {
+                name: 'TPAT1',
+                img: './img_tpat1.png',
+                exams: [
+                    { name: 'ข้อสอบ TPAT1 ปีล่าสุด', badge: '🧠', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TPAT1 ความถนัดทั่วไป ปีล่าสุด', link: null },
+                    { name: 'แนวข้อสอบ TPAT1 ย้อนหลัง', badge: '📋', badgeClass: 'badge-other', desc: 'รวมแนวข้อสอบ TPAT1 ย้อนหลังหลายปี', link: null },
+                ]
+            },
+            english: {
+                name: 'ภาษาอังกฤษ',
+                img: './img_english.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS อังกฤษ', badge: '🇬🇧', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS ภาษาอังกฤษ ย้อนหลัง', link: null },
+                    { name: 'ข้อสอบ O-NET อังกฤษ', badge: '📚', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 ภาษาอังกฤษ', link: null },
+                    { name: 'Mock Test IELTS/TOEIC', badge: '✈️', badgeClass: 'badge-other', desc: 'ข้อสอบจำลองสำหรับ IELTS และ TOEIC', link: null },
+                ]
+            },
+            social: {
+                name: 'สังคมศึกษา',
+                img: './img_social.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS สังคม', badge: '🌏', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS สังคมศึกษา ย้อนหลัง', link: null },
+                    { name: 'ข้อสอบ O-NET สังคม', badge: '🏛️', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 สังคมศึกษา', link: null },
+                ]
+            },
+            thai: {
+                name: 'ภาษาไทย',
+                img: './img_thai.png',
+                exams: [
+                    { name: 'ข้อสอบ TCAS ภาษาไทย', badge: '📜', badgeClass: 'badge-tcas', desc: 'ข้อสอบ TCAS ภาษาไทย ย้อนหลัง', link: null },
+                    { name: 'ข้อสอบ O-NET ภาษาไทย', badge: '🪷', badgeClass: 'badge-onet', desc: 'แนวข้อสอบ O-NET ม.6 ภาษาไทย', link: null },
+                ]
+            },
+        };
+
+        function showSubject(subjectKey) {
+            const subject = subjects[subjectKey];
+            if (!subject) return;
+
+            document.getElementById('detail-img').src = subject.img;
+            document.getElementById('detail-img').alt = subject.name;
+            document.getElementById('detail-title').textContent = subject.name;
+
+            const listEl = document.getElementById('chapter-list');
+            const emptyEl = document.getElementById('chapter-empty');
+            listEl.innerHTML = '';
+
+            const items = subject.exams || [];
+            if (items.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                items.forEach(ex => {
+                    const hasLink = ex.link && ex.link.trim() !== '';
+                    const tag = hasLink ? 'a' : 'div';
+                    const card = document.createElement(tag);
+                    card.className = 'exam-card';
+                    if (hasLink) {
+                        card.href = ex.link;
+                        card.target = '_blank';
+                        card.rel = 'noopener noreferrer';
+                    }
+                    card.innerHTML = `
+                        <div class="exam-badge ${ex.badgeClass}">${ex.badge}</div>
+                        <div class="flex-1">
+                            <p class="font-serif text-lg text-latte-900 font-medium">${ex.name}</p>
+                            <p class="text-sm text-latte-500 mt-1">${ex.desc}</p>
+                        </div>
+                        ${hasLink
+                            ? `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-latte-300 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>`
+                            : `<span class="text-xs text-latte-300 whitespace-nowrap font-mono flex-shrink-0">เร็วๆ นี้</span>`
+                        }
+                    `;
+                    listEl.appendChild(card);
+                });
+            }
+
+            const viewSubjects = document.getElementById('view-subjects');
+            const viewChapters = document.getElementById('view-chapters');
+            viewSubjects.style.opacity = '0';
+            viewSubjects.style.transform = 'translateX(-20px)';
+            viewSubjects.style.transition = 'opacity 0.25s, transform 0.25s';
+            setTimeout(() => {
+                viewSubjects.classList.add('hidden');
+                viewSubjects.style.opacity = '';
+                viewSubjects.style.transform = '';
+                viewChapters.classList.remove('hidden');
+                viewChapters.style.opacity = '0';
+                viewChapters.style.transform = 'translateX(20px)';
+                viewChapters.style.transition = 'opacity 0.3s, transform 0.3s';
+                requestAnimationFrame(() => {
+                    viewChapters.style.opacity = '1';
+                    viewChapters.style.transform = 'translateX(0)';
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 200);
+        }
+
+        function goBack() {
+            const viewSubjects = document.getElementById('view-subjects');
+            const viewChapters = document.getElementById('view-chapters');
+            viewChapters.style.opacity = '0';
+            viewChapters.style.transform = 'translateX(20px)';
+            viewChapters.style.transition = 'opacity 0.25s, transform 0.25s';
+            setTimeout(() => {
+                viewChapters.classList.add('hidden');
+                viewChapters.style.opacity = '';
+                viewChapters.style.transform = '';
+                viewSubjects.classList.remove('hidden');
+                viewSubjects.style.opacity = '0';
+                viewSubjects.style.transform = 'translateX(-20px)';
+                viewSubjects.style.transition = 'opacity 0.3s, transform 0.3s';
+                requestAnimationFrame(() => {
+                    viewSubjects.style.opacity = '1';
+                    viewSubjects.style.transform = 'translateX(0)';
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 200);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && subjects[hash]) showSubject(hash);
+        });
+    </script>
+
+</body>
+</html>

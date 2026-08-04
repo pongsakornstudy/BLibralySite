@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLibrarySite ☕️📚 - B's LibrarySite</title>
+    <!-- โหลด Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Prompt:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        latte: {
+                            50: '#FAF6F0', 100: '#F4EAE0', 300: '#D4B89F',
+                            500: '#A67B5B', 700: '#6F4E37', 900: '#4A3525',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #FAF6F0;
+            background-image: linear-gradient(rgba(250, 246, 240, 0.88), rgba(250, 246, 240, 0.88)), url('./bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #4A3525;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF6F0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D4B89F;
+            border-radius: 4px;
+        }
+
+        /* 3D Book Styles */
+        .book-container {
+            perspective: 1500px;
+        }
+        .book {
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .book-cover {
+            transform-style: preserve-3d;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 30;
+        }
+        .book-cover-inner, .book-cover-outer {
+            backface-visibility: hidden;
+            position: absolute;
+            inset: 0;
+        }
+        .book-cover-inner {
+            transform: rotateY(180deg);
+        }
+        @media (hover: hover) {
+            .book-container:hover .book-cover {
+                transform: rotateY(-140deg);
+            }
+        }
+        .book-container.is-open .book-cover {
+            transform: rotateY(-140deg);
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-latte-300 selection:text-latte-900">
+
+    <!-- แถบเมนูด้านบน -->
+    <nav class="fixed w-full bg-latte-50/90 backdrop-blur-md border-b border-latte-100 z-40 transition-all shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="#home" class="flex items-center space-x-2">
+                    <span class="font-serif font-bold text-xl text-latte-700 tracking-wide">BLibrarySite ☕️</span>
+                </a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#resources"
+                        class="text-latte-700 hover:text-latte-500 font-medium transition">แหล่งข้อมูล</a>
+                    <a href="#files" class="text-latte-700 hover:text-latte-500 font-medium transition">ไฟล์เอกสาร</a>
+                    <a href="#booking"
+                        class="text-latte-700 hover:text-latte-500 font-medium transition">เรียนด้วยกัน</a>
+                    <a href="#social"
+                        class="text-latte-700 hover:text-latte-500 font-medium transition">ติดตามบีสได้ที่</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. โซนต้อนรับ -->
+    <header id="home" class="pt-32 pb-16 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="font-sans text-4xl sm:text-5xl text-latte-900 mb-4 leading-tight font-semibold">
+                ยินดีต้อนรับสู่ <br> <span class="italic text-latte-500">ห้องสมุดของบีส 📖☕️</span>
+            </h1>
+            <p class="text-lg text-latte-700 mb-8 max-w-2xl mx-auto">
+                พื้นที่แบ่งปันความรู้ เทคนิคการเรียน และทริคเตรียมสอบ เนื้อหาแน่นจัดเต็มแบบเป็นกันเอง
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#booking"
+                    class="bg-latte-700 text-white font-medium px-8 py-3.5 rounded-full hover:bg-latte-900 transition shadow-lg">
+                    สนใจเรียนด้วยกัน คลิกที่นี่ 📝✨
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 py-8 space-y-24">
+
+        <!-- 2. โซนแหล่งข้อมูล (3D Book) -->
+        <section id="resources" class="scroll-mt-24">
+            <div class="book-container max-w-3xl mx-auto h-[450px] w-full">
+                <div class="book w-full h-full">
+                    <div class="book-cover absolute inset-0 cursor-pointer group">
+                        <div class="book-cover-outer bg-[#8C6B52] rounded-r-2xl border-l-8 border-[#4A3525] shadow-[10px_10px_20px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center p-6 text-center z-10 transition-colors group-hover:bg-[#9D795E]">
+                            <div class="border-2 border-[#D4B89F] rounded-xl w-full h-full border-dashed flex flex-col items-center justify-center">
+                                <svg class="w-12 h-12 text-[#FAF6F0] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                <h2 class="font-serif text-3xl sm:text-4xl text-white">แหล่งข้อมูลที่ใช้</h2>
+                                <p class="text-latte-100 mt-4 px-4">ตำรา เว็บไซต์ หรือเครื่องมือที่บีสใช้ประจำ</p>
+                            </div>
+                        </div>
+                        <div class="book-cover-inner bg-[#4A3525] rounded-l-2xl border-r-8 border-[#3A2A1D] shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+                    <div class="absolute inset-y-1 left-4 right-1 bg-[#Fdfcf9] rounded-r-xl shadow-[inset_5px_0_15px_rgba(0,0,0,0.05)] z-10 p-6 sm:p-10 overflow-y-auto border-l border-latte-300">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+                            <a href="https://www.smartmathpro.com" target="_blank" class="bg-white p-6 rounded-2xl border border-latte-100 text-center hover:shadow-lg transition block text-latte-900">
+                                <p class="font-medium text-lg">SmartMathPro</p>
+                            </a>
+                            <a href="https://www.chulatutor.com" target="_blank" class="bg-white p-6 rounded-2xl border border-latte-100 text-center hover:shadow-lg transition block text-latte-900">
+                                <p class="font-medium text-lg">Chulatutor</p>
+                            </a>
+                            <a href="https://notebook.google.com/?pli=1" target="_blank" class="bg-white p-6 rounded-2xl border border-latte-100 text-center hover:shadow-lg transition block text-latte-900">
+                                <p class="font-medium text-lg">NoteBookLM</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. โซนไฟล์เอกสาร (3D Book) -->
+        <section id="files" class="scroll-mt-24">
+            <div class="book-container max-w-3xl mx-auto h-[560px] w-full">
+                <div class="book w-full h-full">
+                    <div class="book-cover absolute inset-0 cursor-pointer group">
+                        <div class="book-cover-outer bg-[#6F4E37] rounded-r-2xl border-l-8 border-[#4A3525] shadow-[10px_10px_20px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center p-6 text-center z-10 transition-colors group-hover:bg-[#7D5A42]">
+                            <div class="border-2 border-[#D4B89F] rounded-xl w-full h-full border-dashed flex flex-col items-center justify-center">
+                                <svg class="w-12 h-12 text-[#FAF6F0] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path></svg>
+                                <h2 class="font-serif text-3xl sm:text-4xl text-white">คลังเอกสารและชีทสรุป</h2>
+                                <p class="text-latte-100 mt-4 px-4">ดาวน์โหลดชีทสรุปสูตรฟรี หยิบไปใช้ทบทวนได้เต็มที่!</p>
+                            </div>
+                        </div>
+                        <div class="book-cover-inner bg-[#4A3525] rounded-l-2xl border-r-8 border-[#3A2A1D] shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+                    <div class="absolute inset-y-1 left-4 right-1 bg-[#Fdfcf9] rounded-r-xl shadow-[inset_5px_0_15px_rgba(0,0,0,0.05)] z-10 p-5 sm:p-8 overflow-y-auto border-l border-latte-300 flex flex-col items-center justify-center gap-4">
+                        <a href="./files.html"
+                            class="w-full max-w-sm bg-latte-700 p-4 sm:p-5 rounded-2xl text-center hover:bg-latte-900 transition block text-white shadow-md">
+                            <p class="font-serif text-lg sm:text-xl font-semibold">📝 ไฟล์สรุปของบีส</p>
+                            <p class="text-xs text-latte-200 mt-1">ชีทสรุปแยกวิชา →</p>
+                        </a>
+                        <a href="./resources.html"
+                            class="w-full max-w-sm bg-white p-4 sm:p-5 rounded-2xl border border-latte-200 text-center hover:shadow-lg hover:border-latte-400 transition block text-latte-900">
+                            <p class="font-serif text-lg sm:text-xl font-semibold">🔗 แหล่งข้อมูลที่บีสแนะนำ</p>
+                            <p class="text-xs text-latte-400 mt-1">เว็บ · วิดีโอ · แอป →</p>
+                        </a>
+                        <a href="./exams.html"
+                            class="w-full max-w-sm bg-white p-4 sm:p-5 rounded-2xl border border-latte-200 text-center hover:shadow-lg hover:border-latte-400 transition block text-latte-900">
+                            <p class="font-serif text-lg sm:text-xl font-semibold">📋 แหล่งข้อสอบ</p>
+                            <p class="text-xs text-latte-400 mt-1">TCAS · O-NET · ปลายภาค →</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-latte-300/50">
+
+        <!-- 4. โซนลงทะเบียน (Booking System) อัปเดตวิชาแล้ว -->
+        <!-- 4. โซนลงทะเบียน (3D Book) -->
+        <section id="booking" class="scroll-mt-24">
+            <div class="book-container max-w-4xl mx-auto h-[800px] sm:h-[750px] w-full">
+                <div class="book w-full h-full">
+                    <div class="book-cover absolute inset-0 cursor-pointer group">
+                        <div class="book-cover-outer bg-[#A67B5B] rounded-r-2xl border-l-8 border-[#6F4E37] shadow-[10px_10px_20px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center p-6 text-center z-10 transition-colors group-hover:bg-[#B58A6A]">
+                            <div class="border-2 border-[#D4B89F] rounded-xl w-full h-full border-dashed flex flex-col items-center justify-center">
+                                <svg class="w-12 h-12 text-[#FAF6F0] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 8H4M4 8v8a4 4 0 004 4h8a4 4 0 004-4V8M4 8a4 4 0 014-4h8a4 4 0 014 4m-4 4h2a2 2 0 110 4h-2M9 12v.01M13 12v.01"></path></svg>
+                                <h2 class="font-serif text-3xl sm:text-4xl text-white">เรียนด้วยกัน</h2>
+                                <p class="text-latte-100 mt-4 px-4">สนใจติวเข้ม หรืออยากให้บีสอัดคลิปสอนเฉพาะจุด ลงคิวไว้ได้เลยครับ</p>
+                            </div>
+                        </div>
+                        <div class="book-cover-inner bg-[#4A3525] rounded-l-2xl border-r-8 border-[#3A2A1D] shadow-[inset_10px_0_20px_rgba(0,0,0,0.5)]"></div>
+                    </div>
+                    <div class="absolute inset-y-1 left-4 right-1 bg-[#Fdfcf9] rounded-r-xl shadow-[inset_5px_0_15px_rgba(0,0,0,0.05)] z-10 p-6 sm:p-10 overflow-y-auto border-l border-latte-300">
+                        <div class="flex flex-col gap-6">
+                            <!-- Cafe Receipt Element (Moved inside) -->
+                            <div class="bg-[#FFFDF9] p-4 sm:p-6 rounded-sm relative shadow-md border-x border-latte-100 mx-auto max-w-sm w-full" style="border-top: 3px dashed #D4B89F; border-bottom: 3px dashed #D4B89F;">
+                                <div class="text-center font-mono text-xs text-latte-500 uppercase tracking-[0.15em] border-b border-dashed border-latte-300 pb-3 mb-4">
+                                    ~ Cafe & Library ~<br>Tutoring Ticket
+                                </div>
+                                <div class="font-mono text-sm text-latte-700 flex justify-between items-center mb-3">
+                                    <span>📌 ค่าเรียน/บท:</span>
+                                    <span class="font-bold text-lg text-latte-900">50.-</span>
+                                </div>
+                                <div class="font-mono text-sm text-latte-700 flex justify-between items-center">
+                                    <span>⏱️ ระยะเวลา:</span>
+                                    <span class="text-latte-900">~1 ชม. 30 นาที</span>
+                                </div>
+                                <div class="text-center font-mono text-[10px] text-latte-400 pt-4 mt-4 border-t border-dashed border-latte-300">
+                                    (ราคาอาจมีการปรับขึ้นในอนาคต รีบมาลงกันก่อนเร็ว!)
+                                </div>
+                            </div>
+            
+                            <form id="bookingForm" class="space-y-5 max-w-2xl mx-auto w-full">
+                                <div>
+                                    <label class="block text-sm font-medium text-latte-900 mb-1">รูปแบบการติว</label>
+                                    <select id="tutoring_format" class="w-full bg-white border border-latte-300 rounded-xl p-3" required>
+                                        <option value="1on1">ติวสดตัวต่อตัว (Online)</option>
+                                        <option value="video">อัดวิดีโออธิบายเนื้อหา</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-latte-900 mb-1">วิชาที่ต้องการเรียน</label>
+                                    <select id="subject" class="w-full bg-white border border-latte-300 rounded-xl p-3" required>
+                                        <option value="">-- กรุณาเลือกวิชา --</option>
+                                        <option value="math">คณิตศาสตร์</option>
+                                        <option value="bio">ชีววิทยา</option>
+                                        <option value="physics">ฟิสิกส์</option>
+                                        <option value="chem">เคมี</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-latte-900 mb-1">บทเรียน</label>
+                                    <select id="chapter" class="w-full bg-white border border-latte-300 rounded-xl p-3 disabled:bg-gray-100" disabled required>
+                                        <option value="">-- กรุณาเลือกวิชาก่อน --</option>
+                                    </select>
+                                    <input type="text" id="custom_chapter" class="hidden mt-2 w-full bg-white border border-latte-300 rounded-xl p-3 text-latte-900 focus:outline-none focus:ring-2 focus:ring-latte-500" placeholder="พิมพ์ชื่อบทเรียนหรือหัวข้อที่ต้องการเรียน">
+                                </div>
+                                <div id="datetimeContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-latte-900 mb-1">วันที่สะดวก</label>
+                                        <input type="date" id="date" class="w-full bg-white border border-latte-300 rounded-xl p-3 text-latte-900 focus:outline-none focus:ring-2 focus:ring-latte-500" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-latte-900 mb-1">เวลา (เลือกรอบ หรือระบุเอง)</label>
+                                        <select id="time" class="w-full bg-white border border-latte-300 rounded-xl p-3 text-latte-900 focus:outline-none focus:ring-2 focus:ring-latte-500" required>
+                                            <option value="">-- กรุณาเลือกช่วงเวลา --</option>
+                                            <option value="09:00 - 10:30">09:00 - 10:30 น.</option>
+                                            <option value="10:45 - 12:15">10:45 - 12:15 น.</option>
+                                            <option value="13:00 - 14:30">13:00 - 14:30 น.</option>
+                                            <option value="14:45 - 16:15">14:45 - 16:15 น.</option>
+                                            <option value="17:30 - 19:00">17:30 - 19:00 น.</option>
+                                            <option value="19:15 - 20:45">19:15 - 20:45 น.</option>
+                                            <option value="custom">✍️ ระบุเวลาเอง...</option>
+                                        </select>
+                                        <input type="text" id="custom_time" class="hidden mt-2 w-full bg-white border border-latte-300 rounded-xl p-3 text-latte-900 focus:outline-none focus:ring-2 focus:ring-latte-500" placeholder="พิมพ์ระบุเวลาที่สะดวก (เช่น 18:00 น. หรือ 19:30-21:00)">
+                                        <p id="timeNote" class="text-xs text-latte-700 font-medium mt-2 hidden"></p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-latte-900 mb-1">ช่องทางติดต่อ (IG/LINE)</label>
+                                    <input type="text" id="contact" class="w-full bg-white border border-latte-300 rounded-xl p-3" required>
+                                </div>
+                                <div class="pt-2">
+                                    <button type="submit" class="w-full bg-latte-700 text-white font-semibold rounded-xl p-3.5 hover:bg-latte-900 transition">
+                                        ส่งคำขอจองคิว
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-latte-300/50 mt-8 mb-16">
+
+        <!-- 5. โซนช่องทางติดตาม (เว้นว่างไว้รอใส่ลิงก์จริง) -->
+        <section id="social" class="scroll-mt-24 pb-8 text-center">
+            <h2 class="font-serif text-3xl text-latte-900 mb-2">📱 ติดตามบีสได้ที่นี่</h2>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                <a href="https://www.tiktok.com/@pongsakorn.s28" target="_blank"
+                    class="bg-[#252525] text-white px-8 py-4 rounded-2xl w-full sm:w-auto hover:bg-black transition">TikTok
+                    @pongsakorn.s28</a>
+                <a href="https://youtube.com/@pongsakorns-v5n?si=M9GIkQH5xivsvTVN" target="_blank"
+                    class="bg-[#c4302b] text-white px-8 py-4 rounded-2xl w-full sm:w-auto hover:bg-[#a62520] transition">YouTube
+                    @pongsakorns</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal แจ้งเตือนเรื่องบทเรียน -->
+    <div id="reviewModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center">
+            <h3 class="text-xl font-serif text-latte-900 mb-2">แจ้งให้ทราบล่วงหน้า</h3>
+            <p class="text-latte-700 text-sm mb-6">บทเรียนนี้บีสอาจจะต้องใช้เวลาทบทวนเนื้อหานิดนึงนะครับ
+                คิวอาจจะไม่ได้ไวมาก รอบีสคอนเฟิร์มวันเวลาอีกทีน้า!</p>
+            <button onclick="closeModal('reviewModal')"
+                class="w-full bg-latte-500 text-white rounded-xl p-3">รับทราบครับ/ค่ะ</button>
+        </div>
+    </div>
+
+    <!-- Modal แจ้งเตือนส่งข้อมูลสำเร็จ -->
+    <div id="successModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center">
+            <h3 class="text-xl font-serif text-latte-900 mb-2">ส่งคำขอสำเร็จ!</h3>
+            <p class="text-latte-700 text-sm mb-6">รอรับข้อความจาก บีส ภายในวันนี้นะครับ</p>
+            <button onclick="closeModal('successModal')"
+                class="w-full bg-latte-700 text-white rounded-xl p-3">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
+    <script>
+        // ข้อมูลวิชาที่อัปเดตแล้ว
+        const courseData = {
+            math: [
+                { id: "m1", name: "ตรีโกณมิติ", needsReview: false },
+                { id: "m2", name: "เมทริกซ์", needsReview: false }
+            ],
+            bio: [
+                { id: "b1", name: "ระบบสืบพันธุ์พืชดอก", needsReview: true } // ต้องใช้เวลาทบทวน
+            ],
+            physics: [
+                { id: "p1", name: "การเคลื่อนที่แบบ Simple Harmonic", needsReview: false },
+                { id: "p2", name: "คลื่น", needsReview: false }
+            ],
+            chem: [
+                { id: "c1", name: "อะตอมและสมบัติของธาตุ", needsReview: false },
+                { id: "c2", name: "การจัดเรียงอิเล็กตรอน", needsReview: false },
+                { id: "c3", name: "พันธะเคมี", needsReview: false },
+                { id: "c4", name: "ปริมาณสารสัมพันธ์", needsReview: false },
+                { id: "c5", name: "แก๊ส", needsReview: false }
+            ]
+        };
+
+        const subjectSelect = document.getElementById('subject');
+        const chapterSelect = document.getElementById('chapter');
+        const customChapterInput = document.getElementById('custom_chapter');
+        const tutoringFormatSelect = document.getElementById('tutoring_format');
+        const datetimeContainer = document.getElementById('datetimeContainer');
+        const dateInput = document.getElementById('date');
+        const timeInput = document.getElementById('time');
+        const customTimeInput = document.getElementById('custom_time');
+        const timeNote = document.getElementById('timeNote');
+        const bookingForm = document.getElementById('bookingForm');
+
+        // ============================
+        // ล็อคจองล่วงหน้าขั้นต่ำ 3 วัน
+        // ============================
+        (function setMinBookingDate() {
+            const today = new Date();
+            today.setDate(today.getDate() + 3);
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.min = yyyy + '-' + mm + '-' + dd;
+            dateInput.setAttribute('title', 'กรุณาจองล่วงหน้าอย่างน้อย 3 วัน');
+        })();
+
+        // วาง URL ที่ได้จาก Apps Script ล่าสุดตรงนี้เพียงที่เดียว
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxmbxh0n-QuN0IT1Uo09wqvG6PddA_shFdpIOuImi6orArM4WH4_SxDNnAPDZu4jfHn/exec';
+
+        const allTimeSlots = [
+            // เสาร์-อาทิตย์ (ทั้งวัน) — มีเวลาพัก 15 นาทีระหว่างคิว
+            { value: "09:00 - 10:30", text: "09:00 - 10:30 น.",  isWeekday: false },
+            { value: "10:45 - 12:15", text: "10:45 - 12:15 น.", isWeekday: false },
+            { value: "13:00 - 14:30", text: "13:00 - 14:30 น.", isWeekday: false },
+            { value: "14:45 - 16:15", text: "14:45 - 16:15 น.", isWeekday: false },
+            // จันทร์-ศุกร์ (เฉพาะช่วงเย็น) — มีเวลาพัก 15 นาทีระหว่างคิว
+            { value: "17:30 - 19:00", text: "17:30 - 19:00 น.", isWeekday: true  },
+            { value: "19:15 - 20:45", text: "19:15 - 20:45 น.", isWeekday: true  },
+            { value: "custom",        text: "✍️ ระบุเวลาเอง...", isWeekday: true  }
+        ];
+
+        // เก็บเวลาที่ถูกจองแล้วสำหรับวันที่เลือก
+        let bookedSlotsForDate = [];
+
+        // ดึงข้อมูลคิวที่จองแล้วจาก Google Sheets
+        async function fetchBookedSlots(date) {
+            try {
+                const res = await fetch(SCRIPT_URL + '?action=getBookings&date=' + encodeURIComponent(date));
+                const data = await res.json();
+                if (data && data.bookedTimes) {
+                    bookedSlotsForDate = data.bookedTimes;
+                } else {
+                    bookedSlotsForDate = [];
+                }
+            } catch (err) {
+                console.warn('ไม่สามารถโหลดข้อมูลคิวได้:', err);
+                bookedSlotsForDate = [];
+            }
+        }
+
+        function updateTimeOptions() {
+            const dateVal = dateInput.value;
+            const previousSelected = timeInput.value;
+
+            timeInput.innerHTML = '<option value="">-- กรุณาเลือกช่วงเวลา --</option>';
+
+            if (!dateVal) {
+                timeNote.classList.add('hidden');
+                allTimeSlots.forEach(slot => {
+                    const opt = document.createElement('option');
+                    opt.value = slot.value;
+                    opt.textContent = slot.text;
+                    timeInput.appendChild(opt);
+                });
+                return;
+            }
+
+            const [year, month, day] = dateVal.split('-').map(Number);
+            const selectedDate = new Date(year, month - 1, day);
+            const dayOfWeek = selectedDate.getDay();
+            const isWeekday = (dayOfWeek >= 1 && dayOfWeek <= 5);
+
+            const slotsToShow = isWeekday
+                ? allTimeSlots.filter(s => s.isWeekday)
+                : allTimeSlots;
+
+            if (isWeekday) {
+                timeNote.textContent = '💡 วันจันทร์-ศุกร์ เปิดรับเฉพาะช่วงเย็น (17:30 - 20:45 น.) มีพัก 15 นาทีระหว่างคิว';
+            } else {
+                timeNote.textContent = '💡 วันเสาร์-อาทิตย์ เปิดรับช่วงเช้า-บ่าย (09:00 - 16:15 น.) มีพัก 15 นาทีระหว่างคิว';
+            }
+            timeNote.classList.remove('hidden');
+
+            slotsToShow.forEach(slot => {
+                const opt = document.createElement('option');
+                opt.value = slot.value;
+                const isBooked = bookedSlotsForDate.includes(slot.value);
+                if (isBooked && slot.value !== 'custom') {
+                    opt.textContent = slot.text + ' ❌ (จองแล้ว)';
+                    opt.disabled = true;
+                    opt.style.color = '#999';
+                } else {
+                    opt.textContent = slot.text;
+                }
+                timeInput.appendChild(opt);
+            });
+
+            const isValidPrevious = Array.from(timeInput.options).some(opt => opt.value === previousSelected && !opt.disabled);
+            if (previousSelected && isValidPrevious) {
+                timeInput.value = previousSelected;
+            } else {
+                timeInput.value = '';
+                customTimeInput.classList.add('hidden');
+                customTimeInput.required = false;
+                customTimeInput.value = '';
+            }
+        }
+
+        // เมื่อเลือกวันที่ ให้ดึงข้อมูลคิวที่จองแล้วก่อนแสดงตัวเลือกเวลา
+        async function onDateChange() {
+            const dateVal = dateInput.value;
+            if (dateVal) {
+                // แสดงสถานะกำลังโหลด
+                timeInput.innerHTML = '<option value="">⏳ กำลังเช็คคิว...</option>';
+                timeInput.disabled = true;
+                await fetchBookedSlots(dateVal);
+                timeInput.disabled = false;
+            } else {
+                bookedSlotsForDate = [];
+            }
+            updateTimeOptions();
+        }
+
+        dateInput.addEventListener('change', onDateChange);
+        dateInput.addEventListener('input', onDateChange);
+
+        function openModal(modalId) { document.getElementById(modalId).classList.remove('hidden'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.add('hidden'); }
+
+        // สลับการบังคับกรอก วัน-เวลา เมื่อเลือกอัดวิดีโอหรือติวสด
+        function toggleDateTimeVisibility() {
+            if (tutoringFormatSelect.value === 'video') {
+                datetimeContainer.classList.add('hidden');
+                dateInput.required = false;
+                timeInput.required = false;
+                customTimeInput.required = false;
+                dateInput.value = '';
+                timeInput.value = '';
+                customTimeInput.value = '';
+                customTimeInput.classList.add('hidden');
+                timeNote.classList.add('hidden');
+            } else {
+                datetimeContainer.classList.remove('hidden');
+                dateInput.required = true;
+                timeInput.required = true;
+                updateTimeOptions();
+            }
+        }
+
+        tutoringFormatSelect.addEventListener('change', toggleDateTimeVisibility);
+
+        // แสดง/ซ่อน ช่องพิมพ์ระบุเวลาเอง
+        timeInput.addEventListener('change', function () {
+            if (this.value === 'custom') {
+                customTimeInput.classList.remove('hidden');
+                customTimeInput.required = true;
+                customTimeInput.focus();
+            } else {
+                customTimeInput.classList.add('hidden');
+                customTimeInput.required = false;
+                customTimeInput.value = '';
+            }
+        });
+
+        subjectSelect.addEventListener('change', function () {
+            const selectedSubject = this.value;
+            chapterSelect.innerHTML = '<option value="">-- กรุณาเลือกบทเรียน --</option>';
+            customChapterInput.classList.add('hidden');
+            customChapterInput.required = false;
+            customChapterInput.value = '';
+            if (selectedSubject && courseData[selectedSubject]) {
+                chapterSelect.disabled = false;
+                courseData[selectedSubject].forEach(chap => {
+                    const option = document.createElement('option');
+                    option.value = chap.id;
+                    option.textContent = chap.name;
+                    option.dataset.needsReview = chap.needsReview;
+                    chapterSelect.appendChild(option);
+                });
+                // เพิ่มตัวเลือกระบุเอง
+                const customOpt = document.createElement('option');
+                customOpt.value = 'custom';
+                customOpt.textContent = '✍️ ระบุบทเรียนเอง...';
+                chapterSelect.appendChild(customOpt);
+            } else {
+                chapterSelect.disabled = true;
+            }
+        });
+
+        chapterSelect.addEventListener('change', function () {
+            if (this.value === 'custom') {
+                customChapterInput.classList.remove('hidden');
+                customChapterInput.required = true;
+                customChapterInput.focus();
+            } else {
+                customChapterInput.classList.add('hidden');
+                customChapterInput.required = false;
+                customChapterInput.value = '';
+            }
+            if (this.options[this.selectedIndex] && this.options[this.selectedIndex].dataset.needsReview === "true") {
+                openModal('reviewModal');
+            }
+        });
+
+        bookingForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // ============================
+            // Rate Limit: ป้องกัน spam จาก browser เดิม (10 นาที cooldown)
+            // ============================
+            const COOLDOWN_MS = 10 * 60 * 1000;
+            const RATE_KEY = 'bees_last_submit';
+            const lastSubmit = parseInt(localStorage.getItem(RATE_KEY) || '0', 10);
+            const now = Date.now();
+            if (now - lastSubmit < COOLDOWN_MS) {
+                const remaining = Math.ceil((COOLDOWN_MS - (now - lastSubmit)) / 60000);
+                alert('⏳ คุณเพิ่งส่งคำขอไปแล้ว กรุณารอ ' + remaining + ' นาทีก่อนส่งใหม่นะครับ');
+                return;
+            }
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'กำลังส่งข้อมูล...';
+            submitBtn.disabled = true;
+
+            const selectedTime = timeInput.value === 'custom' ? customTimeInput.value : timeInput.value;
+            const selectedChapter = chapterSelect.value === 'custom' ? customChapterInput.value : chapterSelect.value;
+            const format = document.getElementById('tutoring_format').value;
+            const subject = document.getElementById('subject').value;
+            const date = document.getElementById('date').value;
+            const contact = document.getElementById('contact').value;
+
+            // ตรวจสอบข้อมูลให้ครบถ้วนก่อนส่ง
+            if (!format || !subject || !selectedChapter || !contact || (format !== 'video' && (!date || !selectedTime))) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วนทุกช่องครับ');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // แพ็กข้อมูลเตรียมส่งด้วย Key ภาษาอังกฤษ
+            const formData = new FormData();
+            formData.append('format', format);
+            formData.append('subject', subject);
+            formData.append('chapter', selectedChapter);
+            formData.append('date', date);
+            formData.append('time', selectedTime);
+            formData.append('contact', contact);
+
+            function resetFormState() {
+                bookingForm.reset();
+                chapterSelect.disabled = true;
+                chapterSelect.innerHTML = '<option value="">-- กรุณาเลือกวิชาก่อน --</option>';
+                customChapterInput.classList.add('hidden');
+                customChapterInput.required = false;
+                customChapterInput.value = '';
+                customTimeInput.classList.add('hidden');
+                customTimeInput.required = false;
+                toggleDateTimeVisibility();
+            }
+
+            if (!SCRIPT_URL || !SCRIPT_URL.startsWith('http')) {
+                // จำลองการส่งสำเร็จหากยังไม่ได้ใส่ URL จริงของ Apps Script
+                setTimeout(() => {
+                    localStorage.setItem(RATE_KEY, Date.now().toString());
+                    openModal('successModal');
+                    resetFormState();
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                }, 400);
+                return;
+            }
+
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'error') {
+                        alert(data.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่');
+                    } else {
+                        localStorage.setItem(RATE_KEY, Date.now().toString());
+                        openModal('successModal');
+                        resetFormState();
+                    }
+                })
+                .catch(error => {
+                    alert('เกิดข้อผิดพลาดในการส่งข้อมูล โปรดลองอีกครั้ง');
+                    console.error('Error!', error.message);
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                });
+        });
+
+        // IntersectionObserver for 3D books (Mobile/Scroll interaction)
+        document.addEventListener("DOMContentLoaded", function() {
+            const bookContainers = document.querySelectorAll('.book-container');
+            
+            // ตรวจสอบว่าหน้าจอรองรับ hover หรือไม่ (ถ้าใช่ = คอมพิวเตอร์ที่มีเมาส์)
+            const hasHover = window.matchMedia('(hover: hover)').matches;
+
+            if (!hasHover) {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5 // เปิดหนังสือเมื่อแสดงผล 50% ของหน้าจอ
+                };
+
+                const bookObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-open');
+                        } else {
+                            entry.target.classList.remove('is-open');
+                        }
+                    });
+                }, observerOptions);
+
+                bookContainers.forEach(container => {
+                    bookObserver.observe(container);
+                });
+            }
+        });
+
+    </script>
+</body>
+
+</html>
