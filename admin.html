@@ -127,6 +127,10 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     <span>จัดการคิว (Jobs)</span>
                 </a>
+                <a href="#chats" onclick="switchTab('chats')" id="nav-chats" class="flex items-center space-x-3 w-full p-3 rounded-xl hover:bg-latte-800 text-latte-100 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                    <span>ข้อความแชท (Chats)</span>
+                </a>
             </nav>
             <div class="p-4 border-t border-latte-700">
                 <a href="index.html" class="flex items-center space-x-3 w-full p-3 rounded-xl hover:bg-latte-800 text-latte-100 transition">
@@ -260,6 +264,53 @@
                     </div>
                 </section>
 
+                <!-- Tab: Chats -->
+                <section id="tab-chats" class="space-y-6 hidden h-[calc(100vh-8rem)]">
+                    <h2 class="text-2xl font-sans font-bold text-latte-900 shrink-0">จัดการข้อความแชท (Chats)</h2>
+                    
+                    <div class="bg-white rounded-2xl shadow-sm border border-latte-100 overflow-hidden flex h-[calc(100%-4rem)]">
+                        <!-- Contacts List -->
+                        <div class="w-1/3 min-w-[200px] border-r border-latte-100 flex flex-col bg-latte-50">
+                            <div class="p-4 border-b border-latte-100 shrink-0 flex justify-between items-center">
+                                <h3 class="font-bold text-latte-900">แชทล่าสุด</h3>
+                                <button onclick="loadAdminContacts()" class="text-latte-500 hover:text-latte-900">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                </button>
+                            </div>
+                            <div id="adminChatContacts" class="flex-1 overflow-y-auto">
+                                <!-- Contact items injected here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Interface -->
+                        <div class="flex-1 flex flex-col bg-white h-full relative">
+                            <div id="adminChatHeader" class="p-4 border-b border-latte-100 bg-latte-50 shrink-0 hidden items-center justify-between">
+                                <h3 id="adminChatContactName" class="font-bold text-latte-900"></h3>
+                                <button onclick="deleteAdminChat()" class="text-red-500 hover:text-red-700 transition" title="ลบประวัติแชทนี้">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                            
+                            <div id="adminChatMessagesView" class="flex-1 flex-col hidden h-full overflow-hidden">
+                                <div id="adminChatMessagesList" class="flex-1 p-4 overflow-y-auto space-y-3 flex flex-col bg-white">
+                                    <!-- Messages injected here -->
+                                </div>
+                                <div class="p-3 bg-latte-50 border-t border-latte-200 shrink-0 flex gap-2">
+                                    <input type="text" id="adminChatMsgInput" placeholder="พิมพ์ข้อความตอบกลับ..." class="flex-1 bg-white border border-latte-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-latte-400 text-sm" onkeypress="if(event.key === 'Enter') sendAdminChatMessage()">
+                                    <button onclick="sendAdminChatMessage()" class="bg-latte-700 text-white p-2 rounded-full hover:bg-latte-900 transition flex items-center justify-center w-10 h-10 shrink-0">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="adminChatEmptyState" class="absolute inset-0 flex flex-col items-center justify-center text-latte-400 bg-white">
+                                <svg class="w-16 h-16 mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                <p>เลือกแชทเพื่อเริ่มสนทนา</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </main>
     </div>
@@ -316,7 +367,7 @@
         // UI & Tab Logic
         // ==========================================
         function switchTab(tabId) {
-            ['dashboard', 'calendar', 'jobs'].forEach(id => {
+            ['dashboard', 'calendar', 'jobs', 'chats'].forEach(id => {
                 document.getElementById(`tab-${id}`).classList.add('hidden');
                 document.getElementById(`nav-${id}`).classList.remove('bg-latte-700', 'text-white');
                 document.getElementById(`nav-${id}`).classList.add('hover:bg-latte-800', 'text-latte-100');
@@ -335,6 +386,15 @@
 
             if (tabId === 'calendar' && calendar) {
                 setTimeout(() => calendar.render(), 100); // Trigger render after unhiding
+            }
+            if (tabId === 'chats') {
+                loadAdminContacts();
+                if(!adminChatPollingInterval) adminChatPollingInterval = setInterval(loadAdminChatMessages, 5000);
+            } else {
+                if(adminChatPollingInterval) {
+                    clearInterval(adminChatPollingInterval);
+                    adminChatPollingInterval = null;
+                }
             }
         }
 
@@ -600,6 +660,162 @@
             
             calendar.removeAllEvents();
             calendar.addEventSource(events);
+        }
+         window.changeMonth = function(dir) {
+            currentCalDate.setMonth(currentCalDate.getMonth() + dir);
+            calendar.gotoDate(currentCalDate);
+        }
+
+        // ==========================================
+        // Live Chat Admin Logic
+        // ==========================================
+        let adminCurrentChatContact = null;
+        let adminChatPollingInterval = null;
+
+        async function loadAdminContacts() {
+            try {
+                // Group by contact, getting latest message per contact
+                const { data, error } = await supabaseClient
+                    .from('messages')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error && error.code !== '42P01') throw error;
+                if (!data) return;
+
+                const uniqueContactsMap = new Map();
+                for (const msg of data) {
+                    if (!uniqueContactsMap.has(msg.contact)) {
+                        uniqueContactsMap.set(msg.contact, msg);
+                    }
+                }
+
+                const container = document.getElementById('adminChatContacts');
+                container.innerHTML = Array.from(uniqueContactsMap.values()).map(msg => `
+                    <div onclick="selectAdminChat('${msg.contact}')" class="p-4 border-b border-latte-100 cursor-pointer hover:bg-latte-100 transition ${adminCurrentChatContact === msg.contact ? 'bg-latte-100 border-l-4 border-l-latte-700' : ''}">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-latte-900">${msg.contact}</span>
+                            ${!msg.is_read && msg.sender === 'user' ? '<span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span>' : ''}
+                        </div>
+                        <p class="text-sm text-latte-500 truncate">${msg.message}</p>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error("Error loading contacts", err);
+            }
+        }
+
+        window.selectAdminChat = function(contact) {
+            adminCurrentChatContact = contact;
+            document.getElementById('adminChatEmptyState').classList.add('hidden');
+            document.getElementById('adminChatHeader').classList.remove('hidden');
+            document.getElementById('adminChatHeader').classList.add('flex');
+            document.getElementById('adminChatMessagesView').classList.remove('hidden');
+            document.getElementById('adminChatMessagesView').classList.add('flex');
+            document.getElementById('adminChatContactName').innerText = contact;
+            
+            // Mark as read
+            supabaseClient
+                .from('messages')
+                .update({ is_read: true })
+                .eq('contact', contact)
+                .eq('sender', 'user')
+                .then(() => loadAdminContacts()); // Refresh list to clear red dot
+
+            loadAdminChatMessages();
+        }
+
+        async function loadAdminChatMessages() {
+            if (!adminCurrentChatContact) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('messages')
+                    .select('*')
+                    .eq('contact', adminCurrentChatContact)
+                    .order('created_at', { ascending: true });
+                if (error) throw error;
+                
+                const container = document.getElementById('adminChatMessagesList');
+                const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 50;
+                
+                container.innerHTML = (data || []).map(m => {
+                    const isAdmin = m.sender === 'admin';
+                    return `
+                        <div class="flex ${isAdmin ? 'justify-end' : 'justify-start'}">
+                            <div class="max-w-[80%] rounded-2xl px-4 py-2 text-sm ${isAdmin ? 'bg-latte-700 text-white rounded-br-none' : 'bg-latte-100 border border-latte-200 text-latte-900 rounded-bl-none'}">
+                                ${m.message}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                if (isAtBottom || (data && data.length <= 1)) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            } catch (err) {
+                console.error("Error loading messages", err);
+            }
+        }
+
+        window.sendAdminChatMessage = async function() {
+            const input = document.getElementById('adminChatMsgInput');
+            const msg = input.value.trim();
+            if (!msg || !adminCurrentChatContact) return;
+            
+            input.value = '';
+            
+            const container = document.getElementById('adminChatMessagesList');
+            container.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] rounded-2xl px-4 py-2 text-sm bg-latte-700 text-white rounded-br-none opacity-50">
+                        ${msg}
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('messages')
+                    .insert([{ contact: adminCurrentChatContact, message: msg, sender: 'admin', is_read: false }]);
+                if (error) throw error;
+                loadAdminChatMessages();
+                loadAdminContacts(); // Update latest message in list
+            } catch (err) {
+                alert("ส่งข้อความไม่สำเร็จ");
+                console.error(err);
+            }
+        }
+
+        window.deleteAdminChat = async function() {
+            if (!adminCurrentChatContact) return;
+            
+            const confirmed = confirm(`ต้องการลบประวัติการสนทนากับ ${adminCurrentChatContact} ทั้งหมดใช่หรือไม่?`);
+            if (!confirmed) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('messages')
+                    .delete()
+                    .eq('contact', adminCurrentChatContact);
+                
+                if (error) throw error;
+                
+                // Reset chat view
+                adminCurrentChatContact = null;
+                document.getElementById('adminChatEmptyState').classList.remove('hidden');
+                document.getElementById('adminChatHeader').classList.add('hidden');
+                document.getElementById('adminChatHeader').classList.remove('flex');
+                document.getElementById('adminChatMessagesView').classList.add('hidden');
+                document.getElementById('adminChatMessagesView').classList.remove('flex');
+                
+                // Refresh contacts list
+                loadAdminContacts();
+                alert('ลบประวัติการสนทนาเรียบร้อยแล้ว');
+            } catch (err) {
+                alert("เกิดข้อผิดพลาดในการลบประวัติแชท");
+                console.error(err);
+            }
         }
 
         // ==========================================
