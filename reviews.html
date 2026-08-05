@@ -23,18 +23,33 @@
     <meta name="description" content="รีวิวและความประทับใจจากผู้ที่เคยติวกับบีส">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./theme.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Prompt:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
     <script>
+        if (localStorage.getItem('b_theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         latte: {
-                            50: '#FAF6F0', 100: '#F4EAE0', 300: '#D4B89F',
-                            500: '#A67B5B', 700: '#6F4E37', 900: '#4A3525',
+                            50: 'var(--color-latte-50)', 
+                            100: 'var(--color-latte-100)', 
+                            200: 'var(--color-latte-200)', 
+                            300: 'var(--color-latte-300)',
+                            400: 'var(--color-latte-400)',
+                            500: 'var(--color-latte-500)', 
+                            600: 'var(--color-latte-600)',
+                            700: 'var(--color-latte-700)', 
+                            800: 'var(--color-latte-800)',
+                            900: 'var(--color-latte-900)',
                         }
                     },
                     fontFamily: {

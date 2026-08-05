@@ -1,0 +1,83 @@
+:root {
+  /* Latte Theme (Light Mode - Default) */
+  --color-latte-50: #FAF6F0;
+  --color-latte-100: #F4EAE0;
+  --color-latte-200: #EADCD0;
+  --color-latte-300: #D4B89F;
+  --color-latte-400: #C09D80;
+  --color-latte-500: #A67B5B;
+  --color-latte-600: #8C6244;
+  --color-latte-700: #6F4E37;
+  --color-latte-800: #5C3D2B;
+  --color-latte-900: #4A3525;
+}
+
+html.dark {
+  /* Espresso Theme (Dark Mode) */
+  --color-latte-50: #1C1512;  /* Very dark brown/black background */
+  --color-latte-100: #291F1A; /* Slightly lighter dark brown for cards */
+  --color-latte-200: #3D2E27; /* Borders/Hover states */
+  --color-latte-300: #6F4E37; /* Keeping some warmth */
+  --color-latte-400: #8C6244; 
+  --color-latte-500: #A67B5B; /* Accent color stays similar */
+  --color-latte-600: #C09D80;
+  --color-latte-700: #D4B89F; /* Text color */
+  --color-latte-800: #F4EAE0; /* Lighter text */
+  --color-latte-900: #FAF6F0; /* Brightest text/icons */
+}
+
+/* Base styles for dark mode compatibility */
+html.dark body {
+  background-color: var(--color-latte-50);
+  color: var(--color-latte-800);
+}
+
+/* Adjust gradients/images for dark mode */
+html.dark body {
+  background-image: linear-gradient(rgba(28, 21, 18, 0.95), rgba(28, 21, 18, 0.95)), url('./bg.png');
+}
+
+/* Adjust specific elements if needed */
+html.dark .bg-white {
+  background-color: var(--color-latte-100) !important;
+  border-color: var(--color-latte-200) !important;
+}
+
+html.dark input, html.dark textarea {
+  background-color: var(--color-latte-100);
+  color: var(--color-latte-900);
+  border-color: var(--color-latte-200);
+}
+
+/* Widget Styles */
+#settingsWidget {
+  transition: all 0.3s ease;
+}
+
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* Fix Google Translate widget appearance */
+.goog-te-gadget {
+  font-family: 'Prompt', sans-serif !important;
+  color: transparent !important;
+  margin-top: 8px;
+}
+.goog-te-gadget .goog-te-combo {
+  color: var(--color-latte-900);
+  background-color: var(--color-latte-50);
+  border: 1px solid var(--color-latte-200);
+  border-radius: 0.5rem;
+  padding: 4px 8px;
+  font-family: 'Prompt', sans-serif;
+  outline: none;
+  width: 100%;
+}
+html.dark .goog-te-gadget .goog-te-combo {
+  color: var(--color-latte-900);
+}

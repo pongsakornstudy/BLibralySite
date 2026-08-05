@@ -117,10 +117,97 @@ window.sendChatMessage = async function() {
 };
 
 // ==========================================
+// Settings Widget (Dark Mode & Language)
+// ==========================================
+window.toggleSettingsWidget = function() {
+    const widget = document.getElementById('settingsWidget');
+    if (!widget) return;
+    if (widget.classList.contains('hidden')) {
+        widget.classList.remove('hidden');
+        widget.classList.add('flex');
+    } else {
+        widget.classList.add('hidden');
+        widget.classList.remove('flex');
+    }
+};
+
+window.toggleDarkMode = function() {
+    const htmlEl = document.documentElement;
+    if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        localStorage.setItem('b_theme', 'light');
+    } else {
+        htmlEl.classList.add('dark');
+        localStorage.setItem('b_theme', 'dark');
+    }
+    updateDarkModeToggleUI();
+};
+
+function updateDarkModeToggleUI() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const toggle = document.getElementById('darkModeToggle');
+    if(toggle) {
+        if(isDark) {
+            toggle.classList.remove('bg-latte-200');
+            toggle.classList.add('bg-latte-500');
+            toggle.innerHTML = '<span class="translate-x-5 inline-block w-4 h-4 transform bg-white rounded-full transition-transform"></span>';
+        } else {
+            toggle.classList.remove('bg-latte-500');
+            toggle.classList.add('bg-latte-200');
+            toggle.innerHTML = '<span class="translate-x-1 inline-block w-4 h-4 transform bg-white rounded-full transition-transform"></span>';
+        }
+    }
+}
+
+// Google Translate Init Function
+window.googleTranslateElementInit = function() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'th',
+        includedLanguages: 'en,th,ko,ja,zh-CN',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+};
+
+// ==========================================
 // Inject Floating Buttons + Chat Widget HTML
 // ==========================================
 document.addEventListener('DOMContentLoaded', function() {
+    // Apply dark mode on load
+    if (localStorage.getItem('b_theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+    }
+    setTimeout(updateDarkModeToggleUI, 100);
+
     const floatingHTML = `
+    <!-- Floating Settings Button -->
+    <button onclick="toggleSettingsWidget()"
+        class="fixed bottom-[150px] left-6 bg-white text-latte-700 p-3 rounded-full shadow-lg hover:bg-latte-100 hover:scale-110 transition-all duration-300 z-40 flex items-center justify-center border border-latte-200 w-12 h-12">
+        <span class="text-xl">⚙️</span>
+    </button>
+
+    <!-- Settings Widget -->
+    <div id="settingsWidget" class="fixed bottom-[210px] left-6 w-64 bg-white rounded-2xl shadow-2xl z-50 flex-col hidden overflow-hidden border border-latte-200">
+        <div class="bg-latte-800 text-white p-3 flex justify-between items-center">
+            <h3 class="font-sans font-medium text-sm">ตั้งค่า (Settings)</h3>
+            <button onclick="toggleSettingsWidget()" class="hover:text-latte-200"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        </div>
+        <div class="p-4 space-y-4 bg-latte-50">
+            <!-- Dark Mode Toggle -->
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-latte-900 flex items-center gap-2">🌙 โหมดกลางคืน</span>
+                <button id="darkModeToggle" onclick="toggleDarkMode()" class="relative inline-flex items-center h-6 rounded-full w-10 transition-colors focus:outline-none bg-latte-200">
+                    <span class="translate-x-1 inline-block w-4 h-4 transform bg-white rounded-full transition-transform"></span>
+                </button>
+            </div>
+            <hr class="border-latte-200">
+            <!-- Language Toggle -->
+            <div class="flex flex-col gap-2">
+                <span class="text-sm font-medium text-latte-900 flex items-center gap-2">🌐 ภาษา (Language)</span>
+                <div id="google_translate_element" class="w-full"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Floating Chat Button -->
     <button onclick="toggleChatWidget()"
         class="fixed bottom-[90px] left-6 bg-[#D4B89F] text-white p-3 rounded-full shadow-lg hover:bg-latte-800 hover:scale-110 transition-all duration-300 z-40 flex items-center gap-2 group border-2 border-white">
@@ -153,4 +240,10 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>`;
 
     document.body.insertAdjacentHTML('beforeend', floatingHTML);
+
+    // Inject Google Translate Script dynamically so it doesn't block page load
+    const gtScript = document.createElement('script');
+    gtScript.type = 'text/javascript';
+    gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.body.appendChild(gtScript);
 });
