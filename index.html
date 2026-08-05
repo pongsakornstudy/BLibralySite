@@ -114,7 +114,21 @@
                         class="text-latte-700 hover:text-latte-500 font-medium transition">เรียนด้วยกัน</a>
                     <a href="#social"
                         class="text-latte-700 hover:text-latte-500 font-medium transition">ติดตามบีสได้ที่</a>
+                    <a href="./reviews.html" class="text-latte-700 hover:text-latte-500 font-medium transition">รีวิวจากผู้เรียน</a>
                     <!-- Auth Section -->
+                    <div id="authSection" class="flex items-center space-x-4 pl-4 border-l border-latte-200">
+                        <!-- Guest State -->
+                        <div id="guestState" class="flex items-center space-x-3">
+                            <button onclick="openModal('guestHistoryModal')" class="text-sm font-medium text-latte-700 hover:text-latte-900 bg-latte-100 px-3 py-1 rounded-full transition whitespace-nowrap">เช็คประวัติ</button>
+                            <button id="loginBtn" onclick="openModal('authModal')" class="text-latte-700 hover:text-latte-900 font-medium transition whitespace-nowrap">เข้าสู่ระบบ</button>
+                        </div>
+                        
+                        <!-- Logged In State (Hidden by default) -->
+                        <div id="userProfile" class="hidden items-center space-x-3">
+                            <button id="userActionBtn" class="text-sm font-medium rounded-full transition shadow-sm px-3 py-1"></button>
+                            <button onclick="handleLogout()" class="text-sm text-red-500 hover:text-red-700 font-medium transition">ออกจากระบบ</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -401,12 +415,199 @@
         </div>
     </div>
 
+    <!-- Modal Auth (Login/Register) -->
+    <div id="authModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative">
+            <button onclick="closeModal('authModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-6">
+                <h3 id="authTitle" class="text-2xl font-serif font-bold text-latte-900">เข้าสู่ระบบ</h3>
+                <p class="text-latte-700 text-sm mt-1">เพื่อเข้าถึงระบบจองคิวและแหล่งข้อมูล</p>
+            </div>
+            <form id="authForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-1">อีเมล</label>
+                    <input type="email" id="authEmail" required class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-1">รหัสผ่าน</label>
+                    <input type="password" id="authPassword" required minlength="6" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                </div>
+                <div id="authError" class="text-red-500 text-sm hidden text-center"></div>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">เข้าสู่ระบบ</button>
+            </form>
+            <div class="mt-6 text-center text-sm text-latte-700">
+                <span id="authToggleText">ยังไม่มีบัญชีใช่ไหม?</span> 
+                <button onclick="toggleAuthMode()" id="authToggleBtn" class="text-latte-900 font-bold hover:underline">สมัครสมาชิก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ข้อมูลของฉัน (Profile) -->
+    <div id="profileModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl relative max-h-[80vh] flex flex-col">
+            <button onclick="closeModal('profileModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-latte-900 mb-4">ข้อมูลของฉัน</h3>
+            
+            <!-- Tabs -->
+            <div class="flex space-x-4 border-b border-latte-200 mb-4">
+                <button id="tabBtnHistory" onclick="switchProfileTab('history')" class="pb-2 text-latte-900 font-bold border-b-2 border-latte-900 transition">ประวัติการจอง</button>
+                <button id="tabBtnBookmarks" onclick="switchProfileTab('bookmarks')" class="pb-2 text-latte-500 hover:text-latte-700 transition border-b-2 border-transparent hover:border-latte-300">รายการที่บันทึกไว้</button>
+            </div>
+
+            <!-- Tab Content: History -->
+            <div id="tabContentHistory" class="flex-1 overflow-y-auto space-y-4 pr-2">
+                <div id="historyList" class="space-y-4">
+                    <p class="text-center text-latte-500 py-8">กำลังโหลดข้อมูล...</p>
+                </div>
+            </div>
+
+            <!-- Tab Content: Bookmarks -->
+            <div id="tabContentBookmarks" class="hidden flex-1 overflow-y-auto space-y-4 pr-2">
+                <div id="bookmarkList" class="space-y-4">
+                    <p class="text-center text-latte-500 py-8">กำลังโหลดข้อมูล...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal รีวิว -->
+    <div id="reviewModalCustom" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative">
+            <button onclick="closeModal('reviewModalCustom')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-xl font-serif font-bold text-latte-900 mb-4">รีวิวคอร์สเรียน ⭐️</h3>
+            <form id="reviewForm" class="space-y-4">
+                <input type="hidden" id="reviewBookingId">
+                <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-1">คะแนน (1-5)</label>
+                    <input type="number" id="reviewRating" min="1" max="5" required class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-1">ความประทับใจ</label>
+                    <textarea id="reviewText" required rows="3" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300"></textarea>
+                </div>
+                <button type="submit" id="reviewSubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ส่งรีวิว</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal เช็คประวัติการจอง (Guest) -->
+    <div id="guestHistoryModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative">
+            <button onclick="closeModal('guestHistoryModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-xl font-serif font-bold text-latte-900 mb-4">เช็คประวัติการจอง</h3>
+            <p class="text-sm text-latte-600 mb-4">กรุณากรอกชื่อ IG หรือ Line ID ที่ใช้ตอนจองคิว</p>
+            <form onsubmit="event.preventDefault(); fetchGuestHistory();">
+                <input type="text" id="guestContactInput" required placeholder="เช่น IG_abcc" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                <button type="submit" id="guestHistorySubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ดูประวัติ</button>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const { createClient } = supabase;
         const supabaseUrl = 'https://yqsjtcqxzouglmarvumk.supabase.co';
         const supabaseKey = 'sb_publishable__qCSfxLN65HRJH_9UuKlzA_9XN9Sc0l';
         const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+        // ============================
+        // ระบบ Auth
+        // ============================
+        let isLoginMode = true;
+        const authForm = document.getElementById('authForm');
+        const authTitle = document.getElementById('authTitle');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authToggleText = document.getElementById('authToggleText');
+        const authToggleBtn = document.getElementById('authToggleBtn');
+        const authError = document.getElementById('authError');
+        
+        const loginBtn = document.getElementById('loginBtn');
+        const userProfile = document.getElementById('userProfile');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            authTitle.textContent = isLoginMode ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+            authSubmitBtn.textContent = isLoginMode ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+            authToggleText.textContent = isLoginMode ? 'ยังไม่มีบัญชีใช่ไหม?' : 'มีบัญชีอยู่แล้ว?';
+            authToggleBtn.textContent = isLoginMode ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+            authError.classList.add('hidden');
+        }
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            
+            authSubmitBtn.disabled = true;
+            authSubmitBtn.textContent = 'กำลังดำเนินการ...';
+            authError.classList.add('hidden');
+
+            try {
+                if (isLoginMode) {
+                    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                } else {
+                    const { error } = await supabaseClient.auth.signUp({ email, password });
+                    if (error) throw error;
+                    alert('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
+                    toggleAuthMode();
+                }
+                closeModal('authModal');
+                authForm.reset();
+            } catch (err) {
+                authError.textContent = err.message;
+                if (err.message.includes('Invalid login credentials')) authError.textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+                if (err.message.includes('User already registered')) authError.textContent = 'อีเมลนี้ถูกใช้งานแล้ว';
+                authError.classList.remove('hidden');
+            } finally {
+                authSubmitBtn.disabled = false;
+                authSubmitBtn.textContent = isLoginMode ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+            }
+        });
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+        }
+        // ==========================================
+        // การตั้งค่า Admin Email (ต้องตรงกับหน้า admin.html)
+        // ==========================================
+        const ADMIN_EMAILS = ['bret.study@gmail.com'];
+
+        // ตรวจสอบสถานะและเปลี่ยน UI อัตโนมัติ
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            const userActionBtn = document.getElementById('userActionBtn');
+            const guestState = document.getElementById('guestState');
+            if (session) {
+                if (guestState) guestState.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                userProfile.classList.add('flex');
+                
+                if (userActionBtn) {
+                    if (ADMIN_EMAILS.includes(session.user.email)) {
+                        userActionBtn.textContent = 'ระบบจัดการ';
+                        userActionBtn.className = 'text-sm font-medium text-white bg-latte-900 px-3 py-1 rounded-full hover:bg-black transition shadow-sm';
+                        userActionBtn.onclick = () => window.location.href = 'admin.html';
+                    } else {
+                        userActionBtn.textContent = 'ข้อมูลของฉัน';
+                        userActionBtn.className = 'text-sm font-medium text-latte-700 hover:text-latte-900 bg-latte-100 px-3 py-1 rounded-full transition';
+                        userActionBtn.onclick = () => openProfileModal();
+                    }
+                }
+            } else {
+                if (guestState) guestState.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+                userProfile.classList.remove('flex');
+            }
+        });
 
         const courseData = {
             math: [
@@ -650,8 +851,14 @@
             }
         });
 
-        bookingForm.addEventListener('submit', function (e) {
+        bookingForm.addEventListener('submit', async function (e) {
             e.preventDefault();
+
+            // ============================
+            // เช็ค Auth (เก็บ user_id ถ้ามี)
+            // ============================
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const userId = session ? session.user.id : null;
 
             // ============================
             // Rate Limit: ป้องกัน spam จาก browser เดิม (10 นาที cooldown)
@@ -707,10 +914,12 @@
             }
 
             const bookingPayload = {
+                user_id: userId,
                 format: format,
                 subject: subject,
                 chapter: selectedChapter,
-                contact: contact
+                contact: contact,
+                status: 'รอคอนเฟิร์ม' // ตั้งค่า default
             };
             if (format !== 'video') {
                 bookingPayload.date = date;
@@ -743,7 +952,225 @@
                 });
         });
 
+        // ============================
+        // ระบบประวัติการจองและรีวิว
+        // ============================
+        function renderHistoryList(data, container) {
+            container.innerHTML = data.map(booking => {
+                const dateText = booking.date ? `${booking.date} เวลา ${booking.time || 'ไม่ระบุ'}` : 'อัดวิดีโอ (ไม่ระบุวัน)';
+                
+                let reviewBtn = '';
+                if (booking.status === 'จบงานแล้ว') {
+                    reviewBtn = !booking.rating 
+                        ? `<button onclick="openReviewModal(${booking.id})" class="text-sm bg-latte-700 text-white px-3 py-1 rounded-full hover:bg-latte-900 transition mt-2 sm:mt-0 shadow-sm">รีวิวคอร์ส</button>`
+                        : `<span class="text-sm text-latte-500 mt-2 sm:mt-0 font-medium">⭐️ ${booking.rating}/5</span>`;
+                }
 
+                let statusColor = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                if (booking.status === 'จบงานแล้ว') statusColor = 'bg-green-100 text-green-800 border-green-200';
+                else if (booking.status === 'อนุมัติแล้ว') statusColor = 'bg-blue-100 text-blue-800 border-blue-200';
+
+                return `
+                    <div class="bg-white p-4 rounded-xl border border-latte-100 flex flex-col sm:flex-row sm:justify-between sm:items-center shadow-sm">
+                        <div>
+                            <p class="font-medium text-latte-900 text-lg">${booking.subject}</p>
+                            <p class="text-sm text-latte-600 font-medium">${booking.chapter}</p>
+                            <p class="text-sm text-latte-500 mt-1">${dateText}</p>
+                            <span class="text-xs font-bold px-2.5 py-1 border ${statusColor} rounded-full mt-2 inline-block">สถานะ: ${booking.status || 'รอคอนเฟิร์ม'}</span>
+                        </div>
+                        <div class="mt-3 sm:mt-0 self-start sm:self-center">
+                            ${reviewBtn}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function fetchGuestHistory() {
+            const input = document.getElementById('guestContactInput').value.trim();
+            if (!input) return;
+            
+            const btn = document.getElementById('guestHistorySubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'กำลังตรวจสอบ...';
+            
+            const { data, error } = await supabaseClient
+                .from('bookings')
+                .select('*')
+                .ilike('contact', input)
+                .order('id', { ascending: false });
+                
+            btn.disabled = false;
+            btn.textContent = 'ดูประวัติ';
+            
+            if (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+                return;
+            }
+            
+            closeModal('guestHistoryModal');
+            openModal('profileModal');
+            
+            document.getElementById('tabBtnBookmarks').classList.add('hidden');
+            switchProfileTab('history');
+            
+            const historyList = document.getElementById('historyList');
+            if (!data || data.length === 0) {
+                historyList.innerHTML = '<p class="text-center text-latte-500 py-8 font-medium">ไม่พบประวัติการจองสำหรับ ' + input + '</p>';
+                return;
+            }
+            renderHistoryList(data, historyList);
+        }
+
+        async function fetchBookingHistory() {
+            openModal('profileModal');
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '<p class="text-center text-latte-500 py-8">กำลังโหลดข้อมูล...</p>';
+
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) return;
+
+            const { data, error } = await supabaseClient
+                .from('bookings')
+                .select('*')
+                .eq('user_id', session.user.id)
+                .order('id', { ascending: false });
+
+            if (error) {
+                historyList.innerHTML = '<p class="text-center text-red-500 py-8">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                historyList.innerHTML = '<p class="text-center text-latte-500 py-8">ยังไม่มีประวัติการจองครับ</p>';
+                return;
+            }
+
+            renderHistoryList(data, historyList);
+        }
+
+        window.openProfileModal = async function() {
+            document.getElementById('tabBtnBookmarks').classList.remove('hidden');
+            openModal('profileModal');
+            switchProfileTab('history');
+            await fetchBookingHistory(); // load history
+            await loadBookmarks(); // load bookmarks
+        }
+
+        window.switchProfileTab = switchProfileTab;
+        function switchProfileTab(tab) {
+            const btnHistory = document.getElementById('tabBtnHistory');
+            const btnBookmarks = document.getElementById('tabBtnBookmarks');
+            const contentHistory = document.getElementById('tabContentHistory');
+            const contentBookmarks = document.getElementById('tabContentBookmarks');
+
+            if (tab === 'history') {
+                btnHistory.classList.add('text-latte-900', 'border-latte-900');
+                btnHistory.classList.remove('text-latte-500', 'border-transparent', 'hover:border-latte-300');
+                
+                btnBookmarks.classList.remove('text-latte-900', 'border-latte-900');
+                btnBookmarks.classList.add('text-latte-500', 'border-transparent', 'hover:border-latte-300');
+                
+                contentHistory.classList.remove('hidden');
+                contentBookmarks.classList.add('hidden');
+            } else {
+                btnBookmarks.classList.add('text-latte-900', 'border-latte-900');
+                btnBookmarks.classList.remove('text-latte-500', 'border-transparent', 'hover:border-latte-300');
+                
+                btnHistory.classList.remove('text-latte-900', 'border-latte-900');
+                btnHistory.classList.add('text-latte-500', 'border-transparent', 'hover:border-latte-300');
+                
+                contentBookmarks.classList.remove('hidden');
+                contentHistory.classList.add('hidden');
+            }
+        }
+
+        async function loadBookmarks() {
+            const bookmarkList = document.getElementById('bookmarkList');
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) return;
+
+            bookmarkList.innerHTML = '<p class="text-center text-latte-500 py-8">กำลังโหลดข้อมูล...</p>';
+            
+            const { data: bookmarks, error } = await supabaseClient
+                .from('bookmarks')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error || !bookmarks || bookmarks.length === 0) {
+                bookmarkList.innerHTML = '<p class="text-center text-latte-500 py-8">ยังไม่มีรายการที่บันทึกไว้</p>';
+                return;
+            }
+
+            bookmarkList.innerHTML = '';
+            bookmarks.forEach(bm => {
+                const icon = bm.item_type === 'file' ? '📄' : (bm.item_type === 'exam' ? '📝' : '🌐');
+                const typeText = bm.item_type === 'file' ? 'ไฟล์สรุป' : (bm.item_type === 'exam' ? 'ข้อสอบ' : 'แหล่งข้อมูล');
+                const card = document.createElement('div');
+                card.className = 'p-4 rounded-xl border border-latte-200 bg-latte-50 flex justify-between items-center relative';
+                
+                card.innerHTML = `
+                    <div class="flex-1 mr-4 pr-6">
+                        <div class="text-xs text-latte-500 mb-1">${icon} ${typeText} ${bm.subject_name ? ' · ' + bm.subject_name : ''}</div>
+                        <div class="font-medium text-latte-900">${bm.item_title}</div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        ${bm.item_link ? `<a href="${bm.item_link}" target="_blank" class="bg-latte-200 hover:bg-latte-300 text-latte-900 px-3 py-1.5 rounded-lg text-sm font-medium transition whitespace-nowrap">เปิดดู</a>` : ''}
+                        <button onclick="removeBookmark('${bm.id}')" class="text-latte-400 hover:text-red-500 transition" title="ลบบุ๊กมาร์ก">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </button>
+                    </div>
+                `;
+                bookmarkList.appendChild(card);
+            });
+        }
+
+        window.removeBookmark = async function(id) {
+            if (!confirm('ต้องการลบรายการที่บันทึกไว้นี้ใช่หรือไม่?')) return;
+            const { error } = await supabaseClient.from('bookmarks').delete().eq('id', id);
+            if (!error) {
+                loadBookmarks(); // reload
+            } else {
+                alert('เกิดข้อผิดพลาดในการลบ กรุณาลองใหม่');
+            }
+        }
+
+        function openReviewModal(bookingId) {
+            document.getElementById('reviewBookingId').value = bookingId;
+            document.getElementById('reviewRating').value = '';
+            document.getElementById('reviewText').value = '';
+            openModal('reviewModalCustom');
+        }
+        
+        window.openReviewModal = openReviewModal;
+
+        document.getElementById('reviewForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const bookingId = document.getElementById('reviewBookingId').value;
+            const rating = document.getElementById('reviewRating').value;
+            const reviewText = document.getElementById('reviewText').value;
+            
+            const submitBtn = document.getElementById('reviewSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'กำลังส่ง...';
+
+            const { error } = await supabaseClient
+                .from('bookings')
+                .update({ rating: parseInt(rating), review_text: reviewText })
+                .eq('id', bookingId);
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ส่งรีวิว';
+
+            if (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+                return;
+            }
+
+            closeModal('reviewModalCustom');
+            alert('ขอบคุณสำหรับรีวิวครับ! ⭐️');
+            openProfileModal(); // โหลดข้อมูลใหม่
+        });
 
         // IntersectionObserver for 3D books (Mobile/Scroll interaction)
         document.addEventListener("DOMContentLoaded", function () {

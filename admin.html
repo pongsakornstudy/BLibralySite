@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - BLibrarySite</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        latte: {
+                            50: '#FAF6F0', 100: '#F4EAE0', 300: '#D4B89F',
+                            500: '#A67B5B', 700: '#6F4E37', 900: '#4A3525',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FAF6F0;
+            color: #4A3525;
+        }
+        /* FullCalendar Customization */
+        .fc {
+            font-family: 'Prompt', sans-serif;
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .fc-theme-standard td, .fc-theme-standard th {
+            border-color: #F4EAE0;
+        }
+        .fc-col-header-cell {
+            background-color: #FAF6F0;
+            color: #6F4E37;
+            padding: 0.5rem 0;
+        }
+        .fc-daygrid-day-number {
+            color: #4A3525;
+        }
+        .fc-event {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased hidden" id="appBody">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-latte-50 flex flex-col items-center justify-center z-[100]">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-latte-700 mb-4"></div>
+        <p class="text-latte-700 font-medium text-lg">กำลังตรวจสอบสิทธิ์เข้าถึง...</p>
+    </div>
+
+    <!-- Sidebar & Content Layout -->
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="w-64 bg-latte-900 text-white flex flex-col transition-all duration-300 shadow-xl hidden md:flex">
+            <div class="p-6 border-b border-latte-700">
+                <h1 class="text-2xl font-serif font-bold text-latte-100">B's Admin ☕️</h1>
+                <p class="text-sm text-latte-300 mt-1">Dashboard Management</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                <a href="#dashboard" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 w-full p-3 rounded-xl bg-latte-700 text-white transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    <span>ภาพรวม (Overview)</span>
+                </a>
+                <a href="#calendar" onclick="switchTab('calendar')" id="nav-calendar" class="flex items-center space-x-3 w-full p-3 rounded-xl hover:bg-latte-800 text-latte-100 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span>ปฏิทินงาน (Calendar)</span>
+                </a>
+                <a href="#jobs" onclick="switchTab('jobs')" id="nav-jobs" class="flex items-center space-x-3 w-full p-3 rounded-xl hover:bg-latte-800 text-latte-100 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    <span>จัดการคิว (Jobs)</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-latte-700">
+                <a href="index.html" class="flex items-center space-x-3 w-full p-3 rounded-xl hover:bg-latte-800 text-latte-100 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>กลับหน้าแรก</span>
+                </a>
+                <button onclick="handleLogout()" class="flex items-center space-x-3 w-full p-3 rounded-xl text-red-400 hover:bg-red-500/10 transition mt-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span>ออกจากระบบ</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-latte-50">
+            <!-- Mobile Header -->
+            <header class="md:hidden bg-white shadow-sm p-4 flex justify-between items-center">
+                <h1 class="font-serif font-bold text-xl text-latte-900">B's Admin</h1>
+                <button onclick="document.querySelector('aside').classList.toggle('hidden')" class="text-latte-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </header>
+
+            <div class="p-6 sm:p-8 max-w-7xl mx-auto w-full space-y-8">
+                
+                <!-- Tab: Dashboard -->
+                <section id="tab-dashboard" class="space-y-6">
+                    <h2 class="text-2xl font-sans font-bold text-latte-900">ภาพรวมระบบ (Overview)</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Stat Card 1 -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-latte-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-latte-500 font-medium">คิวทั้งหมด</p>
+                                <p class="text-3xl font-bold text-latte-900 mt-1" id="stat-total">0</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-xl text-blue-600">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Stat Card 2 -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-latte-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-yellow-600 font-medium">รอคอนเฟิร์ม / รอดำเนินการ</p>
+                                <p class="text-3xl font-bold text-yellow-700 mt-1" id="stat-pending">0</p>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-xl text-yellow-600">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                        </div>
+
+                        <!-- Stat Card 3 -->
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-latte-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-green-600 font-medium">อนุมัติแล้ว / จบงานแล้ว</p>
+                                <p class="text-3xl font-bold text-green-700 mt-1" id="stat-done">0</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-xl text-green-600">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Summary -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-latte-100 mt-6">
+                        <h3 class="font-sans font-bold text-lg text-latte-900 mb-4">ผู้ใช้งาน (Accounts)</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-latte-200 text-sm text-latte-500">
+                                        <th class="py-3 px-4 font-medium">ผู้ใช้</th>
+                                        <th class="py-3 px-4 font-medium">ประเภท</th>
+                                        <th class="py-3 px-4 font-medium">จำนวนคิวทั้งหมด</th>
+                                        <th class="py-3 px-4 font-medium">ช่องทางติดต่อ</th>
+                                        <th class="py-3 px-4 font-medium"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody" class="text-sm">
+                                    <!-- Users injected here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tab: Calendar -->
+                <section id="tab-calendar" class="space-y-6 hidden">
+                    <h2 class="text-2xl font-sans font-bold text-latte-900">ตารางปฏิทินงาน</h2>
+                    <div id="calendar" class="mt-4"></div>
+                </section>
+
+                <!-- Tab: Jobs -->
+                <section id="tab-jobs" class="space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-sans font-bold text-latte-900">จัดการคิวงาน (Jobs)</h2>
+                        <button onclick="loadBookings()" class="text-latte-700 hover:text-latte-900 transition flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            <span class="text-sm font-medium">รีเฟรช</span>
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl shadow-sm border border-latte-100 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-latte-50">
+                                    <tr class="text-sm text-latte-700 border-b border-latte-200">
+                                        <th class="py-4 px-6 font-medium">รหัสงาน</th>
+                                        <th class="py-4 px-6 font-medium">ผู้ใช้ / ติดต่อ</th>
+                                        <th class="py-4 px-6 font-medium">วิชา / รูปแบบ</th>
+                                        <th class="py-4 px-6 font-medium">วันเวลา</th>
+                                        <th class="py-4 px-6 font-medium">สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="jobsTableBody" class="divide-y divide-latte-100">
+                                    <!-- Jobs injected here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- User History Modal -->
+    <div id="userHistoryModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-3xl w-full shadow-2xl relative max-h-[85vh] flex flex-col">
+            <button onclick="document.getElementById('userHistoryModal').classList.add('hidden')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-2xl font-sans font-bold text-latte-900 mb-2">ประวัติการลงคิว: <span id="historyUserName" class="text-latte-700"></span></h3>
+            <div class="flex-1 overflow-y-auto mt-4 pr-2">
+                <div class="space-y-4" id="historyListContainer">
+                    <!-- History injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createClient } = supabase;
+        const supabaseUrl = 'https://yqsjtcqxzouglmarvumk.supabase.co';
+        const supabaseKey = 'sb_publishable__qCSfxLN65HRJH_9UuKlzA_9XN9Sc0l';
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+        // ==========================================
+        // การตั้งค่า Admin Email
+        // ==========================================
+        // เปลี่ยนอีเมลตรงนี้เป็นอีเมลของแอดมินเท่านั้น (สามารถใส่ได้หลายอีเมล)
+        const ADMIN_EMAILS = ['bret.study@gmail.com']; 
+        
+        let allBookings = [];
+        let calendar;
+
+        async function checkAdminAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session || !ADMIN_EMAILS.includes(session.user.email)) {
+                alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้ หรือไม่ได้เข้าสู่ระบบด้วยบัญชี Admin\nกรุณาล็อกอินด้วยบัญชีแอดมินที่หน้าแรกก่อนเข้าหน้านี้');
+                window.location.href = 'index.html'; // เตะกลับหน้าแรก
+            } else {
+                // ผ่าน
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                document.getElementById('appBody').classList.remove('hidden');
+                initAdminPanel();
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'index.html';
+        }
+
+        // ==========================================
+        // UI & Tab Logic
+        // ==========================================
+        function switchTab(tabId) {
+            ['dashboard', 'calendar', 'jobs'].forEach(id => {
+                document.getElementById(`tab-${id}`).classList.add('hidden');
+                document.getElementById(`nav-${id}`).classList.remove('bg-latte-700', 'text-white');
+                document.getElementById(`nav-${id}`).classList.add('hover:bg-latte-800', 'text-latte-100');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabId}`).classList.add('bg-latte-700', 'text-white');
+            document.getElementById(`nav-${tabId}`).classList.remove('hover:bg-latte-800', 'text-latte-100');
+            
+            if (tabId === 'calendar' && calendar) {
+                setTimeout(() => calendar.render(), 100); // Trigger render after unhiding
+            }
+        }
+
+        // ==========================================
+        // Data Fetching & Processing
+        // ==========================================
+        async function initAdminPanel() {
+            await loadBookings();
+            initCalendar();
+        }
+
+        function generateUserHash(contact) {
+            // สร้าง hash ง่ายๆ จาก string
+            let hash = 0;
+            for (let i = 0; i < contact.length; i++) {
+                const char = contact.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; 
+            }
+            return 'User_' + Math.abs(hash).toString(16).substring(0, 5).toUpperCase();
+        }
+
+        async function loadBookings() {
+            const { data, error } = await supabaseClient
+                .from('bookings')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error("Error fetching bookings:", error);
+                return;
+            }
+            allBookings = data;
+            
+            updateStats(allBookings);
+            renderJobsTable(allBookings);
+            renderUsersTable(allBookings);
+            
+            if (calendar) {
+                updateCalendarEvents();
+            }
+        }
+
+        // ==========================================
+        // Render Functions
+        // ==========================================
+        function updateStats(data) {
+            const total = data.length;
+            const pending = data.filter(b => b.status === 'รอคอนเฟิร์ม').length;
+            const done = total - pending; // อนุมานว่าที่ไม่ใช่ 'รอคอนเฟิร์ม' คือ อนุมัติ/จบงาน
+            
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-pending').innerText = pending;
+            document.getElementById('stat-done').innerText = done;
+        }
+
+        function getStatusColor(status) {
+            if (status === 'อนุมัติแล้ว') return 'bg-blue-100 text-blue-700 border-blue-200';
+            if (status === 'จบงานแล้ว' || status === 'เสร็จสิ้น') return 'bg-green-100 text-green-700 border-green-200';
+            return 'bg-yellow-100 text-yellow-700 border-yellow-200'; // รอคอนเฟิร์ม
+        }
+
+        async function updateBookingStatus(id, newStatus) {
+            const { error } = await supabaseClient
+                .from('bookings')
+                .update({ status: newStatus })
+                .eq('id', id);
+                
+            if (error) {
+                alert('เกิดข้อผิดพลาดในการอัปเดตสถานะ: ' + error.message);
+            } else {
+                loadBookings(); // Reload data
+            }
+        }
+
+        function renderJobsTable(data) {
+            const tbody = document.getElementById('jobsTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-latte-500">ไม่มีข้อมูลคิว</td></tr>';
+                return;
+            }
+
+            data.forEach(job => {
+                const displayName = job.user_id ? 'สมาชิก' : generateUserHash(job.contact || '');
+                const dateDisplay = job.format === 'video' ? 'รูปแบบวิดีโอ (ไม่มีวันเวลา)' : `${job.date} | ${job.time}`;
+                
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-latte-50/50 transition';
+                tr.innerHTML = `
+                    <td class="py-4 px-6 text-sm font-mono text-latte-500">#${job.id.toString().substring(0, 8)}</td>
+                    <td class="py-4 px-6">
+                        <div class="font-medium text-latte-900">${displayName}</div>
+                        <div class="text-xs text-latte-500 mt-1">${job.contact}</div>
+                    </td>
+                    <td class="py-4 px-6">
+                        <div class="font-medium text-latte-900">${job.subject} - ${job.chapter}</div>
+                        <div class="text-xs bg-latte-100 text-latte-700 inline-block px-2 py-0.5 rounded mt-1">${job.format}</div>
+                    </td>
+                    <td class="py-4 px-6 text-sm text-latte-700">${dateDisplay}</td>
+                    <td class="py-4 px-6">
+                        <select onchange="updateBookingStatus('${job.id}', this.value)" class="text-sm font-medium rounded-lg px-3 py-1.5 border appearance-none cursor-pointer focus:outline-none ${getStatusColor(job.status)}">
+                            <option value="รอคอนเฟิร์ม" ${job.status === 'รอคอนเฟิร์ม' ? 'selected' : ''}>⏳ รอคอนเฟิร์ม</option>
+                            <option value="อนุมัติแล้ว" ${job.status === 'อนุมัติแล้ว' ? 'selected' : ''}>✅ อนุมัติแล้ว</option>
+                            <option value="จบงานแล้ว" ${job.status === 'จบงานแล้ว' ? 'selected' : ''}>🏁 จบงานแล้ว</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderUsersTable(data) {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            
+            // Group by contact (IG / Line ID)
+            const userGroups = {};
+            data.forEach(job => {
+                const contactStr = (job.contact || 'Unknown').trim();
+                const key = contactStr.toLowerCase();
+                
+                if (!userGroups[key]) {
+                    userGroups[key] = {
+                        isRegistered: !!job.user_id,
+                        displayName: contactStr,
+                        contact: contactStr,
+                        jobs: []
+                    };
+                }
+                userGroups[key].jobs.push(job);
+                // Mark as registered if any job has user_id
+                if (job.user_id) {
+                    userGroups[key].isRegistered = true;
+                }
+            });
+
+            const usersArray = Object.values(userGroups).sort((a, b) => b.jobs.length - a.jobs.length);
+
+            usersArray.forEach((user, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-latte-100 hover:bg-latte-50 transition';
+                
+                const initials = user.displayName === 'Unknown' ? '?' : user.displayName.substring(0,2).toUpperCase();
+                
+                tr.innerHTML = `
+                    <td class="py-3 px-4">
+                        <div class="font-medium text-latte-900 flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-latte-200 flex items-center justify-center text-latte-700 font-bold text-xs shrink-0">
+                                ${initials}
+                            </div>
+                            <span class="truncate max-w-[150px]">${user.displayName}</span>
+                        </div>
+                    </td>
+                    <td class="py-3 px-4 text-sm">
+                        ${user.isRegistered 
+                            ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-md">สมาชิก</span>' 
+                            : '<span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-md">ทั่วไป (Guest)</span>'}
+                    </td>
+                    <td class="py-3 px-4 font-medium text-latte-900">${user.jobs.length} งาน</td>
+                    <td class="py-3 px-4 text-sm text-latte-600">${user.contact || '-'}</td>
+                    <td class="py-3 px-4 text-right">
+                        <button onclick='showUserHistory(${JSON.stringify(user).replace(/'/g, "&#39;")})' class="text-latte-700 hover:text-latte-900 font-medium text-sm bg-latte-100 hover:bg-latte-200 px-3 py-1.5 rounded-lg transition">
+                            ดูประวัติ
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function showUserHistory(userObj) {
+            document.getElementById('historyUserName').innerText = userObj.displayName;
+            const container = document.getElementById('historyListContainer');
+            container.innerHTML = '';
+            
+            userObj.jobs.forEach(job => {
+                const dateStr = new Date(job.created_at).toLocaleDateString('th-TH');
+                const div = document.createElement('div');
+                div.className = 'p-4 rounded-xl border border-latte-200 bg-latte-50 flex flex-col sm:flex-row justify-between sm:items-center gap-3';
+                div.innerHTML = `
+                    <div>
+                        <div class="font-medium text-latte-900">${job.subject} - ${job.chapter}</div>
+                        <div class="text-sm text-latte-600 mt-1">
+                            📅 ทำรายการเมื่อ: ${dateStr} | 
+                            ${job.format !== 'video' ? `📌 นัดหมาย: ${job.date} [${job.time}]` : '🎬 รูปแบบวิดีโอ'}
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-medium px-2.5 py-1 rounded-full border ${getStatusColor(job.status)}">${job.status}</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            document.getElementById('userHistoryModal').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // Calendar Logic
+        // ==========================================
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'th',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                events: [],
+                eventClick: function(info) {
+                    alert(`รายละเอียดคิว:\nวิชา: ${info.event.title}\nช่องทางติดต่อ: ${info.event.extendedProps.contact}\nสถานะ: ${info.event.extendedProps.status}`);
+                }
+            });
+            calendar.render();
+            updateCalendarEvents();
+        }
+
+        function updateCalendarEvents() {
+            if (!calendar) return;
+            const events = allBookings
+                .filter(b => b.format !== 'video' && b.date) // ตัดรูปแบบวิดีโอที่ไม่มีวันนัดหมาย
+                .map(b => {
+                    let color = '#EAB308'; // yellow for pending
+                    if (b.status === 'อนุมัติแล้ว') color = '#3B82F6'; // blue
+                    if (b.status === 'จบงานแล้ว' || b.status === 'เสร็จสิ้น') color = '#22C55E'; // green
+
+                    let startStr = b.date;
+                    // พยายามแกะเวลาเริ่มต้นจาก string e.g. "09:00 - 10:30"
+                    if (b.time && b.time.includes('-')) {
+                        const startTime = b.time.split('-')[0].trim();
+                        startStr = `${b.date}T${startTime}:00`;
+                    }
+
+                    return {
+                        id: b.id,
+                        title: `${b.subject} (${generateUserHash(b.contact || '')})`,
+                        start: startStr,
+                        color: color,
+                        extendedProps: {
+                            contact: b.contact,
+                            status: b.status
+                        }
+                    };
+                });
+            
+            calendar.removeAllEvents();
+            calendar.addEventSource(events);
+        }
+
+        // ==========================================
+        // Init
+        // ==========================================
+        window.onload = checkAdminAuth;
+
+    </script>
+</body>
+</html>

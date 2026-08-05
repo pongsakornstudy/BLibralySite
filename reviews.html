@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รีวิวจากผู้เรียน | ห้องสมุดของบีส</title>
+    <meta name="description" content="รีวิวและความประทับใจจากผู้ที่เคยติวกับบีส">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Prompt:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        latte: {
+                            50: '#FAF6F0', 100: '#F4EAE0', 300: '#D4B89F',
+                            500: '#A67B5B', 700: '#6F4E37', 900: '#4A3525',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #FAF6F0;
+            background-image: linear-gradient(rgba(250, 246, 240, 0.88), rgba(250, 246, 240, 0.88)), url('./bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #4A3525;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FAF6F0; }
+        ::-webkit-scrollbar-thumb { background: #D4B89F; border-radius: 4px; }
+    </style>
+</head>
+<body class="font-sans antialiased text-latte-900 selection:bg-latte-200 selection:text-latte-900">
+
+    <!-- แถบเมนูด้านบน -->
+    <nav class="fixed w-full bg-latte-50/90 backdrop-blur-md border-b border-latte-100 z-40 transition-all shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="./index.html" class="flex items-center space-x-2">
+                    <span class="font-serif font-bold text-xl text-latte-700 tracking-wide">BLibrarySite ☕️</span>
+                </a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="./index.html#resources" class="text-latte-700 hover:text-latte-500 font-medium transition">แหล่งข้อมูล</a>
+                    <a href="./files.html" class="text-latte-700 hover:text-latte-500 font-medium transition">ไฟล์เอกสาร</a>
+                    <a href="./index.html#booking" class="text-latte-700 hover:text-latte-500 font-medium transition">เรียนด้วยกัน</a>
+                    <a href="./index.html#social" class="text-latte-700 hover:text-latte-500 font-medium transition">ติดตามบีสได้ที่</a>
+                    <a href="./reviews.html" class="text-latte-700 hover:text-latte-500 font-medium transition">รีวิวจากผู้เรียน</a>
+                    
+                    <!-- Auth Section -->
+                    <div id="authSection" class="flex items-center space-x-4 pl-4 border-l border-latte-200">
+                        <!-- Guest State -->
+                        <div id="guestState" class="flex items-center space-x-3">
+                            <button onclick="window.location.href='./index.html'" class="text-sm font-medium text-latte-700 hover:text-latte-900 bg-latte-100 px-3 py-1 rounded-full transition whitespace-nowrap">เช็คประวัติ</button>
+                            <button onclick="window.location.href='./index.html'" class="text-latte-700 hover:text-latte-900 font-medium transition whitespace-nowrap">เข้าสู่ระบบ</button>
+                        </div>
+                        
+                        <!-- Logged In State (Hidden by default) -->
+                        <div id="userProfile" class="hidden items-center space-x-3">
+                            <button id="userActionBtn" onclick="window.location.href='./admin.html'" class="text-sm font-medium text-white bg-latte-900 px-3 py-1 rounded-full hover:bg-black transition shadow-sm hidden">ระบบจัดการ</button>
+                            <button id="userProfileBtn" onclick="window.location.href='./index.html'" class="text-sm font-medium text-latte-700 hover:text-latte-900 bg-latte-100 px-3 py-1 rounded-full transition hidden">ข้อมูลของฉัน</button>
+                            <button onclick="supabaseClient.auth.signOut().then(() => window.location.reload())" class="text-sm text-red-500 hover:text-red-700 font-medium transition">ออกจากระบบ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Header -->
+    <header class="pt-32 pb-16 px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold text-latte-900 mb-6 tracking-tight leading-tight">
+                รีวิวจากผู้เรียน ⭐️
+            </h1>
+            <p class="text-lg text-latte-600 font-medium">
+                ความประทับใจและผลตอบรับจากทุกคนที่เคยร่วมคลาสกับเรา
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-6 pb-24">
+        <!-- Review List Container -->
+        <div id="reviewsContainer" class="space-y-6">
+            <p class="text-center text-latte-500 py-8">กำลังโหลดรีวิว...</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-latte-200 bg-white/50 backdrop-blur-sm mt-12 py-12 text-center">
+        <p class="text-latte-500 font-medium">© 2026 BLibrarySite</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const { createClient } = supabase;
+        const supabaseUrl = 'https://rrtxdfhuzgqjntnjwdfv.supabase.co';
+        // ใช้ anonymous key ได้ เพราะตาราง bookings ควรมี RLS ให้ select รีวิวได้ (หรือตั้งเป็น public)
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydHhkZmh1emdxam50bmp3ZGZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyOTUzMTIsImV4cCI6MjA1ODg3MTMxMn0.mOQ12t8K_-H76Z_f7O25WzPZ6L23zC7T5s3J2_xY-9g'; 
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+        function generateStars(rating) {
+            let starsHTML = '';
+            for(let i=1; i<=5; i++) {
+                if (i <= rating) {
+                    starsHTML += '<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                } else {
+                    starsHTML += '<svg class="w-5 h-5 text-latte-200 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                }
+            }
+            return starsHTML;
+        }
+
+        async function fetchReviews() {
+            const container = document.getElementById('reviewsContainer');
+            
+            const { data, error } = await supabaseClient
+                .from('bookings')
+                .select('contact, subject, chapter, rating, review_text, created_at')
+                .not('rating', 'is', null)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error("Error fetching reviews:", error);
+                container.innerHTML = '<p class="text-center text-red-500 py-8">เกิดข้อผิดพลาดในการโหลดข้อมูลรีวิว</p>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p class="text-center text-latte-500 py-8 font-medium">ยังไม่มีรีวิวในขณะนี้</p>';
+                return;
+            }
+
+            container.innerHTML = data.map(review => {
+                const contactStr = review.contact ? review.contact.trim() : 'Unknown';
+                // ซ่อนชื่อบางส่วนเพื่อความเป็นส่วนตัว หรือใช้ตามที่ผู้ใช้กรอกมา
+                const displayName = contactStr.length > 5 ? contactStr.substring(0, 3) + '***' : contactStr;
+                const initials = displayName !== 'Unknown' ? displayName.substring(0, 2).toUpperCase() : '?';
+                
+                return `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-latte-100 transition hover:shadow-md">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-latte-200 flex items-center justify-center text-latte-700 font-bold text-sm shrink-0">
+                                    ${initials}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-latte-900">${displayName}</p>
+                                    <p class="text-xs text-latte-500 font-medium">${review.subject} ${review.chapter ? '- ' + review.chapter : ''}</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-1">
+                                ${generateStars(review.rating)}
+                            </div>
+                        </div>
+                        <p class="text-latte-700 leading-relaxed italic">
+                            "${review.review_text || 'ให้คะแนนความพึงพอใจ'}"
+                        </p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchReviews);
+
+        const ADMIN_EMAILS = ['bret.study@gmail.com'];
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            const guestState = document.getElementById('guestState');
+            const userProfile = document.getElementById('userProfile');
+            const userActionBtn = document.getElementById('userActionBtn');
+            const userProfileBtn = document.getElementById('userProfileBtn');
+            
+            if (session) {
+                if (guestState) guestState.classList.add('hidden');
+                if (userProfile) {
+                    userProfile.classList.remove('hidden');
+                    userProfile.classList.add('flex');
+                }
+                
+                if (ADMIN_EMAILS.includes(session.user.email)) {
+                    if (userActionBtn) userActionBtn.classList.remove('hidden');
+                    if (userProfileBtn) userProfileBtn.classList.add('hidden');
+                } else {
+                    if (userActionBtn) userActionBtn.classList.add('hidden');
+                    if (userProfileBtn) userProfileBtn.classList.remove('hidden');
+                }
+            } else {
+                if (guestState) guestState.classList.remove('hidden');
+                if (userProfile) {
+                    userProfile.classList.add('hidden');
+                    userProfile.classList.remove('flex');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
