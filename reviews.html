@@ -147,9 +147,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const { createClient } = supabase;
-        const supabaseUrl = 'https://rrtxdfhuzgqjntnjwdfv.supabase.co';
-        // ใช้ anonymous key ได้ เพราะตาราง bookings ควรมี RLS ให้ select รีวิวได้ (หรือตั้งเป็น public)
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydHhkZmh1emdxam50bmp3ZGZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyOTUzMTIsImV4cCI6MjA1ODg3MTMxMn0.mOQ12t8K_-H76Z_f7O25WzPZ6L23zC7T5s3J2_xY-9g'; 
+        const supabaseUrl = 'https://yqsjtcqxzouglmarvumk.supabase.co';
+        const supabaseKey = 'sb_publishable__qCSfxLN65HRJH_9UuKlzA_9XN9Sc0l'; 
         const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
         function generateStars(rating) {
@@ -169,7 +168,7 @@
             
             const { data, error } = await supabaseClient
                 .from('bookings')
-                .select('contact, subject, chapter, rating, review_text, created_at')
+                .select('contact, subject, chapter, rating, review_text, created_at, review_image')
                 .not('rating', 'is', null)
                 .order('created_at', { ascending: false });
 
