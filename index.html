@@ -4,6 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Open Graph & SEO Meta Tags -->
+    <meta property="og:title" content="B's LibrarySite - ห้องสมุดของบีส">
+    <meta property="og:description" content="คลังความรู้ ข้อสอบ และสรุปบทเรียนต่างๆ สำหรับเตรียมสอบ">
+    <meta property="og:image" content="images/cover.png">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="B's LibrarySite - ห้องสมุดของบีส">
+    <meta name="twitter:description" content="คลังความรู้ ข้อสอบ และสรุปบทเรียนต่างๆ สำหรับเตรียมสอบ">
+    <meta name="twitter:image" content="images/cover.png">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" href="images/cover.png">
+    <link rel="apple-touch-icon" href="images/cover.png">
+
     <title>BLibrarySite ☕️📚 - B's LibrarySite</title>
     <!-- โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -398,9 +414,9 @@
                                 <div>
                                     <label class="block text-sm font-medium text-latte-900 mb-1">ช่องทางติดต่อ
                                         (IG/LINE)</label>
-                                    <input type="text" id="contact" placeholder="ใส่ชื่อแอค IG หรือไอดี LINE เท่านั้น"
+                                    <input type="text" id="contact" placeholder="ใส่เฉพาะชื่อไอดี (ไม่ต้องมี @ หรือคำนำหน้า)"
                                         class="w-full bg-white border border-latte-300 rounded-xl p-3" required>
-                                    <p class="text-xs text-latte-600 mt-1">*ใช้ชื่อนี้เป็น User สำหรับเช็คประวัติและรีวิวได้เลย</p>
+                                    <p class="text-xs text-latte-600 mt-1">*กรอกแค่ชื่อไอดีเพียวๆ ห้ามมีอะไรนำหน้าหรือตามหลัง (ใช้ชื่อนี้เป็น User เช็คประวัติได้)</p>
                                 </div>
                                 <div class="pt-2">
                                     <button type="submit"
@@ -590,7 +606,7 @@
             <h3 class="text-xl font-serif font-bold text-latte-900 mb-4">เช็คประวัติการจอง</h3>
             <p class="text-sm text-latte-600 mb-4">กรุณากรอกชื่อ IG หรือ Line ID ที่ใช้ตอนจองคิว</p>
             <form onsubmit="event.preventDefault(); fetchGuestHistory();">
-                <input type="text" id="guestContactInput" required placeholder="เช่น IG_abcc" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                <input type="text" id="guestContactInput" required placeholder="กรอกแค่ชื่อไอดีเพียวๆ (ไม่ต้องมี @ หรือคำนำหน้า)" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-latte-300">
                 <button type="submit" id="guestHistorySubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ดูประวัติ</button>
             </form>
         </div>
