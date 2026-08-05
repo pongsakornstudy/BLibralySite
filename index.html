@@ -55,7 +55,7 @@
             background-image: linear-gradient(rgba(250, 246, 240, 0.88), rgba(250, 246, 240, 0.88)), url('./bg.png');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            /* Removed background-attachment:fixed for iOS compatibility */
             color: #4A3525;
             overflow-x: hidden;
         }
@@ -314,7 +314,7 @@
         <!-- 4. โซนลงทะเบียน (Booking System) อัปเดตวิชาแล้ว -->
         <!-- 4. โซนลงทะเบียน (3D Book) -->
         <section id="booking" class="scroll-mt-24">
-            <div class="book-container max-w-4xl mx-auto h-[800px] sm:h-[750px] w-full">
+            <div class="book-container max-w-4xl mx-auto h-[900px] sm:h-[780px] w-full">
                 <div class="book w-full h-full">
                     <div class="book-cover absolute inset-0 cursor-pointer group">
                         <div
@@ -1778,7 +1778,7 @@
 
     <!-- Floating Chat Button -->
     <button onclick="toggleChatWidget()"
-        class="fixed bottom-[88px] left-6 bg-[#D4B89F] text-white p-3 rounded-full shadow-lg hover:bg-latte-800 hover:scale-110 transition-all duration-300 z-40 flex items-center gap-2 group border-2 border-white">
+        class="fixed bottom-[90px] left-6 bg-[#D4B89F] text-white p-3 rounded-full shadow-lg hover:bg-latte-800 hover:scale-110 transition-all duration-300 z-40 flex items-center gap-2 group border-2 border-white">
         <span class="text-2xl">💬</span>
         <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out font-medium text-sm text-white group-hover:px-2 group-hover:pr-3">
             คุยกับบีส
@@ -1786,7 +1786,7 @@
     </button>
 
     <!-- Chat Widget -->
-    <div id="chatWidget" class="fixed bottom-24 left-6 sm:left-24 w-80 max-w-[calc(100vw-3rem)] h-[400px] bg-white rounded-2xl shadow-2xl z-50 flex-col hidden overflow-hidden border border-latte-200">
+    <div id="chatWidget" class="fixed bottom-[170px] left-6 sm:left-auto sm:bottom-8 sm:right-8 w-[calc(100vw-3rem)] sm:w-80 max-w-sm h-[420px] bg-white rounded-2xl shadow-2xl z-50 flex-col hidden overflow-hidden border border-latte-200">
         <!-- Header -->
         <div class="bg-latte-800 text-white p-4 flex justify-between items-center shrink-0">
             <h3 class="font-serif font-bold flex items-center gap-2">💬 คุยกับบีส</h3>
