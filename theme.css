@@ -54,30 +54,3 @@ html.dark input, html.dark textarea {
   transition: all 0.3s ease;
 }
 
-.goog-te-banner-frame {
-  display: none !important;
-}
-
-body {
-  top: 0px !important;
-}
-
-/* Fix Google Translate widget appearance */
-.goog-te-gadget {
-  font-family: 'Prompt', sans-serif !important;
-  color: transparent !important;
-  margin-top: 8px;
-}
-.goog-te-gadget .goog-te-combo {
-  color: var(--color-latte-900);
-  background-color: var(--color-latte-50);
-  border: 1px solid var(--color-latte-200);
-  border-radius: 0.5rem;
-  padding: 4px 8px;
-  font-family: 'Prompt', sans-serif;
-  outline: none;
-  width: 100%;
-}
-html.dark .goog-te-gadget .goog-te-combo {
-  color: var(--color-latte-900);
-}

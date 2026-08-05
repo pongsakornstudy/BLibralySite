@@ -159,14 +159,7 @@ function updateDarkModeToggleUI() {
     }
 }
 
-// Google Translate Init Function
-window.googleTranslateElementInit = function() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'th',
-        includedLanguages: 'en,th,ko,ja,zh-CN',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-};
+
 
 // ==========================================
 // Inject Floating Buttons + Chat Widget HTML
@@ -199,12 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="translate-x-1 inline-block w-4 h-4 transform bg-white rounded-full transition-transform"></span>
                 </button>
             </div>
-            <hr class="border-latte-200">
-            <!-- Language Toggle -->
-            <div class="flex flex-col gap-2">
-                <span class="text-sm font-medium text-latte-900 flex items-center gap-2">🌐 ภาษา (Language)</span>
-                <div id="google_translate_element" class="w-full"></div>
-            </div>
+
         </div>
     </div>
 
@@ -241,9 +229,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.body.insertAdjacentHTML('beforeend', floatingHTML);
 
-    // Inject Google Translate Script dynamically so it doesn't block page load
-    const gtScript = document.createElement('script');
-    gtScript.type = 'text/javascript';
-    gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    document.body.appendChild(gtScript);
+
 });
