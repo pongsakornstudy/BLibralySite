@@ -137,6 +137,40 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 focus:outline-none p-2 bg-latte-100 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="mobileMenuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="md:hidden hidden bg-latte-50 border-b border-latte-100 shadow-sm absolute w-full">
+            <div class="px-6 pt-4 pb-6 space-y-4 flex flex-col">
+                <a href="./index.html#resources" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">แหล่งข้อมูล</a>
+                <a href="./files.html" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">ไฟล์เอกสาร</a>
+                <a href="./index.html#booking" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">เรียนด้วยกัน</a>
+                <a href="./index.html#social" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">ติดตามบีสได้ที่</a>
+                <a href="./reviews.html" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">รีวิวจากผู้เรียน</a>
+                
+                <hr class="border-latte-200">
+                
+                <!-- Auth Section Mobile -->
+                <div id="guestStateMobile" class="flex flex-col space-y-4">
+                    <button onclick="window.location.href='./index.html'" class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg">เช็คประวัติ</button>
+                    <button onclick="window.location.href='./index.html'" class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg">เข้าสู่ระบบ</button>
+                </div>
+                
+                <div id="userProfileMobile" class="hidden flex-col space-y-4">
+                    <button id="userActionBtnMobile" onclick="window.location.href='./admin.html'" class="text-left font-medium text-latte-900 text-lg hidden">ระบบจัดการ</button>
+                    <button id="userProfileBtnMobile" onclick="window.location.href='./index.html'" class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg hidden">ข้อมูลของฉัน</button>
+                    <button onclick="supabaseClient.auth.signOut().then(() => window.location.reload())" class="text-left font-medium text-red-500 hover:text-red-700 text-lg">ออกจากระบบ</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -494,28 +528,60 @@
             const userActionBtn = document.getElementById('userActionBtn');
             const userProfileBtn = document.getElementById('userProfileBtn');
             
+            const guestStateMobile = document.getElementById('guestStateMobile');
+            const userProfileMobile = document.getElementById('userProfileMobile');
+            const userActionBtnMobile = document.getElementById('userActionBtnMobile');
+            const userProfileBtnMobile = document.getElementById('userProfileBtnMobile');
+            
             if (session) {
                 if (guestState) guestState.classList.add('hidden');
+                if (guestStateMobile) guestStateMobile.classList.add('hidden');
+                
                 if (userProfile) {
                     userProfile.classList.remove('hidden');
                     userProfile.classList.add('flex');
+                }
+                if (userProfileMobile) {
+                    userProfileMobile.classList.remove('hidden');
+                    userProfileMobile.classList.add('flex');
                 }
                 
                 if (ADMIN_EMAILS.includes(session.user.email)) {
                     if (userActionBtn) userActionBtn.classList.remove('hidden');
                     if (userProfileBtn) userProfileBtn.classList.add('hidden');
+                    
+                    if (userActionBtnMobile) userActionBtnMobile.classList.remove('hidden');
+                    if (userProfileBtnMobile) userProfileBtnMobile.classList.add('hidden');
                 } else {
                     if (userActionBtn) userActionBtn.classList.add('hidden');
                     if (userProfileBtn) userProfileBtn.classList.remove('hidden');
+                    
+                    if (userActionBtnMobile) userActionBtnMobile.classList.add('hidden');
+                    if (userProfileBtnMobile) userProfileBtnMobile.classList.remove('hidden');
                 }
             } else {
                 if (guestState) guestState.classList.remove('hidden');
+                if (guestStateMobile) guestStateMobile.classList.remove('hidden');
+                
                 if (userProfile) {
                     userProfile.classList.add('hidden');
                     userProfile.classList.remove('flex');
                 }
+                if (userProfileMobile) {
+                    userProfileMobile.classList.add('hidden');
+                    userProfileMobile.classList.remove('flex');
+                }
             }
         });
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
     </script>
 </body>
 </html>
