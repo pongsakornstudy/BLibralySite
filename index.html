@@ -7,18 +7,18 @@
     <!-- Open Graph & SEO Meta Tags -->
     <meta property="og:title" content="B's LibrarySite - ห้องสมุดของบีส">
     <meta property="og:description" content="คลังความรู้ ข้อสอบ และสรุปบทเรียนต่างๆ สำหรับเตรียมสอบ">
-    <meta property="og:image" content="images/cover.png">
+    <meta property="og:image" content="images/logo_minimal.png">
     <meta property="og:type" content="website">
-    
+
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="B's LibrarySite - ห้องสมุดของบีส">
     <meta name="twitter:description" content="คลังความรู้ ข้อสอบ และสรุปบทเรียนต่างๆ สำหรับเตรียมสอบ">
-    <meta name="twitter:image" content="images/cover.png">
-    
+    <meta name="twitter:image" content="images/logo_minimal.png">
+
     <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/png" href="images/cover.png">
-    <link rel="apple-touch-icon" href="images/cover.png">
+    <link rel="icon" type="image/png" href="images/logo_minimal.png">
+    <link rel="apple-touch-icon" href="images/logo_minimal.png">
 
     <title>BLibrarySite ☕️📚 - B's LibrarySite</title>
     <!-- โหลด Tailwind CSS -->
@@ -130,54 +130,70 @@
                         class="text-latte-700 hover:text-latte-500 font-medium transition">เรียนด้วยกัน</a>
                     <a href="#social"
                         class="text-latte-700 hover:text-latte-500 font-medium transition">ติดตามบีสได้ที่</a>
-                    <a href="./reviews.html" class="text-latte-700 hover:text-latte-500 font-medium transition">รีวิวจากผู้เรียน</a>
+                    <a href="./reviews.html"
+                        class="text-latte-700 hover:text-latte-500 font-medium transition">รีวิวจากผู้เรียน</a>
                     <!-- Auth Section -->
                     <div id="authSection" class="flex items-center space-x-4 pl-4 border-l border-latte-200">
                         <!-- Guest State -->
                         <div id="guestState" class="flex items-center space-x-3">
-                            <button onclick="openModal('guestHistoryModal')" class="text-sm font-medium text-latte-700 hover:text-latte-900 bg-latte-100 px-3 py-1 rounded-full transition whitespace-nowrap">เช็คประวัติ</button>
-                            <button id="loginBtn" onclick="openModal('authModal')" class="text-latte-700 hover:text-latte-900 font-medium transition whitespace-nowrap">เข้าสู่ระบบ</button>
+                            <button onclick="openModal('guestHistoryModal')"
+                                class="text-sm font-medium text-latte-700 hover:text-latte-900 bg-latte-100 px-3 py-1 rounded-full transition whitespace-nowrap">เช็คประวัติ</button>
+                            <button id="loginBtn" onclick="openModal('authModal')"
+                                class="text-latte-700 hover:text-latte-900 font-medium transition whitespace-nowrap">เข้าสู่ระบบ</button>
                         </div>
-                        
+
                         <!-- Logged In State (Hidden by default) -->
                         <div id="userProfile" class="hidden items-center space-x-3">
-                            <button id="userActionBtn" class="text-sm font-medium rounded-full transition shadow-sm px-3 py-1"></button>
-                            <button onclick="handleLogout()" class="text-sm text-red-500 hover:text-red-700 font-medium transition">ออกจากระบบ</button>
+                            <button id="userActionBtn"
+                                class="text-sm font-medium rounded-full transition shadow-sm px-3 py-1"></button>
+                            <button onclick="handleLogout()"
+                                class="text-sm text-red-500 hover:text-red-700 font-medium transition">ออกจากระบบ</button>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 focus:outline-none p-2 bg-latte-100 rounded-lg">
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()"
+                        class="text-latte-700 hover:text-latte-900 focus:outline-none p-2 bg-latte-100 rounded-lg">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path id="mobileMenuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path id="mobileMenuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-        
+
         <!-- Mobile Menu Dropdown -->
         <div id="mobileMenu" class="md:hidden hidden bg-latte-50 border-b border-latte-100 shadow-sm absolute w-full">
             <div class="px-6 pt-4 pb-6 space-y-4 flex flex-col">
-                <a href="#resources" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">แหล่งข้อมูล</a>
-                <a href="#files" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">ไฟล์เอกสาร</a>
-                <a href="#booking" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">เรียนด้วยกัน</a>
-                <a href="#social" onclick="toggleMobileMenu()" class="text-latte-700 hover:text-latte-900 font-medium text-lg">ติดตามบีสได้ที่</a>
-                <a href="./reviews.html" class="text-latte-700 hover:text-latte-900 font-medium text-lg">รีวิวจากผู้เรียน</a>
-                
+                <a href="#resources" onclick="toggleMobileMenu()"
+                    class="text-latte-700 hover:text-latte-900 font-medium text-lg">แหล่งข้อมูล</a>
+                <a href="#files" onclick="toggleMobileMenu()"
+                    class="text-latte-700 hover:text-latte-900 font-medium text-lg">ไฟล์เอกสาร</a>
+                <a href="#booking" onclick="toggleMobileMenu()"
+                    class="text-latte-700 hover:text-latte-900 font-medium text-lg">เรียนด้วยกัน</a>
+                <a href="#social" onclick="toggleMobileMenu()"
+                    class="text-latte-700 hover:text-latte-900 font-medium text-lg">ติดตามบีสได้ที่</a>
+                <a href="./reviews.html"
+                    class="text-latte-700 hover:text-latte-900 font-medium text-lg">รีวิวจากผู้เรียน</a>
+
                 <hr class="border-latte-200">
-                
+
                 <!-- Auth Section Mobile -->
                 <div id="guestStateMobile" class="flex flex-col space-y-4">
-                    <button onclick="openModal('guestHistoryModal'); toggleMobileMenu()" class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg">เช็คประวัติ</button>
-                    <button onclick="openModal('authModal'); toggleMobileMenu()" class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg">เข้าสู่ระบบ</button>
+                    <button onclick="openModal('guestHistoryModal'); toggleMobileMenu()"
+                        class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg">เช็คประวัติ</button>
+                    <button onclick="openModal('authModal'); toggleMobileMenu()"
+                        class="text-left font-medium text-latte-700 hover:text-latte-900 text-lg">เข้าสู่ระบบ</button>
                 </div>
-                
+
                 <div id="userProfileMobile" class="hidden flex-col space-y-4">
-                    <button id="userActionBtnMobile" class="text-left font-medium text-latte-900 text-lg hidden"></button>
-                    <button onclick="handleLogout()" class="text-left font-medium text-red-500 hover:text-red-700 text-lg">ออกจากระบบ</button>
+                    <button id="userActionBtnMobile"
+                        class="text-left font-medium text-latte-900 text-lg hidden"></button>
+                    <button onclick="handleLogout()"
+                        class="text-left font-medium text-red-500 hover:text-red-700 text-lg">ออกจากระบบ</button>
                 </div>
             </div>
         </div>
@@ -345,8 +361,13 @@
                             </div>
 
                             <div class="text-center">
-                                <button type="button" onclick="openCalendarModal()" class="inline-flex items-center space-x-2 bg-latte-50 text-latte-700 hover:bg-latte-100 font-medium px-5 py-2.5 rounded-full transition shadow-sm border border-latte-200">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <button type="button" onclick="openCalendarModal()"
+                                    class="inline-flex items-center space-x-2 bg-latte-50 text-latte-700 hover:bg-latte-100 font-medium px-5 py-2.5 rounded-full transition shadow-sm border border-latte-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
                                     <span>เช็คคิวว่าง (ปฏิทิน)</span>
                                 </button>
                             </div>
@@ -414,9 +435,11 @@
                                 <div>
                                     <label class="block text-sm font-medium text-latte-900 mb-1">ช่องทางติดต่อ
                                         (IG/LINE)</label>
-                                    <input type="text" id="contact" placeholder="ใส่เฉพาะชื่อไอดี (ไม่ต้องมี @ หรือคำนำหน้า)"
+                                    <input type="text" id="contact"
+                                        placeholder="ใส่เฉพาะชื่อไอดี (ไม่ต้องมี @ หรือคำนำหน้า)"
                                         class="w-full bg-white border border-latte-300 rounded-xl p-3" required>
-                                    <p class="text-xs text-latte-600 mt-1">*กรอกแค่ชื่อไอดีเพียวๆ ห้ามมีอะไรนำหน้าหรือตามหลัง (ใช้ชื่อนี้เป็น User เช็คประวัติได้)</p>
+                                    <p class="text-xs text-latte-600 mt-1">*กรอกแค่ชื่อไอดีเพียวๆ
+                                        ห้ามมีอะไรนำหน้าหรือตามหลัง (ใช้ชื่อนี้เป็น User เช็คประวัติได้)</p>
                                 </div>
                                 <div class="pt-2">
                                     <button type="submit"
@@ -444,7 +467,7 @@
                     class="bg-[#c4302b] text-white px-8 py-4 rounded-2xl w-full sm:w-auto hover:bg-[#a62520] transition shadow-sm">YouTube
                     @pongsakorns</a>
                 <a href="https://www.instagram.com/bluv_viii?utm_source=qr" target="_blank"
-                    class="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white px-8 py-4 rounded-2xl w-full sm:w-auto hover:opacity-90 transition shadow-sm">Instagram 
+                    class="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white px-8 py-4 rounded-2xl w-full sm:w-auto hover:opacity-90 transition shadow-sm">Instagram
                     @bluv_viii</a>
             </div>
         </section>
@@ -463,6 +486,30 @@
         </div>
     </div>
 
+    <!-- Modal แจ้งเตือนวิดีโอ -->
+    <div id="videoModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center">
+            <h3 class="text-xl font-serif text-latte-900 mb-2">แจ้งให้ทราบล่วงหน้า</h3>
+            <p class="text-latte-700 text-sm mb-6">เป็นวิดิโอที่อัดไว้ล่วงหน้าแล้วนะครับ
+                ลองดูคลิปก่อนแล้วค่อยโอนเงินก็ได้นะครับ คิวอาอยู่ตรงรูปกาแฟซ้ายล่างครับ</p>
+            <button onclick="closeModal('videoModal'); openModal('videoInstructionModal')"
+                class="w-full bg-latte-500 text-white rounded-xl p-3">ตกลง</button>
+        </div>
+    </div>
+
+    <!-- Modal แจ้งเตือนวิธีดูวิดีโอ -->
+    <div id="videoInstructionModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center">
+            <h3 class="text-xl font-serif text-latte-900 mb-2">วิธีดูคลิปวิดีโอ</h3>
+            <p class="text-latte-700 text-sm mb-6">
+                ถ้าต้องการดูคลิปให้กดที่หน้าเช็คประวัติแล้วก็ใส่ไอจีที่ลงทะเบียนไว้ได้เลยครับ ลิงก์จะอยู่ในนั้น</p>
+            <button onclick="closeModal('videoInstructionModal')"
+                class="w-full bg-latte-700 text-white rounded-xl p-3">เข้าใจแล้ว</button>
+        </div>
+    </div>
+
 
     <!-- Modal แจ้งเตือนส่งข้อมูลสำเร็จ -->
     <div id="successModal"
@@ -476,10 +523,15 @@
     </div>
 
     <!-- Modal Auth (Login/Register) -->
-    <div id="authModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+    <div id="authModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
         <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative">
-            <button onclick="closeModal('authModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button onclick="closeModal('authModal')"
+                class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
             <div class="text-center mb-6">
                 <h3 id="authTitle" class="text-2xl font-serif font-bold text-latte-900">เข้าสู่ระบบ</h3>
@@ -488,34 +540,45 @@
             <form id="authForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-latte-900 mb-1">อีเมล</label>
-                    <input type="email" id="authEmail" required class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                    <input type="email" id="authEmail" required
+                        class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-latte-900 mb-1">รหัสผ่าน</label>
-                    <input type="password" id="authPassword" required minlength="6" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                    <input type="password" id="authPassword" required minlength="6"
+                        class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
                 </div>
                 <div id="authError" class="text-red-500 text-sm hidden text-center"></div>
-                <button type="submit" id="authSubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">เข้าสู่ระบบ</button>
+                <button type="submit" id="authSubmitBtn"
+                    class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">เข้าสู่ระบบ</button>
             </form>
             <div class="mt-6 text-center text-sm text-latte-700">
-                <span id="authToggleText">ยังไม่มีบัญชีใช่ไหม?</span> 
-                <button onclick="toggleAuthMode()" id="authToggleBtn" class="text-latte-900 font-bold hover:underline">สมัครสมาชิก</button>
+                <span id="authToggleText">ยังไม่มีบัญชีใช่ไหม?</span>
+                <button onclick="toggleAuthMode()" id="authToggleBtn"
+                    class="text-latte-900 font-bold hover:underline">สมัครสมาชิก</button>
             </div>
         </div>
     </div>
 
     <!-- Modal ข้อมูลของฉัน (Profile) -->
-    <div id="profileModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+    <div id="profileModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
         <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl relative max-h-[80vh] flex flex-col">
-            <button onclick="closeModal('profileModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button onclick="closeModal('profileModal')"
+                class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
             <h3 class="text-2xl font-serif font-bold text-latte-900 mb-4">ข้อมูลของฉัน</h3>
-            
+
             <!-- Tabs -->
             <div class="flex space-x-4 border-b border-latte-200 mb-4">
-                <button id="tabBtnHistory" onclick="switchProfileTab('history')" class="pb-2 text-latte-900 font-bold border-b-2 border-latte-900 transition">ประวัติการจอง</button>
-                <button id="tabBtnBookmarks" onclick="switchProfileTab('bookmarks')" class="pb-2 text-latte-500 hover:text-latte-700 transition border-b-2 border-transparent hover:border-latte-300">รายการที่บันทึกไว้</button>
+                <button id="tabBtnHistory" onclick="switchProfileTab('history')"
+                    class="pb-2 text-latte-900 font-bold border-b-2 border-latte-900 transition">ประวัติการจอง</button>
+                <button id="tabBtnBookmarks" onclick="switchProfileTab('bookmarks')"
+                    class="pb-2 text-latte-500 hover:text-latte-700 transition border-b-2 border-transparent hover:border-latte-300">รายการที่บันทึกไว้</button>
             </div>
 
             <!-- Tab Content: History -->
@@ -535,28 +598,37 @@
     </div>
 
     <!-- Modal รีวิว -->
-    <div id="reviewModalCustom" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+    <div id="reviewModalCustom"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
         <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative">
-            <button onclick="closeModal('reviewModalCustom')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button onclick="closeModal('reviewModalCustom')"
+                class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
             <h3 class="text-xl font-serif font-bold text-latte-900 mb-4">รีวิวคอร์สเรียน ⭐️</h3>
             <form id="reviewForm" class="space-y-4">
                 <input type="hidden" id="reviewBookingId">
                 <div>
                     <label class="block text-sm font-medium text-latte-900 mb-1">คะแนน (1-5)</label>
-                    <input type="number" id="reviewRating" min="1" max="5" required class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                    <input type="number" id="reviewRating" min="1" max="5" required
+                        class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-latte-900 mb-1">ความประทับใจ</label>
-                    <textarea id="reviewText" required rows="3" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300"></textarea>
+                    <textarea id="reviewText" required rows="3"
+                        class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-latte-300"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-latte-900 mb-1">แนบรูปภาพ (ถ้ามี)</label>
-                    <input type="file" id="reviewImageInput" accept="image/*" class="w-full text-sm text-latte-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-latte-100 file:text-latte-800 hover:file:bg-latte-200 transition cursor-pointer">
+                    <input type="file" id="reviewImageInput" accept="image/*"
+                        class="w-full text-sm text-latte-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-latte-100 file:text-latte-800 hover:file:bg-latte-200 transition cursor-pointer">
                     <p class="text-xs text-latte-500 mt-1">* รูปภาพจะถูกบีบอัดอัตโนมัติ</p>
                 </div>
-                <button type="submit" id="reviewSubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ส่งรีวิว</button>
+                <button type="submit" id="reviewSubmitBtn"
+                    class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ส่งรีวิว</button>
             </form>
         </div>
     </div>
@@ -564,50 +636,80 @@
     <!-- Calendar Modal -->
     <div id="calendarModal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-latte-900/40 backdrop-blur-sm" onclick="closeModal('calendarModal')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[90%] max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[90%] max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-latte-50 p-5 sm:p-6 flex justify-between items-center border-b border-latte-100 shrink-0">
                 <h3 class="font-serif text-xl sm:text-2xl text-latte-900 font-bold">🗓️ ปฏิทินคิวงานของบีส</h3>
-                <button onclick="closeModal('calendarModal')" class="text-latte-400 hover:text-latte-700 transition bg-white rounded-full p-1 shadow-sm">
+                <button onclick="closeModal('calendarModal')"
+                    class="text-latte-400 hover:text-latte-700 transition bg-white rounded-full p-1 shadow-sm">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
                     </svg>
                 </button>
             </div>
-            
+
             <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#FAF6F0]/30">
-                <div class="flex justify-between items-center mb-6 bg-white p-3 rounded-xl shadow-sm border border-latte-100">
-                    <button onclick="changeMonth(-1)" class="p-2 sm:px-4 text-latte-700 hover:bg-latte-100 rounded-lg transition font-medium">&lt; เดือนก่อนหน้า</button>
+                <div
+                    class="flex justify-between items-center mb-6 bg-white p-3 rounded-xl shadow-sm border border-latte-100">
+                    <button onclick="changeMonth(-1)"
+                        class="p-2 sm:px-4 text-latte-700 hover:bg-latte-100 rounded-lg transition font-medium">&lt;
+                        เดือนก่อนหน้า</button>
                     <h4 id="calendarMonthYear" class="font-bold text-lg sm:text-xl text-latte-900"></h4>
-                    <button onclick="changeMonth(1)" class="p-2 sm:px-4 text-latte-700 hover:bg-latte-100 rounded-lg transition font-medium">เดือนถัดไป &gt;</button>
+                    <button onclick="changeMonth(1)"
+                        class="p-2 sm:px-4 text-latte-700 hover:bg-latte-100 rounded-lg transition font-medium">เดือนถัดไป
+                        &gt;</button>
                 </div>
-                
-                <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center font-bold text-latte-600 mb-2 text-xs sm:text-sm">
-                    <div class="text-red-500">อา.</div><div>จ.</div><div>อ.</div><div>พ.</div><div>พฤ.</div><div>ศ.</div><div class="text-latte-500">ส.</div>
+
+                <div
+                    class="grid grid-cols-7 gap-1 sm:gap-2 text-center font-bold text-latte-600 mb-2 text-xs sm:text-sm">
+                    <div class="text-red-500">อา.</div>
+                    <div>จ.</div>
+                    <div>อ.</div>
+                    <div>พ.</div>
+                    <div>พฤ.</div>
+                    <div>ศ.</div>
+                    <div class="text-latte-500">ส.</div>
                 </div>
-                
+
                 <div id="calendarGrid" class="grid grid-cols-7 gap-1 sm:gap-2">
                     <!-- Calendar days will be generated here -->
                 </div>
-                
-                <div class="mt-6 text-sm text-latte-600 flex flex-wrap items-center justify-center gap-4 bg-white p-3 rounded-xl border border-latte-100 shadow-sm">
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-red-100 border border-red-300"></div> <span>= มีคิวสอนแล้ว (ไม่ว่าง)</span></div>
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-white border border-latte-200"></div> <span>= คิวว่าง</span></div>
+
+                <div
+                    class="mt-6 text-sm text-latte-600 flex flex-wrap items-center justify-center gap-4 bg-white p-3 rounded-xl border border-latte-100 shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-red-100 border border-red-300"></div> <span>=
+                            มีคิวสอนแล้ว (ไม่ว่าง)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-white border border-latte-200"></div> <span>=
+                            คิวว่าง</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal เช็คประวัติการจอง (Guest) -->
-    <div id="guestHistoryModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+    <div id="guestHistoryModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
         <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative">
-            <button onclick="closeModal('guestHistoryModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button onclick="closeModal('guestHistoryModal')"
+                class="absolute top-4 right-4 text-latte-500 hover:text-latte-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
             <h3 class="text-xl font-serif font-bold text-latte-900 mb-4">เช็คประวัติการจอง</h3>
             <p class="text-sm text-latte-600 mb-4">กรุณากรอกชื่อ IG หรือ Line ID ที่ใช้ตอนจองคิว</p>
             <form onsubmit="event.preventDefault(); fetchGuestHistory();">
-                <input type="text" id="guestContactInput" required placeholder="กรอกแค่ชื่อไอดีเพียวๆ (ไม่ต้องมี @ หรือคำนำหน้า)" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-latte-300">
-                <button type="submit" id="guestHistorySubmitBtn" class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ดูประวัติ</button>
+                <input type="text" id="guestContactInput" required
+                    placeholder="กรอกแค่ชื่อไอดีเพียวๆ (ไม่ต้องมี @ หรือคำนำหน้า)"
+                    class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-latte-300">
+                <button type="submit" id="guestHistorySubmitBtn"
+                    class="w-full bg-latte-700 text-white rounded-xl p-3 hover:bg-latte-900 transition font-medium">ดูประวัติ</button>
             </form>
         </div>
     </div>
@@ -636,7 +738,7 @@
                     .from('bookings')
                     .select('date, time')
                     .eq('status', 'อนุมัติแล้ว');
-                
+
                 if (error) throw error;
                 busyBookings = data || [];
             } catch (err) {
@@ -644,7 +746,7 @@
             }
         }
 
-        window.changeMonth = function(dir) {
+        window.changeMonth = function (dir) {
             currentCalDate.setMonth(currentCalDate.getMonth() + dir);
             renderCalendar();
         }
@@ -652,47 +754,47 @@
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
             const monthYearText = document.getElementById('calendarMonthYear');
-            
+
             const year = currentCalDate.getFullYear();
             const month = currentCalDate.getMonth();
-            
+
             const monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
             monthYearText.innerText = `${monthNames[month]} ${year + 543}`;
-            
+
             grid.innerHTML = '';
-            
+
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-            
+
             // Empty slots for previous month
             for (let i = 0; i < firstDay; i++) {
                 grid.innerHTML += `<div class="p-1 sm:p-2 rounded-xl bg-transparent"></div>`;
             }
-            
+
             // Days of current month
             for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${year}-${String(month+1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const dayBookings = busyBookings.filter(b => b.date === dateStr);
-                
+
                 let timesHtml = '';
                 let cellClass = 'p-1 sm:p-2 border border-latte-200 rounded-xl min-h-[70px] sm:min-h-[90px] flex flex-col bg-white shadow-sm hover:shadow-md transition';
-                
+
                 if (dayBookings.length > 0) {
                     cellClass += ' bg-red-50/40 border-red-200';
                     dayBookings.forEach(b => {
-                        if(b.time) {
+                        if (b.time) {
                             timesHtml += `<div class="text-[9px] sm:text-[11px] bg-red-100 text-red-700 rounded px-1 py-0.5 mt-1 sm:mt-1.5 truncate font-medium shadow-sm border border-red-200 border-dashed" title="ติดสอน ${b.time}">ติดสอน ${b.time}</div>`;
                         } else {
                             timesHtml += `<div class="text-[9px] sm:text-[11px] bg-red-100 text-red-700 rounded px-1 py-0.5 mt-1 sm:mt-1.5 truncate font-medium shadow-sm border border-red-200 border-dashed">ติดสอน</div>`;
                         }
                     });
                 }
-                
+
                 const isToday = new Date().toDateString() === new Date(year, month, day).toDateString();
-                const dayStyle = isToday 
-                    ? 'bg-latte-900 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center mx-auto mb-1 font-bold shadow-md' 
+                const dayStyle = isToday
+                    ? 'bg-latte-900 text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center mx-auto mb-1 font-bold shadow-md'
                     : 'text-latte-900 font-bold text-center mb-1 text-sm sm:text-base';
-                
+
                 grid.innerHTML += `
                     <div class="${cellClass}">
                         <div class="${dayStyle}">${day}</div>
@@ -715,7 +817,7 @@
         const authToggleText = document.getElementById('authToggleText');
         const authToggleBtn = document.getElementById('authToggleBtn');
         const authError = document.getElementById('authError');
-        
+
         const loginBtn = document.getElementById('loginBtn');
         const userProfile = document.getElementById('userProfile');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
@@ -733,7 +835,7 @@
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
-            
+
             authSubmitBtn.disabled = true;
             authSubmitBtn.textContent = 'กำลังดำเนินการ...';
             authError.classList.add('hidden');
@@ -774,15 +876,15 @@
             const userActionBtn = document.getElementById('userActionBtn');
             const guestState = document.getElementById('guestState');
             const userProfile = document.getElementById('userProfile');
-            
+
             const userActionBtnMobile = document.getElementById('userActionBtnMobile');
             const guestStateMobile = document.getElementById('guestStateMobile');
             const userProfileMobile = document.getElementById('userProfileMobile');
-            
+
             if (session) {
                 if (guestState) guestState.classList.add('hidden');
                 if (guestStateMobile) guestStateMobile.classList.add('hidden');
-                
+
                 if (userProfile) {
                     userProfile.classList.remove('hidden');
                     userProfile.classList.add('flex');
@@ -791,7 +893,7 @@
                     userProfileMobile.classList.remove('hidden');
                     userProfileMobile.classList.add('flex');
                 }
-                
+
                 if (ADMIN_EMAILS.includes(session.user.email)) {
                     if (userActionBtn) {
                         userActionBtn.textContent = 'ระบบจัดการ';
@@ -818,7 +920,7 @@
             } else {
                 if (guestState) guestState.classList.remove('hidden');
                 if (guestStateMobile) guestStateMobile.classList.remove('hidden');
-                
+
                 if (userProfile) {
                     userProfile.classList.add('hidden');
                     userProfile.classList.remove('flex');
@@ -841,22 +943,22 @@
 
         const courseData = {
             math: [
-                { id: "m1", name: "ตรีโกณมิติ", needsReview: false },
-                { id: "m2", name: "เมทริกซ์", needsReview: false }
+                { id: "m1", name: "ตรีโกณมิติ", needsReview: false, videoLink: "https://drive.google.com/file/d/11A0gzy8rucky6e8AhFEfj7EDxYLTyu6I/view?usp=share_link" },
+                { id: "m2", name: "เมทริกซ์", needsReview: false, videoLink: "https://drive.google.com/drive/folders/math-m2-placeholder" }
             ],
             bio: [
-                { id: "b1", name: "ระบบสืบพันธุ์พืชดอก", needsReview: true }
+                { id: "b1", name: "ระบบสืบพันธุ์พืชดอก", needsReview: true, videoLink: "https://drive.google.com/drive/folders/bio-b1-placeholder" }
             ],
             physics: [
-                { id: "p1", name: "การเคลื่อนที่แบบ Simple Harmonic", needsReview: false },
-                { id: "p2", name: "คลื่น", needsReview: false }
+                { id: "p1", name: "การเคลื่อนที่แบบ Simple Harmonic", needsReview: false, videoLink: "https://drive.google.com/drive/folders/physics-p1-placeholder" },
+                { id: "p2", name: "คลื่น", needsReview: false, videoLink: "https://drive.google.com/drive/folders/physics-p2-placeholder" }
             ],
             chem: [
-                { id: "c1", name: "อะตอมและสมบัติของธาตุ", needsReview: false },
-                { id: "c2", name: "การจัดเรียงอิเล็กตรอน", needsReview: false },
-                { id: "c3", name: "พันธะเคมี", needsReview: false },
-                { id: "c4", name: "ปริมาณสารสัมพันธ์", needsReview: false },
-                { id: "c5", name: "แก๊ส", needsReview: false }
+                { id: "c1", name: "อะตอมและสมบัติของธาตุ", needsReview: false, videoLink: "https://drive.google.com/drive/folders/chem-c1-placeholder" },
+                { id: "c2", name: "การจัดเรียงอิเล็กตรอน", needsReview: false, videoLink: "https://drive.google.com/drive/folders/chem-c2-placeholder" },
+                { id: "c3", name: "พันธะเคมี", needsReview: false, videoLink: "https://drive.google.com/drive/folders/chem-c3-placeholder" },
+                { id: "c4", name: "ปริมาณสารสัมพันธ์", needsReview: false, videoLink: "https://drive.google.com/drive/folders/chem-c4-placeholder" },
+                { id: "c5", name: "แก๊ส", needsReview: false, videoLink: "https://drive.google.com/drive/folders/chem-c5-placeholder" }
             ]
         };
 
@@ -1018,11 +1120,19 @@
                 customTimeInput.value = '';
                 customTimeInput.classList.add('hidden');
                 timeNote.classList.add('hidden');
+                openModal('videoModal');
             } else {
                 datetimeContainer.classList.remove('hidden');
                 dateInput.required = true;
                 timeInput.required = true;
                 updateTimeOptions();
+            }
+
+            // รีเฟรชตัวเลือกบทเรียน (เพื่อซ่อน/แสดงปุ่มระบุเอง)
+            const currentChapter = chapterSelect.value;
+            subjectSelect.dispatchEvent(new Event('change'));
+            if (currentChapter !== 'custom' || tutoringFormatSelect.value !== 'video') {
+                chapterSelect.value = currentChapter;
             }
         }
 
@@ -1056,11 +1166,13 @@
                     option.dataset.needsReview = chap.needsReview;
                     chapterSelect.appendChild(option);
                 });
-                // เพิ่มตัวเลือกระบุเอง
-                const customOpt = document.createElement('option');
-                customOpt.value = 'custom';
-                customOpt.textContent = '✍️ ระบุบทเรียนเอง...';
-                chapterSelect.appendChild(customOpt);
+                // เพิ่มตัวเลือกระบุเอง ถ้าไม่ได้เลือกแบบวิดีโอ
+                if (tutoringFormatSelect.value !== 'video') {
+                    const customOpt = document.createElement('option');
+                    customOpt.value = 'custom';
+                    customOpt.textContent = '✍️ ระบุบทเรียนเอง...';
+                    chapterSelect.appendChild(customOpt);
+                }
             } else {
                 chapterSelect.disabled = true;
             }
@@ -1188,12 +1300,32 @@
         function renderHistoryList(data, container) {
             container.innerHTML = data.map(booking => {
                 const dateText = booking.date ? `${booking.date} เวลา ${booking.time || 'ไม่ระบุ'}` : 'อัดวิดีโอ (ไม่ระบุวัน)';
-                
+
                 let reviewBtn = '';
                 if (booking.status === 'จบงานแล้ว') {
-                    reviewBtn = !booking.rating 
+                    reviewBtn = !booking.rating
                         ? `<button onclick="openReviewModal(${booking.id})" class="text-sm bg-latte-700 text-white px-3 py-1 rounded-full hover:bg-latte-900 transition mt-2 sm:mt-0 shadow-sm">รีวิวคอร์ส</button>`
                         : `<span class="text-sm text-latte-500 mt-2 sm:mt-0 font-medium">⭐️ ${booking.rating}/5</span>`;
+                }
+
+                // Check for Video Link
+                let watchVideoBtn = '';
+                if (booking.format === 'video' && booking.status !== 'ไม่รับคิว') {
+                    // ค้นหาลิงก์วิดีโอจาก courseData
+                    let vidLink = '';
+                    for (const subjectKey in courseData) {
+                        const foundChap = courseData[subjectKey].find(c => c.name === booking.chapter);
+                        if (foundChap && foundChap.videoLink) {
+                            vidLink = foundChap.videoLink;
+                            break;
+                        }
+                    }
+                    if (vidLink) {
+                        watchVideoBtn = `<a href="${vidLink}" target="_blank" class="text-sm bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition shadow-sm inline-flex items-center space-x-1 mt-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            <span>ดูวิดีโอคอร์สเรียน</span>
+                        </a>`;
+                    }
                 }
 
                 let statusColor = 'bg-yellow-100 text-yellow-800 border-yellow-200';
@@ -1213,6 +1345,7 @@
                             <p class="text-sm text-latte-500 mt-1">${dateText}</p>
                             <span class="text-xs font-bold px-2.5 py-1 border ${statusColor} rounded-full mt-2 inline-block">สถานะ: ${booking.status || 'รอคอนเฟิร์ม'}</span>
                             ${apologyMsg}
+                            ${watchVideoBtn ? `<div class="mt-2">${watchVideoBtn}</div>` : ''}
                         </div>
                         <div class="mt-3 sm:mt-0 self-start sm:self-center">
                             ${reviewBtn}
@@ -1225,31 +1358,31 @@
         async function fetchGuestHistory() {
             const input = document.getElementById('guestContactInput').value.trim();
             if (!input) return;
-            
+
             const btn = document.getElementById('guestHistorySubmitBtn');
             btn.disabled = true;
             btn.textContent = 'กำลังตรวจสอบ...';
-            
+
             const { data, error } = await supabaseClient
                 .from('bookings')
                 .select('*')
                 .ilike('contact', input)
                 .order('id', { ascending: false });
-                
+
             btn.disabled = false;
             btn.textContent = 'ดูประวัติ';
-            
+
             if (error) {
                 alert('เกิดข้อผิดพลาด: ' + error.message);
                 return;
             }
-            
+
             closeModal('guestHistoryModal');
             openModal('profileModal');
-            
+
             document.getElementById('tabBtnBookmarks').classList.add('hidden');
             switchProfileTab('history');
-            
+
             const historyList = document.getElementById('historyList');
             if (!data || data.length === 0) {
                 historyList.innerHTML = '<p class="text-center text-latte-500 py-8 font-medium">ไม่พบประวัติการจองสำหรับ ' + input + '</p>';
@@ -1285,7 +1418,7 @@
             renderHistoryList(data, historyList);
         }
 
-        window.openProfileModal = async function() {
+        window.openProfileModal = async function () {
             document.getElementById('tabBtnBookmarks').classList.remove('hidden');
             openModal('profileModal');
             switchProfileTab('history');
@@ -1303,19 +1436,19 @@
             if (tab === 'history') {
                 btnHistory.classList.add('text-latte-900', 'border-latte-900');
                 btnHistory.classList.remove('text-latte-500', 'border-transparent', 'hover:border-latte-300');
-                
+
                 btnBookmarks.classList.remove('text-latte-900', 'border-latte-900');
                 btnBookmarks.classList.add('text-latte-500', 'border-transparent', 'hover:border-latte-300');
-                
+
                 contentHistory.classList.remove('hidden');
                 contentBookmarks.classList.add('hidden');
             } else {
                 btnBookmarks.classList.add('text-latte-900', 'border-latte-900');
                 btnBookmarks.classList.remove('text-latte-500', 'border-transparent', 'hover:border-latte-300');
-                
+
                 btnHistory.classList.remove('text-latte-900', 'border-latte-900');
                 btnHistory.classList.add('text-latte-500', 'border-transparent', 'hover:border-latte-300');
-                
+
                 contentBookmarks.classList.remove('hidden');
                 contentHistory.classList.add('hidden');
             }
@@ -1327,7 +1460,7 @@
             if (!session) return;
 
             bookmarkList.innerHTML = '<p class="text-center text-latte-500 py-8">กำลังโหลดข้อมูล...</p>';
-            
+
             const { data: bookmarks, error } = await supabaseClient
                 .from('bookmarks')
                 .select('*')
@@ -1344,7 +1477,7 @@
                 const typeText = bm.item_type === 'file' ? 'ไฟล์สรุป' : (bm.item_type === 'exam' ? 'ข้อสอบ' : 'แหล่งข้อมูล');
                 const card = document.createElement('div');
                 card.className = 'p-4 rounded-xl border border-latte-200 bg-latte-50 flex justify-between items-center relative';
-                
+
                 card.innerHTML = `
                     <div class="flex-1 mr-4 pr-6">
                         <div class="text-xs text-latte-500 mb-1">${icon} ${typeText} ${bm.subject_name ? ' · ' + bm.subject_name : ''}</div>
@@ -1361,7 +1494,7 @@
             });
         }
 
-        window.removeBookmark = async function(id) {
+        window.removeBookmark = async function (id) {
             if (!confirm('ต้องการลบรายการที่บันทึกไว้นี้ใช่หรือไม่?')) return;
             const { error } = await supabaseClient.from('bookmarks').delete().eq('id', id);
             if (!error) {
@@ -1377,7 +1510,7 @@
             document.getElementById('reviewText').value = '';
             openModal('reviewModalCustom');
         }
-        
+
         window.openReviewModal = openReviewModal;
 
         document.getElementById('reviewForm').addEventListener('submit', async function (e) {
@@ -1386,7 +1519,7 @@
             const rating = document.getElementById('reviewRating').value;
             const reviewText = document.getElementById('reviewText').value;
             const imageInput = document.getElementById('reviewImageInput');
-            
+
             const submitBtn = document.getElementById('reviewSubmitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'กำลังส่ง...';
@@ -1405,9 +1538,9 @@
                 }
             }
 
-            const updatePayload = { 
-                rating: parseInt(rating), 
-                review_text: reviewText 
+            const updatePayload = {
+                rating: parseInt(rating),
+                review_text: reviewText
             };
 
             if (base64Image) {
@@ -1468,7 +1601,7 @@
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        
+
                         // Output as JPEG Base64
                         resolve(canvas.toDataURL('image/jpeg', 0.7));
                     };
@@ -1511,24 +1644,33 @@
     </script>
 
     <!-- Floating Coffee Button -->
-    <button onclick="openModal('coffeeModal')" class="fixed bottom-6 left-6 bg-latte-800 text-white p-3 rounded-full shadow-lg hover:bg-latte-900 hover:scale-110 transition-all duration-300 z-40 flex items-center gap-2 group border-2 border-[#D4B89F]">
+    <button onclick="openModal('coffeeModal')"
+        class="fixed bottom-6 left-6 bg-latte-800 text-white p-3 rounded-full shadow-lg hover:bg-latte-900 hover:scale-110 transition-all duration-300 z-40 flex items-center gap-2 group border-2 border-[#D4B89F]">
         <span class="text-2xl">☕️</span>
-        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out font-medium text-sm group-hover:px-2 group-hover:pr-3">
+        <span
+            class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out font-medium text-sm group-hover:px-2 group-hover:pr-3">
             สนับสนุนค่ากาแฟบีส
         </span>
     </button>
 
     <!-- Coffee QR Modal -->
-    <div id="coffeeModal" class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative text-center border-4 border-[#D4B89F]">
-            <button onclick="closeModal('coffeeModal')" class="absolute top-4 right-4 text-latte-500 hover:text-latte-900 bg-latte-100 p-1.5 rounded-full transition hover:bg-latte-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <div id="coffeeModal"
+        class="fixed inset-0 bg-latte-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity">
+        <div
+            class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative text-center border-4 border-[#D4B89F]">
+            <button onclick="closeModal('coffeeModal')"
+                class="absolute top-4 right-4 text-latte-500 hover:text-latte-900 bg-latte-100 p-1.5 rounded-full transition hover:bg-latte-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
             <div class="text-5xl mb-3 animate-bounce mt-2">☕️</div>
             <h3 class="text-xl font-serif font-bold text-latte-900 mb-2">สนับสนุนค่ากาแฟบีส</h3>
             <p class="text-sm text-latte-600 mb-6">ขอบคุณที่เป็นกำลังใจให้บีสนะครับ ขอให้สอบผ่านทุกวิชาเลย! 💖</p>
             <div class="bg-latte-50 p-4 rounded-2xl border border-latte-200 shadow-inner">
-                <img src="./images/qr-coffee.jpg" alt="QR Code รับเงิน" class="w-full rounded-xl shadow-sm mb-4 border border-latte-200">
+                <img src="./images/qr-coffee.jpg" alt="QR Code รับเงิน"
+                    class="w-full rounded-xl shadow-sm mb-4 border border-latte-200">
                 <p class="font-bold text-latte-800 tracking-wide text-sm">พร้อมเพย์ / Make by KBank</p>
             </div>
         </div>
