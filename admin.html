@@ -75,6 +75,23 @@
         .fc-event {
             cursor: pointer;
         }
+
+        /* Mobile fixes for FullCalendar */
+        @media (max-width: 640px) {
+            .fc .fc-toolbar.fc-header-toolbar {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .fc .fc-toolbar-title {
+                font-size: 1.25rem !important;
+            }
+            .fc-toolbar-chunk {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body class="font-sans antialiased hidden" id="appBody">
@@ -538,6 +555,7 @@
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'th',
+                dayHeaderFormat: { weekday: 'short' },
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
