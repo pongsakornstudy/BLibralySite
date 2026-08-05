@@ -169,7 +169,7 @@
             
             const { data, error } = await supabaseClient
                 .from('bookings')
-                .select('contact, subject, chapter, rating, review_text, created_at, review_image')
+                .select('contact, subject, chapter, rating, review_text, created_at')
                 .not('rating', 'is', null)
                 .order('created_at', { ascending: false });
 
