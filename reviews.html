@@ -169,7 +169,7 @@
             
             const { data, error } = await supabaseClient
                 .from('bookings')
-                .select('contact, subject, chapter, rating, review_text, created_at')
+                .select('*')
                 .not('rating', 'is', null)
                 .order('created_at', { ascending: false });
 
@@ -190,6 +190,10 @@
                 const displayName = contactStr.length > 5 ? contactStr.substring(0, 3) + '***' : contactStr;
                 const initials = displayName !== 'Unknown' ? displayName.substring(0, 2).toUpperCase() : '?';
                 
+                const imageHtml = review.review_image 
+                    ? `<div class="mt-4 rounded-xl overflow-hidden border border-latte-200"><img src="${review.review_image}" alt="รูปประกอบรีวิว" class="w-full h-auto object-cover max-h-64 sm:max-h-80"></div>` 
+                    : '';
+
                 return `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-latte-100 transition hover:shadow-md">
                         <div class="flex items-start justify-between mb-4">
@@ -202,13 +206,14 @@
                                     <p class="text-xs text-latte-500 font-medium">${review.subject} ${review.chapter ? '- ' + review.chapter : ''}</p>
                                 </div>
                             </div>
-                            <div class="flex space-x-1">
+                            <div class="flex space-x-1 shrink-0">
                                 ${generateStars(review.rating)}
                             </div>
                         </div>
                         <p class="text-latte-700 leading-relaxed italic">
                             "${review.review_text || 'ให้คะแนนความพึงพอใจ'}"
                         </p>
+                        ${imageHtml}
                     </div>
                 `;
             }).join('');
