@@ -264,7 +264,7 @@
         let currentQuestionIndex = 0;
         let userAnswers = []; // Store selected index
         let timerInterval = null;
-        let timeLeft = 0; // seconds
+        let timeElapsed = 0; // seconds
 
         // --- View Navigation ---
         function switchView(viewId) {
@@ -314,8 +314,8 @@
             currentQuestionIndex = 0;
             userAnswers = new Array(questions.length).fill(null);
 
-            // Timer (e.g. 5 mins per mock test)
-            timeLeft = questions.length * 60; 
+            // Timer (Count up)
+            timeElapsed = 0; 
             
             document.getElementById('quizSubjectDisplay').innerText = `วิชา: ${subj}`;
             
@@ -328,19 +328,14 @@
             clearInterval(timerInterval);
             updateTimerDisplay();
             timerInterval = setInterval(() => {
-                timeLeft--;
+                timeElapsed++;
                 updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    alert('หมดเวลา!');
-                    submitQuiz();
-                }
             }, 1000);
         }
 
         function updateTimerDisplay() {
-            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const s = (timeLeft % 60).toString().padStart(2, '0');
+            const m = Math.floor(timeElapsed / 60).toString().padStart(2, '0');
+            const s = (timeElapsed % 60).toString().padStart(2, '0');
             document.getElementById('timerDisplay').innerText = `${m}:${s}`;
         }
 
