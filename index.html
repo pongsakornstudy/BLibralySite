@@ -1123,25 +1123,24 @@
         window.openModal = openModal;
         window.closeModal = closeModal;
 
-        // สลับการบังคับกรอก วัน-เวลา เมื่อเลือกอัดวิดีโอหรือติวสด
+        // สลับป้ายกำกับ วัน-เวลา เมื่อเลือกอัดวิดีโอหรือติวสด
         function toggleDateTimeVisibility() {
+            const dateLabel = dateInput.previousElementSibling;
+            const timeLabel = timeInput.previousElementSibling;
+
             if (tutoringFormatSelect.value === 'video') {
-                datetimeContainer.classList.add('hidden');
-                dateInput.required = false;
-                timeInput.required = false;
-                customTimeInput.required = false;
-                dateInput.value = '';
-                timeInput.value = '';
-                customTimeInput.value = '';
-                customTimeInput.classList.add('hidden');
-                timeNote.classList.add('hidden');
+                dateLabel.innerText = "Deadline (วันที่ต้องการคลิป)";
+                timeLabel.innerText = "Deadline (เวลา)";
                 openModal('videoModal');
             } else {
-                datetimeContainer.classList.remove('hidden');
-                dateInput.required = true;
-                timeInput.required = true;
-                updateTimeOptions();
+                dateLabel.innerText = "วันที่สะดวก";
+                timeLabel.innerText = "เวลา (เลือกรอบ หรือระบุเอง)";
             }
+
+            datetimeContainer.classList.remove('hidden');
+            dateInput.required = true;
+            timeInput.required = true;
+            updateTimeOptions();
 
             // รีเฟรชตัวเลือกบทเรียน (เพื่อซ่อน/แสดงปุ่มระบุเอง)
             const currentChapter = chapterSelect.value;
@@ -1243,7 +1242,7 @@
             const contact = document.getElementById('contact').value;
 
             // ตรวจสอบข้อมูลให้ครบถ้วนก่อนส่ง
-            if (!format || !subject || !selectedChapter || !contact || (format !== 'video' && (!date || !selectedTime))) {
+            if (!format || !subject || !selectedChapter || !contact || !date || !selectedTime) {
                 alert('กรุณากรอกข้อมูลให้ครบถ้วนทุกช่องครับ');
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;

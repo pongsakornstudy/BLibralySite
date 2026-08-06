@@ -765,7 +765,7 @@
 
             data.forEach(job => {
                 const displayName = job.user_id ? 'สมาชิก' : generateUserHash(job.contact || '');
-                const dateDisplay = job.format === 'video' ? 'รูปแบบวิดีโอ (ไม่มีวันเวลา)' : `${job.date} | ${job.time}`;
+                const dateDisplay = `${job.date} | ${job.time}`;
                 
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-latte-50/50 transition';
@@ -877,8 +877,8 @@
                     <div>
                         <div class="font-medium text-latte-900">${job.subject} - ${job.chapter}</div>
                         <div class="text-sm text-latte-600 mt-1">
-                            📅 ทำรายการเมื่อ: ${dateStr} | 
-                            ${job.format !== 'video' ? `📌 นัดหมาย: ${job.date} [${job.time}]` : '🎬 รูปแบบวิดีโอ'}
+                            📅 ทำรายการเมื่อ: ${dateStr}
+                            <p class="text-sm text-latte-600 mt-2">📌 กำหนดการ: ${job.date} [${job.time}]</p>
                         </div>
                     </div>
                     <div>
@@ -917,7 +917,7 @@
         function updateCalendarEvents() {
             if (!calendar) return;
             const events = allBookings
-                .filter(b => b.format !== 'video' && b.date) // ตัดรูปแบบวิดีโอที่ไม่มีวันนัดหมาย
+                .filter(b => b.date) // เอาเฉพาะงานที่มีวันที่ (ซึ่งตอนนี้มีทุกอัน)
                 .map(b => {
                     let color = '#EAB308'; // yellow for pending
                     if (b.status === 'อนุมัติแล้ว') color = '#3B82F6'; // blue
