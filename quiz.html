@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Open Graph & SEO Meta Tags -->
+    <meta property="og:title" content="B's LibrarySite - แบบทดสอบออนไลน์">
+    <meta property="og:description" content="ระบบทำแบบทดสอบออนไลน์ จับเวลา ประเมินผล">
+    <meta property="og:image" content="images/logo_minimal.png">
+    <meta property="og:type" content="website">
+    
+    <title>แบบทดสอบออนไลน์ | ห้องสมุดของบีส</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./theme.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        if (localStorage.getItem('b_theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        latte: {
+                            50: 'var(--color-latte-50)', 
+                            100: 'var(--color-latte-100)', 
+                            200: 'var(--color-latte-200)', 
+                            300: 'var(--color-latte-300)',
+                            400: 'var(--color-latte-400)',
+                            500: 'var(--color-latte-500)', 
+                            600: 'var(--color-latte-600)',
+                            700: 'var(--color-latte-700)', 
+                            800: 'var(--color-latte-800)',
+                            900: 'var(--color-latte-900)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: #FAF6F0;
+            background-image: linear-gradient(rgba(250, 246, 240, 0.88), rgba(250, 246, 240, 0.88)), url('./bg.png');
+            background-size: cover;
+            background-position: center;
+            color: #4A3525;
+            overflow-x: hidden;
+        }
+        html.dark body {
+            background-image: linear-gradient(rgba(28, 21, 18, 0.95), rgba(28, 21, 18, 0.95)), url('./bg.png');
+        }
+        .mode-card {
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(74, 53, 37, 0.08);
+            border: 1px solid #F0E6D6;
+            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1);
+            cursor: pointer;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .mode-card:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 0 16px 40px rgba(74, 53, 37, 0.18);
+        }
+        html.dark .mode-card {
+            background: var(--color-latte-100);
+            border-color: var(--color-latte-200);
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col">
+
+    <!-- แถบเมนูด้านบน -->
+    <nav class="fixed w-full bg-latte-50/90 backdrop-blur-md border-b border-latte-100 z-40 transition-all shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="./index.html" class="flex items-center space-x-2">
+                    <span class="font-serif font-bold text-xl text-latte-700 tracking-wide">BLibrarySite ☕️</span>
+                </a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="./index.html#resources" class="text-latte-700 hover:text-latte-500 font-medium transition">แหล่งข้อมูล</a>
+                    <a href="./files.html" class="text-latte-700 hover:text-latte-500 font-medium transition">ไฟล์เอกสาร</a>
+                    <a href="./quiz.html" class="text-latte-700 hover:text-latte-500 font-medium transition font-bold">แบบทดสอบ</a>
+                    <a href="./index.html#booking" class="text-latte-700 hover:text-latte-500 font-medium transition">เรียนด้วยกัน</a>
+                    <a href="./index.html#social" class="text-latte-700 hover:text-latte-500 font-medium transition">ติดตามบีสได้ที่</a>
+                    <a href="./reviews.html" class="text-latte-700 hover:text-latte-500 font-medium transition">รีวิวจากผู้เรียน</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 pt-24 pb-12">
+        <!-- View 1: Mode Selection -->
+        <div id="view-mode">
+            <div class="text-center mb-12">
+                <h1 class="font-serif text-4xl sm:text-5xl text-latte-900 mb-3">แบบทดสอบออนไลน์</h1>
+                <p class="text-latte-600 text-lg">เลือกรูปแบบข้อสอบที่ต้องการทดสอบ</p>
+                <div class="w-16 h-1 bg-latte-400 rounded-full mx-auto mt-5"></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <button onclick="selectMode('ipst')" class="mode-card">
+                    <div class="text-5xl mb-4">🔬</div>
+                    <h2 class="text-2xl font-serif font-bold text-latte-900">สสวท. (IPST)</h2>
+                    <p class="text-latte-500 mt-2">ข้อสอบวิทยาศาสตร์และคณิตศาสตร์เข้มข้น</p>
+                </button>
+                <button onclick="selectMode('alevel')" class="mode-card">
+                    <div class="text-5xl mb-4">🎓</div>
+                    <h2 class="text-2xl font-serif font-bold text-latte-900">A-Level</h2>
+                    <p class="text-latte-500 mt-2">ข้อสอบเข้ามหาวิทยาลัย 8 วิชา</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- View 2: Setup (Subject & IG) -->
+        <div id="view-setup" class="hidden max-w-lg mx-auto bg-white dark:bg-latte-100 p-8 rounded-2xl shadow-xl border border-latte-100 dark:border-latte-200">
+            <button onclick="goBackToMode()" class="text-latte-500 hover:text-latte-900 mb-6 flex items-center gap-2">
+                &larr; กลับไปหน้าเลือกโหมด
+            </button>
+            <h2 class="text-2xl font-serif text-latte-900 mb-6" id="setupTitle">เตรียมตัวสอบ...</h2>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-2">เลือกวิชา</label>
+                    <select id="subjectSelect" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:ring-2 focus:ring-latte-400 focus:outline-none"></select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-2">ชื่อ IG (Instagram) ของคุณ</label>
+                    <input type="text" id="igInput" placeholder="@username" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:ring-2 focus:ring-latte-400 focus:outline-none">
+                    <p class="text-xs text-latte-500 mt-2">* เพื่อใช้บันทึกประวัติคะแนนสอบ</p>
+                </div>
+                <button onclick="startQuiz()" class="w-full bg-latte-700 text-white rounded-xl p-3 font-medium hover:bg-latte-900 transition mt-4">เริ่มทำข้อสอบ</button>
+            </div>
+        </div>
+
+        <!-- View 3: Quiz Active -->
+        <div id="view-quiz" class="hidden">
+            <div class="flex justify-between items-center mb-6 bg-white dark:bg-latte-100 p-4 rounded-xl shadow-sm border border-latte-100 dark:border-latte-200">
+                <div class="font-medium text-latte-900 flex flex-col sm:flex-row gap-2 sm:gap-6">
+                    <span id="quizSubjectDisplay">วิชา: -</span>
+                    <span id="quizQuestionCounter">ข้อ 1/10</span>
+                </div>
+                <div class="flex items-center gap-2 text-red-600 font-bold bg-red-50 px-4 py-2 rounded-lg border border-red-100">
+                    ⏱ <span id="timerDisplay">00:00</span>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-latte-100 p-6 sm:p-8 rounded-2xl shadow-xl border border-latte-100 dark:border-latte-200 mb-6">
+                <h3 id="questionText" class="text-xl text-latte-900 font-medium mb-6 leading-relaxed"></h3>
+                <div id="optionsContainer" class="space-y-3">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <button id="prevBtn" onclick="prevQuestion()" class="px-6 py-2 rounded-full border border-latte-300 text-latte-700 hover:bg-latte-50 font-medium transition hidden">ย้อนกลับ</button>
+                <div class="flex-grow"></div>
+                <button id="nextBtn" onclick="nextQuestion()" class="px-6 py-2 rounded-full bg-latte-700 text-white hover:bg-latte-900 font-medium transition shadow-md">ถัดไป</button>
+                <button id="submitQuizBtn" onclick="submitQuiz()" class="px-6 py-2 rounded-full bg-green-600 text-white hover:bg-green-700 font-medium transition shadow-md hidden">ส่งข้อสอบ</button>
+            </div>
+        </div>
+
+        <!-- View 4: Result -->
+        <div id="view-result" class="hidden max-w-2xl mx-auto text-center">
+            <div class="bg-white dark:bg-latte-100 p-8 sm:p-12 rounded-3xl shadow-2xl border border-latte-100 dark:border-latte-200 mb-8">
+                <div class="text-6xl mb-4">🏆</div>
+                <h2 class="text-3xl font-serif text-latte-900 mb-2">สรุปผลคะแนน</h2>
+                <p class="text-latte-500 mb-6" id="resultMeta">วิชา - | ชื่อ IG: @-</p>
+                
+                <div class="inline-block bg-latte-50 rounded-2xl p-6 border border-latte-200 mb-8 min-w-[200px]">
+                    <span class="text-5xl font-bold text-latte-900" id="scoreDisplay">0</span>
+                    <span class="text-xl text-latte-500"> / </span>
+                    <span class="text-2xl text-latte-500" id="totalDisplay">0</span>
+                </div>
+
+                <div id="wrongAnswersContainer" class="text-left bg-red-50 p-6 rounded-xl border border-red-100 hidden">
+                    <h3 class="text-red-800 font-bold mb-4 flex items-center gap-2">⚠️ ข้อที่ตอบผิด</h3>
+                    <ul id="wrongAnswersList" class="space-y-4 text-sm text-red-900"></ul>
+                </div>
+
+                <div class="mt-8">
+                    <button onclick="location.reload()" class="bg-latte-700 text-white px-8 py-3 rounded-full font-medium hover:bg-latte-900 transition shadow-lg">กลับไปหน้าหลักแบบทดสอบ</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'REPLACE_WITH_URL'; 
+        const SUPABASE_ANON_KEY = 'REPLACE_WITH_KEY';
+        // Note: For a real implementation, you'd pull this from a shared config if available.
+        // Here we just mock the supabase client so it doesn't break if not configured properly in this snippet
+        let supabaseClient;
+        try {
+            // Attempt to read from localStorage if they have it there, or just initialize a dummy
+            supabaseClient = supabase.createClient(
+                localStorage.getItem('sb_url') || 'https://xyz.supabase.co',
+                localStorage.getItem('sb_key') || 'dummy'
+            );
+        } catch(e) {
+            console.warn("Supabase init error (missing keys in localStorage maybe)");
+        }
+    </script>
+    <script src="./shared-widgets.js"></script>
+
+    <script>
+        // --- Mock Question Data ---
+        const MOCK_QUESTIONS = {
+            'คณิตศาสตร์': [
+                { q: "จงหาค่าของ 5 + 3 * 2", options: ["11", "16", "10", "15"], ans: 0 },
+                { q: "x^2 - 4 = 0 จงหาค่า x (x > 0)", options: ["1", "2", "4", "0"], ans: 1 },
+                { q: "ความน่าจะเป็นของการทอยลูกเต๋า 1 ลูกแล้วได้แต้มคู่คือเท่าใด?", options: ["1/6", "1/3", "1/2", "2/3"], ans: 2 }
+            ],
+            'ชีววิทยา': [
+                { q: "ออร์แกเนลล์ใดทำหน้าที่สร้างพลังงานให้เซลล์?", options: ["Ribosome", "Nucleus", "Mitochondria", "Golgi body"], ans: 2 },
+                { q: "กระบวนการสังเคราะห์แสงเกิดขึ้นที่ใด?", options: ["คลอโรพลาสต์", "ไมโทคอนเดรีย", "นิวเคลียส", "ไซโทพลาซึม"], ans: 0 }
+            ],
+            'ฟิสิกส์': [
+                { q: "กฎข้อที่ 2 ของนิวตันคืออะไร?", options: ["F = mv", "F = ma", "E = mc^2", "P = IV"], ans: 1 },
+                { q: "ความเร่งโน้มถ่วงของโลก (g) มีค่าประมาณเท่าใด?", options: ["9.8 m/s^2", "10.5 m/s^2", "8.9 m/s^2", "11.2 m/s^2"], ans: 0 }
+            ],
+            'เคมี': [
+                { q: "สัญลักษณ์ทางเคมีของทองคำคืออะไร?", options: ["Ag", "Au", "Fe", "Cu"], ans: 1 },
+                { q: "น้ำ (H2O) มีพันธะเคมีชนิดใด?", options: ["Ionic", "Covalent", "Metallic", "Hydrogen"], ans: 1 }
+            ],
+            'TPAT1': [
+                { q: "ภาพใดมีความสัมพันธ์กับคำว่า 'จริยธรรมแพทย์' มากที่สุด?", options: ["การปิดบังประวัติคนไข้", "การรักษาโดยไม่ถามความสมัครใจ", "การเก็บรักษาความลับของผู้ป่วย", "การเลือกปฏิบัติ"], ans: 2 }
+            ],
+            'ภาษาอังกฤษ': [
+                { q: "Choose the correct sentence:", options: ["She don't like apples.", "She doesn't likes apples.", "She doesn't like apples.", "She not like apples."], ans: 2 }
+            ],
+            'สังคมศึกษา': [
+                { q: "หลักธรรมใดเป็นหัวใจของพระพุทธศาสนา?", options: ["อริยสัจ 4", "โอวาทปาติโมกข์", "พรหมวิหาร 4", "อิทธิบาท 4"], ans: 1 }
+            ],
+            'ภาษาไทย': [
+                { q: "คำใดสะกดถูกต้อง?", options: ["ศีรษะ", "ศริษะ", "ศรีษะ", "ศรีษระ"], ans: 0 }
+            ]
+        };
+
+        const MODES = {
+            ipst: { title: "สสวท. (IPST)", subjects: ["คณิตศาสตร์", "ชีววิทยา", "ฟิสิกส์", "เคมี"] },
+            alevel: { title: "A-Level", subjects: ["คณิตศาสตร์", "ชีววิทยา", "ฟิสิกส์", "เคมี", "TPAT1", "ภาษาอังกฤษ", "สังคมศึกษา", "ภาษาไทย"] }
+        };
+
+        // --- State Variables ---
+        let currentMode = '';
+        let currentSubject = '';
+        let currentIG = '';
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = []; // Store selected index
+        let timerInterval = null;
+        let timeLeft = 0; // seconds
+
+        // --- View Navigation ---
+        function switchView(viewId) {
+            ['view-mode', 'view-setup', 'view-quiz', 'view-result'].forEach(v => {
+                document.getElementById(v).classList.add('hidden');
+            });
+            document.getElementById(viewId).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function selectMode(mode) {
+            currentMode = mode;
+            document.getElementById('setupTitle').innerText = `โหมด: ${MODES[mode].title}`;
+            
+            const subjSelect = document.getElementById('subjectSelect');
+            subjSelect.innerHTML = '<option value="">-- เลือกวิชา --</option>';
+            MODES[mode].subjects.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s; opt.innerText = s;
+                subjSelect.appendChild(opt);
+            });
+            
+            // Check if IG exists in localStorage
+            const savedIg = localStorage.getItem('b_quiz_ig');
+            if (savedIg) document.getElementById('igInput').value = savedIg;
+
+            switchView('view-setup');
+        }
+
+        function goBackToMode() {
+            switchView('view-mode');
+        }
+
+        function startQuiz() {
+            const subj = document.getElementById('subjectSelect').value;
+            const ig = document.getElementById('igInput').value.trim();
+            
+            if (!subj) return alert('กรุณาเลือกวิชาครับ');
+            if (!ig) return alert('กรุณากรอกชื่อ IG เพื่อบันทึกประวัติครับ');
+
+            currentSubject = subj;
+            currentIG = ig;
+            localStorage.setItem('b_quiz_ig', currentIG);
+
+            // Fetch questions
+            questions = MOCK_QUESTIONS[subj] || [{q: "ไม่มีข้อสอบสำหรับวิชานี้", options: ["-", "-", "-", "-"], ans: 0}];
+            currentQuestionIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+
+            // Timer (e.g. 5 mins per mock test)
+            timeLeft = questions.length * 60; 
+            
+            document.getElementById('quizSubjectDisplay').innerText = `วิชา: ${subj}`;
+            
+            renderQuestion();
+            startTimer();
+            switchView('view-quiz');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert('หมดเวลา!');
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById('quizQuestionCounter').innerText = `ข้อ ${currentQuestionIndex + 1}/${questions.length}`;
+            document.getElementById('questionText').innerText = `${currentQuestionIndex + 1}. ${q.q}`;
+            
+            const optsContainer = document.getElementById('optionsContainer');
+            optsContainer.innerHTML = '';
+            
+            q.options.forEach((optText, idx) => {
+                const isSelected = userAnswers[currentQuestionIndex] === idx;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border-2 transition-all ${isSelected ? 'border-latte-500 bg-latte-50 ring-2 ring-latte-200' : 'border-latte-200 bg-white hover:border-latte-400 hover:bg-latte-50/50'}`;
+                btn.innerHTML = `<span class="inline-block w-8 font-bold text-latte-500">${String.fromCharCode(65 + idx)}.</span> ${optText}`;
+                btn.onclick = () => selectOption(idx);
+                optsContainer.appendChild(btn);
+            });
+
+            document.getElementById('prevBtn').classList.toggle('hidden', currentQuestionIndex === 0);
+            
+            if (currentQuestionIndex === questions.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('submitQuizBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('submitQuizBtn').classList.add('hidden');
+            }
+        }
+
+        function selectOption(idx) {
+            userAnswers[currentQuestionIndex] = idx;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        async function submitQuiz() {
+            clearInterval(timerInterval);
+            let score = 0;
+            let wrongItems = [];
+
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.ans) {
+                    score++;
+                } else {
+                    wrongItems.push({
+                        qNum: idx + 1,
+                        qText: q.q,
+                        userAns: userAnswers[idx] !== null ? q.options[userAnswers[idx]] : 'ไม่ได้ตอบ',
+                        correctAns: q.options[q.ans]
+                    });
+                }
+            });
+
+            // Display Result
+            document.getElementById('resultMeta').innerText = `วิชา ${currentSubject} (${MODES[currentMode].title}) | ชื่อ IG: ${currentIG}`;
+            document.getElementById('scoreDisplay').innerText = score;
+            document.getElementById('totalDisplay').innerText = questions.length;
+
+            const wrongContainer = document.getElementById('wrongAnswersContainer');
+            const wrongList = document.getElementById('wrongAnswersList');
+            if (wrongItems.length > 0) {
+                wrongContainer.classList.remove('hidden');
+                wrongList.innerHTML = wrongItems.map(w => 
+                    `<li>
+                        <div class="font-medium mb-1">ข้อ ${w.qNum}. ${w.qText}</div>
+                        <div class="text-latte-600">ตอบผิด: <span class="line-through">${w.userAns}</span></div>
+                        <div class="text-green-700 font-medium">เฉลย: ${w.correctAns}</div>
+                    </li>`
+                ).join('<hr class="border-red-200 my-2">');
+            } else {
+                wrongContainer.classList.add('hidden');
+            }
+
+            switchView('view-result');
+
+            // --- Send to Supabase ---
+            // If the user hasn't created the table, this will silently fail in console, which is fine for the demo.
+            try {
+                if (supabaseClient && supabaseClient.from) {
+                    await supabaseClient.from('quiz_history').insert([{
+                        ig_username: currentIG,
+                        mode: currentMode,
+                        subject: currentSubject,
+                        score: score,
+                        total_questions: questions.length
+                    }]);
+                }
+            } catch (err) {
+                console.error("Failed to save quiz history:", err);
+            }
+        }
+    </script>
+</body>
+</html>
