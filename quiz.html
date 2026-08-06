@@ -137,6 +137,26 @@
                     <select id="subjectSelect" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:ring-2 focus:ring-latte-400 focus:outline-none"></select>
                 </div>
                 <div>
+                    <label class="block text-sm font-medium text-latte-900 mb-2">เลือกปีของข้อสอบ</label>
+                    <select id="yearSelect" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:ring-2 focus:ring-latte-400 focus:outline-none">
+                        <option value="55">ปี 2555</option>
+                        <option value="56">ปี 2556</option>
+                        <option value="57">ปี 2557</option>
+                        <option value="58">ปี 2558</option>
+                        <option value="59">ปี 2559</option>
+                        <option value="60">ปี 2560</option>
+                        <option value="61">ปี 2561</option>
+                        <option value="62">ปี 2562</option>
+                        <option value="63">ปี 2563</option>
+                        <option value="64">ปี 2564</option>
+                        <option value="65">ปี 2565</option>
+                        <option value="66">ปี 2566</option>
+                        <option value="67">ปี 2567</option>
+                        <option value="68">ปี 2568</option>
+                        <option value="69">ปี 2569</option>
+                    </select>
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-latte-900 mb-2">ชื่อ IG (Instagram) ของคุณ</label>
                     <input type="text" id="igInput" placeholder="@username" class="w-full bg-latte-50 border border-latte-200 rounded-xl p-3 focus:ring-2 focus:ring-latte-400 focus:outline-none">
                     <p class="text-xs text-latte-500 mt-2">* เพื่อใช้บันทึกประวัติคะแนนสอบ</p>
@@ -220,35 +240,338 @@
     <script>
         // --- Mock Question Data ---
         const MOCK_QUESTIONS = {
-            'คณิตศาสตร์': [
-                { q: "จงหาค่าของ 5 + 3 * 2", options: ["11", "16", "10", "15"], ans: 0 },
-                { q: "x^2 - 4 = 0 จงหาค่า x (x > 0)", options: ["1", "2", "4", "0"], ans: 1 },
-                { q: "ความน่าจะเป็นของการทอยลูกเต๋า 1 ลูกแล้วได้แต้มคู่คือเท่าใด?", options: ["1/6", "1/3", "1/2", "2/3"], ans: 2 }
-            ],
-            'ชีววิทยา': [
-                { q: "ออร์แกเนลล์ใดทำหน้าที่สร้างพลังงานให้เซลล์?", options: ["Ribosome", "Nucleus", "Mitochondria", "Golgi body"], ans: 2 },
-                { q: "กระบวนการสังเคราะห์แสงเกิดขึ้นที่ใด?", options: ["คลอโรพลาสต์", "ไมโทคอนเดรีย", "นิวเคลียส", "ไซโทพลาซึม"], ans: 0 }
-            ],
-            'ฟิสิกส์': [
-                { q: "กฎข้อที่ 2 ของนิวตันคืออะไร?", options: ["F = mv", "F = ma", "E = mc^2", "P = IV"], ans: 1 },
-                { q: "ความเร่งโน้มถ่วงของโลก (g) มีค่าประมาณเท่าใด?", options: ["9.8 m/s^2", "10.5 m/s^2", "8.9 m/s^2", "11.2 m/s^2"], ans: 0 }
-            ],
-            'เคมี': [
-                { q: "สัญลักษณ์ทางเคมีของทองคำคืออะไร?", options: ["Ag", "Au", "Fe", "Cu"], ans: 1 },
-                { q: "น้ำ (H2O) มีพันธะเคมีชนิดใด?", options: ["Ionic", "Covalent", "Metallic", "Hydrogen"], ans: 1 }
-            ],
-            'TPAT1': [
-                { q: "ภาพใดมีความสัมพันธ์กับคำว่า 'จริยธรรมแพทย์' มากที่สุด?", options: ["การปิดบังประวัติคนไข้", "การรักษาโดยไม่ถามความสมัครใจ", "การเก็บรักษาความลับของผู้ป่วย", "การเลือกปฏิบัติ"], ans: 2 }
-            ],
-            'ภาษาอังกฤษ': [
-                { q: "Choose the correct sentence:", options: ["She don't like apples.", "She doesn't likes apples.", "She doesn't like apples.", "She not like apples."], ans: 2 }
-            ],
-            'สังคมศึกษา': [
-                { q: "หลักธรรมใดเป็นหัวใจของพระพุทธศาสนา?", options: ["อริยสัจ 4", "โอวาทปาติโมกข์", "พรหมวิหาร 4", "อิทธิบาท 4"], ans: 1 }
-            ],
-            'ภาษาไทย': [
-                { q: "คำใดสะกดถูกต้อง?", options: ["ศีรษะ", "ศริษะ", "ศรีษะ", "ศรีษระ"], ans: 0 }
-            ]
+            'คณิตศาสตร์': {
+                '55': [
+  {
+    "type": "text",
+    "q": "ถ้าเซตคำตอบของอสมการ |3 − 2x| − |3x − 7| ≥ 0 คือช่วง[a, b] แล้ว a+b มีค่าเท่ากับเท่าไหร่",
+    "ans": "6"
+  },
+  {
+    "type": "text",
+    "q": "ถ้า S เป็นเซตของจำนวนนับ n ซึ่ง ค.ร.น. ของ 720 และ n มีค่าเท่ากับ 10800 แล้วสมาชิกของ S ที่มีค่าน้อยที่สุดมีค่าเท่ากับเท่าใด",
+    "ans": "675"
+  },
+  {
+    "type": "text",
+    "q": "sec^2(2 tan^-1(sqrt(2))) มีค่าเท่ากับเท่าใด",
+    "ans": "9"
+  },
+  {
+    "type": "text",
+    "q": "กำหนดให้ O เป็นจุดกำเนิด A = (1,-4,-3) และ B = (3,-6,2) ถ้า C เป็นจุดบน OB ซึ่งทำให้ AC ตั้งฉากกับ OB แล้ว OC ยาวเท่าใด",
+    "ans": "3"
+  },
+  {
+    "type": "text",
+    "q": "ผลบวกของคำตอบทั้งหมดของสมการ 3^x + 3^(2-x) = 4sqrt(3) มีค่าเท่ากับเท่าใด",
+    "ans": "0"
+  },
+  {
+    "type": "text",
+    "q": "ถ้า log[x+27^(log_3(2))] = 1 แล้ว x มีค่าเท่ากับเท่าใด",
+    "ans": "2"
+  },
+  {
+    "type": "text",
+    "q": "ในการกระจาย (x^2 + 2/x^3)^10 โดยใช้ทฤษฎีบททวินาม จะได้ว่าพจน์ค่าคงตัวมีค่าเท่ากับเท่าใด",
+    "ans": "210"
+  },
+  {
+    "type": "text",
+    "q": "ในการสอบวิชาประวัติศาสตร์มีการสอบ 5 ครั้ง โดยที่อาจารย์ผู้สอนให้น้ำหนักของผลการสอบครั้งสุดท้ายเป็นสองเท่าของผลการสอบครั้งอื่น ในการสอบสี่ครั้งแรก เด็กชายพูลสอบได้คะแนนเฉลี่ย 86 เปอร์เซ็นต์ ถ้าเขาต้องการผลการสอบวิชานี้เป็น 90 เปอร์เซ็นต์แล้วเขาจะต้องได้คะแนนในการสอบครั้งที่ 5 เท่ากับกี่เปอร์เซ็นต์ (ตอบเฉพาะตัวเลข)",
+    "ans": "98"
+  },
+  {
+    "type": "text",
+    "q": "กำหนดให้ L1 เป็นเส้นตรงซึ่งมีสมการเป็น 4x - 3y + 10 = 0 และ L2 เป็นเส้นสัมผัสของเส้นโค้ง y = x^2 - (8/3)x + 7/3 ถ้า L2 ขนานกับ L1 แล้ว ระยะห่างระหว่างเส้นตรง L1 และ L2 เท่ากับเท่าใด",
+    "ans": "3"
+  },
+  {
+    "type": "text",
+    "q": "อินทิเกรต 6x|x - 2|dx จาก 0 ถึง 2 มีค่าเท่ากับเท่าใด",
+    "ans": "8"
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ P(x) เป็นพหุนามดีกรี 3 ถ้า x - 1 , x - 2 และ x - 3 ต่างก็หาร P(x) แล้วเหลือเศษ 1 และ x - 4 หาร P(x) ลงตัว แล้ว P(5) มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "-3",
+      "-1",
+      "0",
+      "1",
+      "3"
+    ],
+    "ans": 0
+  },
+  {
+    "type": "choice",
+    "q": "ถ้า z เป็นจำนวนเชิงซ้อนซึ่งมี Im(z) > 0 และสอดคล้องกับสมการ (z + √3/2)^2 = -1/4 แล้ว z^8 เท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "-√3/2 - 1/2 i",
+      "-√3/2 + 1/2 i",
+      "1/2",
+      "-1/2 - √3/2 i",
+      "-1/2 + √3/2 i"
+    ],
+    "ans": 4
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ a, b เป็นจำนวนเต็มบวกซึ่ง ab - 25a - 25b = 1575 ถ้า ห.ร.ม. (a, b) = 5 แล้ว |a - b| มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "15",
+      "45",
+      "90",
+      "210",
+      "435"
+    ],
+    "ans": 0
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ u และ v เป็นเวกเตอร์สามมิติซึ่งทำมุมป้านต่อกัน และพื้นที่ของรูปสี่เหลี่ยมด้านขนานที่มีด้านประกอบมุมเป็น u และ v มีค่าเท่ากับ 3 ตารางหน่วย ถ้า u และ v มีขนาด 1 และ 5 หน่วย ตามลำดับแล้ว (2u + v) · (u - v) มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "-27",
+      "-19",
+      "0",
+      "19",
+      "27"
+    ],
+    "ans": 1
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ H เป็นไฮเพอร์โบลาซึ่งมีสมการเป็น 9x^2 - 72x - 16y^2 - 32y = 16 ถ้า E เป็นวงรีซึ่งมีจุดยอดอยู่ที่จุดโฟกัสของ H และมีความเยื้องศูนย์กลางเท่ากับ 1/√5 แล้ว E คือ สมการในข้อใดต่อไปนี้",
+    "options": [
+      "(x-4)^2/25 + (y+1)^2/16 = 1",
+      "(x+4)^2/25 + (y-1)^2/16 = 1",
+      "(x-4)^2/25 + (y+1)^2/20 = 1",
+      "(x+4)^2/25 + (y-1)^2/20 = 1",
+      "(x-4)^2/16 + (y+1)^2/9 = 1"
+    ],
+    "ans": 2
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้รูปสามเหลี่ยม ABC มีมุม A และมุม B เป็นมุมแหลม ถ้า cos 2A + 3 cos 2B = -2 และ cos A - √2 cos B = 0 แล้ว cos C มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "1/5(√3 - √2)",
+      "1/5(√3 + √2)",
+      "1/5(2√3 - √2)",
+      "1/5(√3 + 2√3)",
+      "1/5(2√2 - √3)"
+    ],
+    "ans": 2
+  },
+  {
+    "type": "choice",
+    "q": "ถ้า x, y, z สอดคล้องกับระบบสมการ 2x + y + 2z = a, x + y - z = b, 3x + 2y - 2z = c โดยที่ดีเทอร์มิแนนต์ของเมทริกซ์ 3x3 เท่ากับ 24 แล้ว x มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "-4",
+      "-4/5",
+      "0",
+      "4/5",
+      "4"
+    ],
+    "ans": 4
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ A เป็นเมทริกซ์มิติ 3x3 และ AXi = Bi เมื่อ i = 1, 2, 3 ... แล้ว det (A) มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "-8",
+      "-1/8",
+      "1/8",
+      "1",
+      "8"
+    ],
+    "ans": 1
+  },
+  {
+    "type": "choice",
+    "q": "ถ้า S1 = {x | log_1/2(x + 1) + 2log_1/4(x + 2) - log_1/2(9x - 3) <= 0} และ S2 = {x | x เป็นจำนวนเต็มซึ่ง -10 <= x <= 10} แล้ว S1 intersection S2 มีจำนวนสมาชิกเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "ans": 2
+  },
+  {
+    "type": "choice",
+    "q": "ในการจัดเด็ก 7 คนซึ่งมีอายุ 1, 2, 3, 4, 5, 6, 7 ขวบ นั่งเก้าอี้ 7 ตัวซึ่งติดหมายเลข 1, 2, 3, 4, 5, 6, 7 โดย กำหนดให้เด็กที่จะนั่งเก้าอี้หมายเลข k ต้องมีอายุมากกว่าหรือเท่ากับ k - 1 ขวบ จะมีจำนวนวิธีใดในการจัดเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "32",
+      "60",
+      "64",
+      "120",
+      "128"
+    ],
+    "ans": 2
+  },
+  {
+    "type": "choice",
+    "q": "ข้อมูลชุดหนึ่งเป็นคะแนนจากการสอบวิชาคณิตศาสตร์ของนักเรียนกลุ่มหนึ่ง ถ้าเพิ่มคะแนนให้นักเรียนทุกคนๆละ 3 คะแนน แล้วจะทำให้ค่าสถิติในข้อใดต่อไปนี้มีค่าลดลง",
+    "options": [
+      "ส่วนเบี่ยงเบนเฉลี่ยของคะแนน",
+      "สัมประสิทธิ์ของพิสัยของคะแนน",
+      "ค่าเฉลี่ยเลขคณิตของคะแนน",
+      "ค่ามัธยฐานของคะแนน",
+      "ส่วนเบี่ยงเบนมาตรฐานของคะแนน"
+    ],
+    "ans": 1
+  },
+  {
+    "type": "choice",
+    "q": "น้ำหนักของถุงซึ่งบรรจุอาหารขายส่งของบริษัทแห่งหนึ่งมีการแจกแจงปกติ ถ้าถุงที่มีน้ำหนักเกิน 117.8 กรัมมีอยู่ 67% และถุงที่มีน้ำหนักเกิน 126.7 กรัม มีอยู่ 9% แล้ว จำนวนเปอร์เซ็นต์ของถุงที่มีน้ำหนักน้อยกว่า 125 กรัม เท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "84.13",
+      "86.43",
+      "88.49",
+      "89.25",
+      "90"
+    ],
+    "ans": 0
+  },
+  {
+    "type": "choice",
+    "q": "พาราโบลารูปหนึ่งมีแกนสมมาตรขนานกับแกน Y มีจุดยอดอยู่ที่จุด (3,9) และผ่านจุด (1, 5) บริเวณที่ปิดล้อมด้วยพาราโบลารูปนี้ และแกน X มีพื้นที่เท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "9 ตารางหน่วย",
+      "18 ตารางหน่วย",
+      "27 ตารางหน่วย",
+      "36 ตารางหน่วย",
+      "54 ตารางหน่วย"
+    ],
+    "ans": 3
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ g เป็นฟังก์ชันพหุนามซึ่งมีจุด (2, -1) เป็นจุดต่ำสุดสัมพัทธ์ และกราฟของ g ผ่านจุด (1, 4) ถ้า c เป็นค่าคงตัวที่ทำให้ฟังก์ชัน f นิยามโดย ... ต่อเนื่องที่จุด x = 1 แล้ว f'(2) มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "-8",
+      "-4",
+      "0",
+      "4",
+      "8"
+    ],
+    "ans": 0
+  },
+  {
+    "type": "choice",
+    "q": "ถ้า a_n = { n เมื่อ n เป็นจำนวนคี่, 2n เมื่อ n เป็นจำนวนคู่ } แล้วผลรวมของ a_k ตั้งแต่ k=1 ถึง 40 มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "860",
+      "1060",
+      "1080",
+      "1240",
+      "1440"
+    ],
+    "ans": 3
+  },
+  {
+    "type": "choice",
+    "q": "ถ้า A = [[a, 1-a], [1+a, -a]] เมื่อ a เป็นจำนวนจริงและ I = [[1, 0], [0, 1]] แล้ว det(A - √2 I)(A - √3 I)(A - √5 I)(A - √7 I) มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "48-13a",
+      "(a-√2)(a-√3)(a-√5)(a-√7)",
+      "17a",
+      "17",
+      "4"
+    ],
+    "ans": 4
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ E_n เป็นวงรีที่มีสมการเป็น x^2/a_n^2 + y^2/b_n^2 = 1 โดยที่ a_n = 2b_n >= 0 ถ้า a_1 = 2 และ จุดยอดของวงรี E_n เป็นจุดโฟกัสของวงรี E_{n-1} ทุก n >= 2 แล้วผลรวมของ a_n ตั้งแต่ n=1 ถึงอินฟินิตี้ มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "6 + 4√3",
+      "8 + 4√3",
+      "10 + 4√3",
+      "15",
+      "17"
+    ],
+    "ans": 1
+  },
+  {
+    "type": "choice",
+    "q": "ข้อใดต่อไปนี้ผิด",
+    "options": [
+      "f(x) = x|x + 1| มีอนุพันธ์ที่จุด x = 0",
+      "f(x) = x / |x+1| มีอนุพันธ์ที่จุด x = 0",
+      "f(x) = |x|(x + 1) มีอนุพันธ์ที่จุด x = 0",
+      "f(x) = x^2|x + 1| มีอนุพันธ์ที่จุด x = 0",
+      "f(x) = x|x| มีอนุพันธ์ที่จุด x = 0"
+    ],
+    "ans": 2
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ข้อมูลชุดหนึ่งประกอบด้วย a_1, a_2, a_3, ..., a_91 โดยที่ a_n = { n เมื่อ n เป็นจำนวนเต็มบวกคู่, 3 + 4n เมื่อ n เป็นจำนวนเต็มบวกคี่ } มัธยฐานของข้อมูลชุดนี้มีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "63",
+      "68",
+      "71",
+      "74",
+      "76"
+    ],
+    "ans": 3
+  },
+  {
+    "type": "choice",
+    "q": "กำหนดให้ M = { [[a, b], [c, d]] | a,b,c,d in {-1,0,1} } ถ้าสุ่มเลือกเมทริกซ์ หนึ่ง เมทริกซ์จากเซต M แล้ว ความน่าจะเป็นที่จะได้เมทริกซ์ที่มีอินเวอร์สการคูณมีค่าเท่ากับข้อใดต่อไปนี้",
+    "options": [
+      "24/81",
+      "31/81",
+      "33/81",
+      "48/81",
+      "50/81"
+    ],
+    "ans": 3
+  }
+]
+            },
+            'ชีววิทยา': {
+                '55': [
+                    { q: "ออร์แกเนลล์ใดทำหน้าที่สร้างพลังงานให้เซลล์?", options: ["Ribosome", "Nucleus", "Mitochondria", "Golgi body"], ans: 2 },
+                    { q: "กระบวนการสังเคราะห์แสงเกิดขึ้นที่ใด?", options: ["คลอโรพลาสต์", "ไมโทคอนเดรีย", "นิวเคลียส", "ไซโทพลาซึม"], ans: 0 }
+                ]
+            },
+            'ฟิสิกส์': {
+                '55': [
+                    { q: "กฎข้อที่ 2 ของนิวตันคืออะไร?", options: ["F = mv", "F = ma", "E = mc^2", "P = IV"], ans: 1 },
+                    { q: "ความเร่งโน้มถ่วงของโลก (g) มีค่าประมาณเท่าใด?", options: ["9.8 m/s^2", "10.5 m/s^2", "8.9 m/s^2", "11.2 m/s^2"], ans: 0 }
+                ]
+            },
+            'เคมี': {
+                '55': [
+                    { q: "สัญลักษณ์ทางเคมีของทองคำคืออะไร?", options: ["Ag", "Au", "Fe", "Cu"], ans: 1 },
+                    { q: "น้ำ (H2O) มีพันธะเคมีชนิดใด?", options: ["Ionic", "Covalent", "Metallic", "Hydrogen"], ans: 1 }
+                ]
+            },
+            'TPAT1': {
+                '55': [
+                    { q: "ภาพใดมีความสัมพันธ์กับคำว่า 'จริยธรรมแพทย์' มากที่สุด?", options: ["การปิดบังประวัติคนไข้", "การรักษาโดยไม่ถามความสมัครใจ", "การเก็บรักษาความลับของผู้ป่วย", "การเลือกปฏิบัติ"], ans: 2 }
+                ]
+            },
+            'ภาษาอังกฤษ': {
+                '55': [
+                    { q: "Choose the correct sentence:", options: ["She don't like apples.", "She doesn't likes apples.", "She doesn't like apples.", "She not like apples."], ans: 2 }
+                ]
+            },
+            'สังคมศึกษา': {
+                '55': [
+                    { q: "หลักธรรมใดเป็นหัวใจของพระพุทธศาสนา?", options: ["อริยสัจ 4", "โอวาทปาติโมกข์", "พรหมวิหาร 4", "อิทธิบาท 4"], ans: 1 }
+                ]
+            },
+            'ภาษาไทย': {
+                '55': [
+                    { q: "คำใดสะกดถูกต้อง?", options: ["ศีรษะ", "ศริษะ", "ศรีษะ", "ศรีษระ"], ans: 0 }
+                ]
+            }
         };
 
         const MODES = {
@@ -259,6 +582,7 @@
         // --- State Variables ---
         let currentMode = '';
         let currentSubject = '';
+        let currentYear = '';
         let currentIG = '';
         let questions = [];
         let currentQuestionIndex = 0;
@@ -300,24 +624,32 @@
 
         function startQuiz() {
             const subj = document.getElementById('subjectSelect').value;
+            const year = document.getElementById('yearSelect').value;
             const ig = document.getElementById('igInput').value.trim();
             
             if (!subj) return alert('กรุณาเลือกวิชาครับ');
             if (!ig) return alert('กรุณากรอกชื่อ IG เพื่อบันทึกประวัติครับ');
 
             currentSubject = subj;
+            currentYear = year;
             currentIG = ig;
             localStorage.setItem('b_quiz_ig', currentIG);
 
             // Fetch questions
-            questions = MOCK_QUESTIONS[subj] || [{q: "ไม่มีข้อสอบสำหรับวิชานี้", options: ["-", "-", "-", "-"], ans: 0}];
+            let subjectQuestions = MOCK_QUESTIONS[subj];
+            if (subjectQuestions && subjectQuestions[year] && subjectQuestions[year].length > 0) {
+                questions = subjectQuestions[year];
+            } else {
+                questions = [{q: `ไม่มีข้อมูลข้อสอบสำหรับวิชานี้ ในปี ${year} ครับ`, options: ["-", "-", "-", "-"], ans: 0}];
+            }
+            
             currentQuestionIndex = 0;
             userAnswers = new Array(questions.length).fill(null);
 
             // Timer (Count up)
             timeElapsed = 0; 
             
-            document.getElementById('quizSubjectDisplay').innerText = `วิชา: ${subj}`;
+            document.getElementById('quizSubjectDisplay').innerText = `วิชา: ${subj} (ปี ${year})`;
             
             renderQuestion();
             startTimer();
@@ -347,14 +679,24 @@
             const optsContainer = document.getElementById('optionsContainer');
             optsContainer.innerHTML = '';
             
-            q.options.forEach((optText, idx) => {
-                const isSelected = userAnswers[currentQuestionIndex] === idx;
-                const btn = document.createElement('button');
-                btn.className = `w-full text-left p-4 rounded-xl border-2 transition-all ${isSelected ? 'border-latte-500 bg-latte-50 ring-2 ring-latte-200' : 'border-latte-200 bg-white hover:border-latte-400 hover:bg-latte-50/50'}`;
-                btn.innerHTML = `<span class="inline-block w-8 font-bold text-latte-500">${String.fromCharCode(65 + idx)}.</span> ${optText}`;
-                btn.onclick = () => selectOption(idx);
-                optsContainer.appendChild(btn);
-            });
+            if (q.type === 'text' || !q.options) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'w-full bg-latte-50 border border-latte-200 rounded-xl p-4 text-lg focus:ring-2 focus:ring-latte-400 focus:outline-none transition-all';
+                input.placeholder = 'พิมพ์คำตอบของคุณที่นี่...';
+                input.value = userAnswers[currentQuestionIndex] || '';
+                input.oninput = (e) => { userAnswers[currentQuestionIndex] = e.target.value; };
+                optsContainer.appendChild(input);
+            } else {
+                q.options.forEach((optText, idx) => {
+                    const isSelected = userAnswers[currentQuestionIndex] === idx;
+                    const btn = document.createElement('button');
+                    btn.className = `w-full text-left p-4 rounded-xl border-2 transition-all ${isSelected ? 'border-latte-500 bg-latte-50 ring-2 ring-latte-200' : 'border-latte-200 bg-white hover:border-latte-400 hover:bg-latte-50/50'}`;
+                    btn.innerHTML = `<span class="inline-block w-8 font-bold text-latte-500">${String.fromCharCode(65 + idx)}.</span> ${optText}`;
+                    btn.onclick = () => selectOption(idx);
+                    optsContainer.appendChild(btn);
+                });
+            }
 
             document.getElementById('prevBtn').classList.toggle('hidden', currentQuestionIndex === 0);
             
@@ -392,14 +734,29 @@
             let wrongItems = [];
 
             questions.forEach((q, idx) => {
-                if (userAnswers[idx] === q.ans) {
+                let isCorrect = false;
+                let userAnsStr = '';
+                let correctAnsStr = '';
+                
+                if (q.type === 'text' || !q.options) {
+                    const ua = (userAnswers[idx] || '').trim();
+                    userAnsStr = ua !== '' ? ua : 'ไม่ได้ตอบ';
+                    correctAnsStr = q.ans;
+                    isCorrect = (ua === q.ans);
+                } else {
+                    userAnsStr = userAnswers[idx] !== null ? q.options[userAnswers[idx]] : 'ไม่ได้ตอบ';
+                    correctAnsStr = q.options[q.ans];
+                    isCorrect = (userAnswers[idx] === q.ans);
+                }
+
+                if (isCorrect) {
                     score++;
                 } else {
                     wrongItems.push({
                         qNum: idx + 1,
                         qText: q.q,
-                        userAns: userAnswers[idx] !== null ? q.options[userAnswers[idx]] : 'ไม่ได้ตอบ',
-                        correctAns: q.options[q.ans]
+                        userAns: userAnsStr,
+                        correctAns: correctAnsStr
                     });
                 }
             });
@@ -443,5 +800,35 @@
             }
         }
     </script>
+
+    <!-- Announcement Modal -->
+    <div id="announcementModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl transform transition-transform scale-95 border-2 border-latte-200" id="announcementBox">
+            <div class="text-6xl text-center mb-4">📢</div>
+            <h2 class="text-2xl font-serif text-center text-latte-900 mb-2 font-bold">ประกาศสำคัญ</h2>
+            <p class="text-latte-600 text-center mb-6 leading-relaxed">ปัจจุบันระบบมีเฉพาะข้อสอบ <b>A-Level วิชาคณิตศาสตร์</b> เท่านั้นนะครับ วิชากับโหมดอื่นๆ บีสจะทยอยอัปเดตตามมาทีหลังครับ 😊</p>
+            <button onclick="closeAnnouncement()" class="w-full bg-latte-800 hover:bg-latte-900 text-white font-medium py-3 rounded-xl transition-colors shadow-lg">รับทราบครับ</button>
+        </div>
+    </div>
+
+    <script>
+        function closeAnnouncement() {
+            const modal = document.getElementById('announcementModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('announcementModal');
+            modal.classList.remove('hidden');
+            // Small delay to allow CSS transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                document.getElementById('announcementBox').classList.remove('scale-95');
+                document.getElementById('announcementBox').classList.add('scale-100');
+            }, 10);
+        });
+    </script>
+
 </body>
 </html>

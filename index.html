@@ -1068,26 +1068,36 @@
                 : allTimeSlots;
 
             if (isWeekday) {
-                timeNote.textContent = '💡 วันจันทร์-ศุกร์ เปิดรับเฉพาะช่วงเย็น (17:30 - 20:45 น.) มีพัก 15 นาทีระหว่างคิว';
+                timeNote.textContent = '💡 วันจันทร์-ศุกร์ เปิดรับเฉพาะช่วงเย็น (17:30 - 20:45 น.) รับเพียงวันละ 1 คิวเท่านั้น';
             } else {
                 timeNote.textContent = '💡 วันเสาร์-อาทิตย์ เปิดรับช่วงเช้า-บ่าย (09:00 - 16:15 น.) มีพัก 15 นาทีระหว่างคิว';
             }
             timeNote.classList.remove('hidden');
 
-            slotsToShow.forEach(slot => {
-                const opt = document.createElement('option');
-                opt.value = slot.value;
-                const isBooked = bookedSlotsForDate.includes(slot.value);
-                if (isBooked && slot.value !== 'custom') {
-                    opt.textContent = slot.text + ' ❌ (จองแล้ว)';
-                    opt.disabled = true;
-                    opt.style.color = '#999';
-                } else {
-                    opt.textContent = slot.text;
-                }
-                timeInput.appendChild(opt);
-            });
+            const isWeekdayFull = isWeekday && bookedSlotsForDate.length >= 1;
 
+            if (isWeekdayFull) {
+                const opt = document.createElement('option');
+                opt.value = "";
+                opt.textContent = "❌ คิวเต็มแล้ว (รับวันละ 1 คิว)";
+                opt.disabled = true;
+                opt.style.color = '#999';
+                timeInput.appendChild(opt);
+            } else {
+                slotsToShow.forEach(slot => {
+                    const opt = document.createElement('option');
+                    opt.value = slot.value;
+                    const isBooked = bookedSlotsForDate.includes(slot.value);
+                    if (isBooked && slot.value !== 'custom') {
+                        opt.textContent = slot.text + ' ❌ (จองแล้ว)';
+                        opt.disabled = true;
+                        opt.style.color = '#999';
+                    } else {
+                        opt.textContent = slot.text;
+                    }
+                    timeInput.appendChild(opt);
+                });
+            }
             const isValidPrevious = Array.from(timeInput.options).some(opt => opt.value === previousSelected && !opt.disabled);
             if (previousSelected && isValidPrevious) {
                 timeInput.value = previousSelected;
