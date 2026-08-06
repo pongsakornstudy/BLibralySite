@@ -594,8 +594,7 @@
                     revTotal += rev;
                     const subj = b.subject || 'อื่นๆ';
                     revenueBySubject[subj] = (revenueBySubject[subj] || 0) + rev;
-                    if (!b.created_at) return;
-                    const d = new Date(b.created_at);
+                    const d = new Date(b.revenue_date || b.created_at);
                     if (d.toISOString().slice(0,10) === todayStr) revToday += rev;
                     if (d >= weekAgo) revWeek += rev;
                     if (d >= monthAgo) revMonth += rev;
@@ -661,9 +660,9 @@
                     bySubject[subj] = bySubject[subj] || { count: 0, rev: 0 };
                     bySubject[subj].count++;
                     bySubject[subj].rev += rev;
-                    revenueRows.push(b);
-                    if (!b.created_at) return;
-                    const d = new Date(b.created_at);
+                    revenueRows.push({ ...b, displayDate: b.revenue_date || b.created_at });
+                    if (!b.revenue_date && !b.created_at) return;
+                    const d = new Date(b.revenue_date || b.created_at);
                     if (d.toISOString().slice(0,10) === todayStr) rvToday += rev;
                     if (d >= weekAgo) rvWeek += rev;
                     if (d >= monthStart) rvMonth += rev;
@@ -688,8 +687,8 @@
 
             // Recent list
             const list = document.getElementById('rv-list');
-            list.innerHTML = revenueRows.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,20).map(b => {
-                const d = b.created_at ? new Date(b.created_at).toLocaleDateString('th-TH') : '-';
+            list.innerHTML = revenueRows.sort((a,b)=>new Date(b.displayDate)-new Date(a.displayDate)).slice(0,20).map(b => {
+                const d = b.displayDate ? new Date(b.displayDate).toLocaleDateString('th-TH') : '-';
                 return `<tr class="border-b border-latte-50 hover:bg-latte-50"><td class="py-2 px-3 text-latte-500">${d}</td><td class="py-2 px-3">${b.contact || '-'}</td><td class="py-2 px-3">${b.subject || '-'}</td><td class="py-2 px-3 font-bold text-green-700">฿${parseFloat(b.revenue).toLocaleString()}</td></tr>`;
             }).join('') || '<tr><td colspan="4" class="py-4 text-center text-latte-400">ยังไม่มีรายการ</td></tr>';
         }
@@ -718,6 +717,7 @@
             const updateData = { status: 'จบงานแล้ว' };
             if (amount !== null) {
                 updateData.revenue = amount;
+                updateData.revenue_date = new Date().toISOString();
             }
 
             try {
@@ -734,7 +734,7 @@
             } catch (err) {
                 console.error(err);
                 if (err.code === '42703' || err.message.includes('revenue')) {
-                    alert('ไม่พบคอลัมน์ revenue ในตาราง bookings กรุณาเข้าไปสร้างใน Supabase ก่อนครับ');
+                    alert('ไม่พบคอลัมน์ revenue หรือ revenue_date ในตาราง bookings กรุณาเข้าไปสร้าง (ประเภท date/timestamp) ใน Supabase ก่อนครับ');
                 } else {
                     alert('เกิดข้อผิดพลาดในการบันทึกรายได้: ' + err.message);
                 }
